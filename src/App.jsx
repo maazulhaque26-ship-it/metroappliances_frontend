@@ -123,6 +123,15 @@ const AdminAssignments   = lazy(() => import('./pages/admin/AdminAssignments'));
 // ── Sprint 9F: Enterprise Hardening ─────────────────────────────────────────
 const AdminAuditLog = lazy(() => import('./pages/admin/AdminAuditLog'));
 
+// ── Sprint 10A: Warehouse Foundation ─────────────────────────────────────────
+const AdminWarehouseDashboard = lazy(() => import('./pages/admin/AdminWarehouseDashboard'));
+const AdminWarehouses         = lazy(() => import('./pages/admin/AdminWarehouses'));
+const AdminWarehouseDetail    = lazy(() => import('./pages/admin/AdminWarehouseDetail'));
+const AdminWarehouseZones     = lazy(() => import('./pages/admin/AdminWarehouseZones'));
+const AdminWarehouseLocations = lazy(() => import('./pages/admin/AdminWarehouseLocations'));
+const AdminWarehouseUsers     = lazy(() => import('./pages/admin/AdminWarehouseUsers'));
+const AdminWarehouseSettings  = lazy(() => import('./pages/admin/AdminWarehouseSettings'));
+
 // ── Sprint 9E: BI & Analytics Pages ──────────────────────────────────────────
 const AdminBIDashboard        = lazy(() => import('./pages/admin/AdminBIDashboard'));
 const AdminRevenueAnalytics   = lazy(() => import('./pages/admin/AdminRevenueAnalytics'));
@@ -364,6 +373,15 @@ export default function App() {
 
         {/* Sprint 9F: Enterprise Hardening */}
         <Route path="/admin/audit-log"       element={<AdminRoute><AdminAuditLog /></AdminRoute>} />
+
+        {/* Sprint 10A: Warehouse Foundation */}
+        <Route path="/admin/warehouse"                  element={<AdminRoute><AdminWarehouseDashboard /></AdminRoute>} />
+        <Route path="/admin/warehouses"                 element={<AdminRoute><AdminWarehouses /></AdminRoute>} />
+        <Route path="/admin/warehouses/:id"             element={<AdminRoute><AdminWarehouseDetail /></AdminRoute>} />
+        <Route path="/admin/warehouse-zones"            element={<AdminRoute><AdminWarehouseZones /></AdminRoute>} />
+        <Route path="/admin/warehouse-locations"        element={<AdminRoute><AdminWarehouseLocations /></AdminRoute>} />
+        <Route path="/admin/warehouse-users"            element={<AdminRoute><AdminWarehouseUsers /></AdminRoute>} />
+        <Route path="/admin/warehouse-settings"         element={<AdminRoute><AdminWarehouseSettings /></AdminRoute>} />
 
         {/* Sprint 9E: BI & Analytics */}
         <Route path="/admin/bi/dashboard"    element={<AdminRoute><AdminBIDashboard /></AdminRoute>} />

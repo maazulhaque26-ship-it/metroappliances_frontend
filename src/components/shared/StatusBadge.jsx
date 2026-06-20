@@ -32,6 +32,19 @@ const PRESETS = {
   admin:         { bg: '#DBEAFE', color: '#1E40AF' },
   moderator:     { bg: '#D1FAE5', color: '#065F46' },
   user:          { bg: '#F3F4F6', color: '#6B7280' },
+  // Warehouse statuses
+  maintenance:   { bg: '#FEF3C7', color: '#92400E' },
+  available:     { bg: '#D1FAE5', color: '#065F46' },
+  occupied:      { bg: '#FEE2E2', color: '#991B1B' },
+  reserved:      { bg: '#FEF3C7', color: '#92400E' },
+  blocked:       { bg: '#F3F4F6', color: '#6B7280' },
+  // WH user roles
+  warehouse_manager: { bg: '#EDE9FE', color: '#5B21B6' },
+  supervisor:    { bg: '#DBEAFE', color: '#1E40AF' },
+  picker:        { bg: '#D1FAE5', color: '#065F46' },
+  packer:        { bg: '#D1FAE5', color: '#065F46' },
+  loader:        { bg: '#F3F4F6', color: '#6B7280' },
+  auditor:       { bg: '#FEF3C7', color: '#92400E' },
 };
 
 export default function StatusBadge({ status, label, size = 'sm' }) {

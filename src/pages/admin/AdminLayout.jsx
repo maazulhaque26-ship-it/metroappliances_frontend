@@ -9,7 +9,8 @@ import {
   FiMail, FiList, FiShield, FiLayout, FiImage, FiArrowUpRight,
   FiChevronRight, FiChevronDown, FiAward, FiBook, FiHash,
   FiZap, FiLayers, FiTarget, FiRadio, FiMessageSquare, FiBriefcase,
-  FiBarChart2, FiTrendingUp, FiMap, FiActivity, FiDownload, FiSliders,
+  FiBarChart2, FiTrendingUp, FiMap, FiMapPin, FiActivity, FiDownload, FiSliders,
+  FiBox, FiDatabase,
 } from 'react-icons/fi';
 import Logo from '../../components/ui/Logo';
 
@@ -105,6 +106,17 @@ const NAV_GROUPS = [
       { label: 'Lead Funnel',         path: '/admin/bi/leads',        icon: FiActivity,   roles: ['admin', 'super_admin'] },
       { label: 'Reports & Export',    path: '/admin/bi/reports',      icon: FiDownload,   roles: ['admin', 'super_admin'] },
       { label: 'Targets',             path: '/admin/bi/targets',      icon: FiSliders,    roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
+    label: 'Warehouse',
+    items: [
+      { label: 'WH Dashboard',   path: '/admin/warehouse',           icon: FiBox,      roles: ['admin', 'super_admin'] },
+      { label: 'Warehouses',     path: '/admin/warehouses',          icon: FiDatabase, roles: ['admin', 'super_admin'] },
+      { label: 'Zones',          path: '/admin/warehouse-zones',     icon: FiGrid,     roles: ['admin', 'super_admin'] },
+      { label: 'Locations',      path: '/admin/warehouse-locations', icon: FiMapPin,   roles: ['admin', 'super_admin'] },
+      { label: 'WH Users',       path: '/admin/warehouse-users',     icon: FiUsers,    roles: ['admin', 'super_admin'] },
+      { label: 'WH Settings',    path: '/admin/warehouse-settings',  icon: FiSettings, roles: ['admin', 'super_admin'] },
     ],
   },
   {
