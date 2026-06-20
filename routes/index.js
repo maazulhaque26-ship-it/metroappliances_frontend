@@ -504,4 +504,22 @@ router.post(  '/admin/assignments',                protect, admin, assignment.cr
 router.post(  '/admin/assignments/:id/transfer',   protect, admin, assignment.transferAssignment);
 router.put(   '/admin/assignments/:id/deactivate', protect, admin, assignment.deactivateAssignment);
 
+// ── Sprint 9E: BI & Analytics ─────────────────────────────────────────────────
+const bi     = require('../controllers/biController');
+const target = require('../controllers/targetController');
+
+router.get('/admin/bi/overview',              protect, admin, bi.getOverview);
+router.get('/admin/bi/revenue',               protect, admin, bi.getRevenue);
+router.get('/admin/bi/agents',                protect, admin, bi.getAgentPerformance);
+router.get('/admin/bi/dealers',               protect, admin, bi.getDealerAnalytics);
+router.get('/admin/bi/territories',           protect, admin, bi.getTerritoryAnalytics);
+router.get('/admin/bi/leads',                 protect, admin, bi.getLeadFunnel);
+router.get('/admin/bi/export/:type',          protect, admin, bi.exportData);
+
+router.get(   '/admin/bi/targets',                  protect, admin, target.getTargets);
+router.post(  '/admin/bi/targets',                  protect, admin, target.createTarget);
+router.put(   '/admin/bi/targets/:id',              protect, admin, target.updateTarget);
+router.delete('/admin/bi/targets/:id',              protect, admin, target.deleteTarget);
+router.get(   '/admin/bi/targets/:id/achievement',  protect, admin, target.getAchievement);
+
 module.exports = router;
