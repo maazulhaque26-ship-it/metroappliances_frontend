@@ -10,7 +10,7 @@ import {
   FiChevronRight, FiChevronDown, FiAward, FiBook, FiHash,
   FiZap, FiLayers, FiTarget, FiRadio, FiMessageSquare, FiBriefcase,
   FiBarChart2, FiTrendingUp, FiMap, FiMapPin, FiActivity, FiDownload, FiSliders,
-  FiBox, FiDatabase,
+  FiBox, FiDatabase, FiRefreshCw, FiAlertTriangle, FiFileText, FiClipboard,
 } from 'react-icons/fi';
 import Logo from '../../components/ui/Logo';
 
@@ -117,6 +117,20 @@ const NAV_GROUPS = [
       { label: 'Locations',      path: '/admin/warehouse-locations', icon: FiMapPin,   roles: ['admin', 'super_admin'] },
       { label: 'WH Users',       path: '/admin/warehouse-users',     icon: FiUsers,    roles: ['admin', 'super_admin'] },
       { label: 'WH Settings',    path: '/admin/warehouse-settings',  icon: FiSettings, roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
+    label: 'Inventory',
+    items: [
+      { label: 'Inv Dashboard',  path: '/admin/inventory',                  icon: FiPackage,       roles: ['admin', 'super_admin'] },
+      { label: 'Inventory List', path: '/admin/inventory/list',             icon: FiList,          roles: ['admin', 'super_admin'] },
+      { label: 'Transactions',   path: '/admin/inventory/transactions',     icon: FiTrendingUp,    roles: ['admin', 'super_admin'] },
+      { label: 'GRN',            path: '/admin/inventory/grn',              icon: FiFileText,      roles: ['admin', 'super_admin'] },
+      { label: 'Adjustments',    path: '/admin/inventory/adjustments',      icon: FiSliders,       roles: ['admin', 'super_admin'] },
+      { label: 'Cycle Counts',   path: '/admin/inventory/cycle-count',      icon: FiRefreshCw,     roles: ['admin', 'super_admin'] },
+      { label: 'Batches',        path: '/admin/inventory/batches',          icon: FiClipboard,     roles: ['admin', 'super_admin'] },
+      { label: 'Serials',        path: '/admin/inventory/serials',          icon: FiHash,          roles: ['admin', 'super_admin'] },
+      { label: 'Reservations',   path: '/admin/inventory/reservations',     icon: FiAlertTriangle, roles: ['admin', 'super_admin'] },
     ],
   },
   {
