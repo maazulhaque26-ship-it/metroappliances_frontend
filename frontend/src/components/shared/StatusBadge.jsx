@@ -32,6 +32,37 @@ const PRESETS = {
   admin:         { bg: '#DBEAFE', color: '#1E40AF' },
   moderator:     { bg: '#D1FAE5', color: '#065F46' },
   user:          { bg: '#F3F4F6', color: '#6B7280' },
+  // Warehouse statuses
+  maintenance:   { bg: '#FEF3C7', color: '#92400E' },
+  available:     { bg: '#D1FAE5', color: '#065F46' },
+  occupied:      { bg: '#FEE2E2', color: '#991B1B' },
+  reserved:      { bg: '#FEF3C7', color: '#92400E' },
+  blocked:       { bg: '#F3F4F6', color: '#6B7280' },
+  // WH user roles
+  warehouse_manager: { bg: '#EDE9FE', color: '#5B21B6' },
+  supervisor:    { bg: '#DBEAFE', color: '#1E40AF' },
+  picker:        { bg: '#D1FAE5', color: '#065F46' },
+  packer:        { bg: '#D1FAE5', color: '#065F46' },
+  loader:        { bg: '#F3F4F6', color: '#6B7280' },
+  auditor:       { bg: '#FEF3C7', color: '#92400E' },
+  // Inventory — GRN / Adjustment / CycleCount statuses
+  draft:         { bg: '#F3F4F6', color: '#6B7280' },
+  receiving:     { bg: '#DBEAFE', color: '#1E40AF' },
+  quality_check: { bg: '#FEF3C7', color: '#92400E' },
+  completed:     { bg: '#D1FAE5', color: '#065F46' },
+  applied:       { bg: '#D1FAE5', color: '#065F46' },
+  fulfilled:     { bg: '#D1FAE5', color: '#065F46' },
+  released:      { bg: '#F3F4F6', color: '#6B7280' },
+  expired:       { bg: '#FEE2E2', color: '#991B1B' },
+  // Inventory — Stock / Serial Number statuses
+  in_stock:      { bg: '#D1FAE5', color: '#065F46' },
+  low_stock:     { bg: '#FEF3C7', color: '#92400E' },
+  out_of_stock:  { bg: '#FEE2E2', color: '#991B1B' },
+  sold:          { bg: '#F3F4F6', color: '#6B7280' },
+  returned:      { bg: '#DBEAFE', color: '#1E40AF' },
+  // Inventory — Batch statuses
+  depleted:      { bg: '#F3F4F6', color: '#6B7280' },
+  quarantine:    { bg: '#FEF3C7', color: '#92400E' },
 };
 
 export default function StatusBadge({ status, label, size = 'sm' }) {

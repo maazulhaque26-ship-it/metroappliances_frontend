@@ -123,6 +123,37 @@ const AdminAssignments   = lazy(() => import('./pages/admin/AdminAssignments'));
 // ── Sprint 9F: Enterprise Hardening ─────────────────────────────────────────
 const AdminAuditLog = lazy(() => import('./pages/admin/AdminAuditLog'));
 
+// ── Sprint 10A: Warehouse Foundation ─────────────────────────────────────────
+const AdminWarehouseDashboard = lazy(() => import('./pages/admin/AdminWarehouseDashboard'));
+const AdminWarehouses         = lazy(() => import('./pages/admin/AdminWarehouses'));
+const AdminWarehouseDetail    = lazy(() => import('./pages/admin/AdminWarehouseDetail'));
+const AdminWarehouseZones     = lazy(() => import('./pages/admin/AdminWarehouseZones'));
+const AdminWarehouseLocations = lazy(() => import('./pages/admin/AdminWarehouseLocations'));
+const AdminWarehouseUsers     = lazy(() => import('./pages/admin/AdminWarehouseUsers'));
+const AdminWarehouseSettings  = lazy(() => import('./pages/admin/AdminWarehouseSettings'));
+
+// ── Sprint 10B: Inventory Management — Admin pages ────────────────────────────
+const AdminInventoryDashboard   = lazy(() => import('./pages/admin/AdminInventoryDashboard'));
+const AdminInventoryList        = lazy(() => import('./pages/admin/AdminInventoryList'));
+const AdminInventoryDetail      = lazy(() => import('./pages/admin/AdminInventoryDetail'));
+const AdminInventoryTransactions= lazy(() => import('./pages/admin/AdminInventoryTransactions'));
+const AdminGRNList              = lazy(() => import('./pages/admin/AdminGRNList'));
+const AdminGRNDetail            = lazy(() => import('./pages/admin/AdminGRNDetail'));
+const AdminStockAdjustment      = lazy(() => import('./pages/admin/AdminStockAdjustment'));
+const AdminCycleCount           = lazy(() => import('./pages/admin/AdminCycleCount'));
+const AdminBatchManagement      = lazy(() => import('./pages/admin/AdminBatchManagement'));
+const AdminSerialManagement     = lazy(() => import('./pages/admin/AdminSerialManagement'));
+const AdminReservationDashboard = lazy(() => import('./pages/admin/AdminReservationDashboard'));
+
+// ── Sprint 10B: Warehouse Portal pages ────────────────────────────────────────
+const WarehouseLogin            = lazy(() => import('./pages/warehouse/WarehouseLogin'));
+const WarehouseLayout           = lazy(() => import('./pages/warehouse/WarehouseLayout'));
+const WarehouseDashboard        = lazy(() => import('./pages/warehouse/WarehouseDashboard'));
+const WarehouseInventoryLookup  = lazy(() => import('./pages/warehouse/WarehouseInventoryLookup'));
+const WarehouseReceiveStock     = lazy(() => import('./pages/warehouse/WarehouseReceiveStock'));
+const WarehouseCycleCount       = lazy(() => import('./pages/warehouse/WarehouseCycleCount'));
+const WarehouseAdjustment       = lazy(() => import('./pages/warehouse/WarehouseAdjustment'));
+
 // ── Sprint 9E: BI & Analytics Pages ──────────────────────────────────────────
 const AdminBIDashboard        = lazy(() => import('./pages/admin/AdminBIDashboard'));
 const AdminRevenueAnalytics   = lazy(() => import('./pages/admin/AdminRevenueAnalytics'));
@@ -160,6 +191,14 @@ function DealerRoute({ children }) {
   const { token, dealer } = useSelector(s => s.dealerAuth);
   if (!token) return <Navigate to="/dealer/login" replace />;
   if (dealer?.status === 'suspended') return <Navigate to="/dealer/login" replace />;
+  return children;
+}
+
+// Warehouse route guard — reads warehouseAuth slice (completely isolated)
+function WarehouseRoute({ children }) {
+  const { token, warehouseUser } = useSelector(s => s.warehouseAuth);
+  if (!token) return <Navigate to="/warehouse/login" replace />;
+  if (warehouseUser?.status !== 'active') return <Navigate to="/warehouse/login" replace />;
   return children;
 }
 
@@ -364,6 +403,39 @@ export default function App() {
 
         {/* Sprint 9F: Enterprise Hardening */}
         <Route path="/admin/audit-log"       element={<AdminRoute><AdminAuditLog /></AdminRoute>} />
+
+        {/* Sprint 10A: Warehouse Foundation */}
+        <Route path="/admin/warehouse"                  element={<AdminRoute><AdminWarehouseDashboard /></AdminRoute>} />
+        <Route path="/admin/warehouses"                 element={<AdminRoute><AdminWarehouses /></AdminRoute>} />
+        <Route path="/admin/warehouses/:id"             element={<AdminRoute><AdminWarehouseDetail /></AdminRoute>} />
+        <Route path="/admin/warehouse-zones"            element={<AdminRoute><AdminWarehouseZones /></AdminRoute>} />
+        <Route path="/admin/warehouse-locations"        element={<AdminRoute><AdminWarehouseLocations /></AdminRoute>} />
+        <Route path="/admin/warehouse-users"            element={<AdminRoute><AdminWarehouseUsers /></AdminRoute>} />
+        <Route path="/admin/warehouse-settings"         element={<AdminRoute><AdminWarehouseSettings /></AdminRoute>} />
+
+        {/* Sprint 10B: Inventory Management — Admin */}
+        <Route path="/admin/inventory"                  element={<AdminRoute><AdminInventoryDashboard /></AdminRoute>} />
+        <Route path="/admin/inventory/list"             element={<AdminRoute><AdminInventoryList /></AdminRoute>} />
+        <Route path="/admin/inventory/transactions"     element={<AdminRoute><AdminInventoryTransactions /></AdminRoute>} />
+        <Route path="/admin/inventory/grn"              element={<AdminRoute><AdminGRNList /></AdminRoute>} />
+        <Route path="/admin/inventory/grn/:id"          element={<AdminRoute><AdminGRNDetail /></AdminRoute>} />
+        <Route path="/admin/inventory/adjustments"      element={<AdminRoute><AdminStockAdjustment /></AdminRoute>} />
+        <Route path="/admin/inventory/cycle-count"      element={<AdminRoute><AdminCycleCount /></AdminRoute>} />
+        <Route path="/admin/inventory/batches"          element={<AdminRoute><AdminBatchManagement /></AdminRoute>} />
+        <Route path="/admin/inventory/serials"          element={<AdminRoute><AdminSerialManagement /></AdminRoute>} />
+        <Route path="/admin/inventory/reservations"     element={<AdminRoute><AdminReservationDashboard /></AdminRoute>} />
+        <Route path="/admin/inventory/:id"              element={<AdminRoute><AdminInventoryDetail /></AdminRoute>} />
+
+        {/* Sprint 10B: Warehouse Portal (isolated auth — type:'warehouse' JWT) */}
+        <Route path="/warehouse/login" element={<PageWrapper><WarehouseLogin /></PageWrapper>} />
+        <Route path="/warehouse" element={<WarehouseRoute><WarehouseLayout /></WarehouseRoute>}>
+          <Route path="dashboard"   element={<WarehouseDashboard />} />
+          <Route path="inventory"   element={<WarehouseInventoryLookup />} />
+          <Route path="receive"     element={<WarehouseReceiveStock />} />
+          <Route path="grn"         element={<WarehouseReceiveStock />} />
+          <Route path="cycle-count" element={<WarehouseCycleCount />} />
+          <Route path="adjustments" element={<WarehouseAdjustment />} />
+        </Route>
 
         {/* Sprint 9E: BI & Analytics */}
         <Route path="/admin/bi/dashboard"    element={<AdminRoute><AdminBIDashboard /></AdminRoute>} />
