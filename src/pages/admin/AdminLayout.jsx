@@ -108,6 +108,12 @@ const NAV_GROUPS = [
     ],
   },
   {
+    label: 'Enterprise',
+    items: [
+      { label: 'Audit Log', path: '/admin/audit-log', icon: FiShield, roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
     label: 'Settings',
     items: [
       { label: 'Store Settings', path: '/admin/settings',   icon: FiSettings, roles: ['admin', 'super_admin'] },

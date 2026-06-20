@@ -12,6 +12,7 @@ import { HeroSkeleton } from './components/ui/Skeleton';
 import { CookieConsent } from './components/ui/CookieConsent';
 import AnnouncementBar from './components/ui/AnnouncementBar';
 import MarketingPopup from './components/ui/MarketingPopup';
+import OfflineBanner from './components/ui/OfflineBanner';
 import { trackPageView } from './utils/analytics';
 
 // ── Eager-loaded pages (critical path) ──────────────────────────────────────
@@ -118,6 +119,9 @@ const AdminLeads         = lazy(() => import('./pages/admin/AdminLeads'));
 const AdminVisitReports  = lazy(() => import('./pages/admin/AdminVisitReports'));
 const AdminTasks         = lazy(() => import('./pages/admin/AdminTasks'));
 const AdminAssignments   = lazy(() => import('./pages/admin/AdminAssignments'));
+
+// ── Sprint 9F: Enterprise Hardening ─────────────────────────────────────────
+const AdminAuditLog = lazy(() => import('./pages/admin/AdminAuditLog'));
 
 // ── Sprint 9E: BI & Analytics Pages ──────────────────────────────────────────
 const AdminBIDashboard        = lazy(() => import('./pages/admin/AdminBIDashboard'));
@@ -358,6 +362,9 @@ export default function App() {
         <Route path="/admin/agent-tasks"           element={<AdminRoute><AdminTasks /></AdminRoute>} />
         <Route path="/admin/agent-assignments"     element={<AdminRoute><AdminAssignments /></AdminRoute>} />
 
+        {/* Sprint 9F: Enterprise Hardening */}
+        <Route path="/admin/audit-log"       element={<AdminRoute><AdminAuditLog /></AdminRoute>} />
+
         {/* Sprint 9E: BI & Analytics */}
         <Route path="/admin/bi/dashboard"    element={<AdminRoute><AdminBIDashboard /></AdminRoute>} />
         <Route path="/admin/bi/revenue"      element={<AdminRoute><AdminRevenueAnalytics /></AdminRoute>} />
@@ -386,6 +393,7 @@ export default function App() {
     </Suspense>
     <CookieConsent />
     <MarketingPopup />
+    <OfflineBanner />
     </>
   );
 }
