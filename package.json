@@ -1,0 +1,36 @@
+{
+  "name": "shopifix-frontend",
+  "version": "1.0.0",
+  "description": "Shopifix e-commerce React frontend",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.2.0",
+    "@stripe/react-stripe-js": "^2.4.0",
+    "@stripe/stripe-js": "^3.2.0",
+    "axios": "^1.6.8",
+    "clsx": "^2.1.0",
+    "gsap": "^3.12.5",
+    "immer": "^10.0.4",
+    "lucide-react": "^1.17.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.51.1",
+    "react-icons": "^5.6.0",
+    "react-redux": "^9.1.0",
+    "react-router-dom": "^6.22.3",
+    "react-toastify": "^10.0.5",
+    "socket.io-client": "^4.8.3",
+    "swiper": "^11.0.7"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
+    "vite": "^5.2.0"
+  }
+}

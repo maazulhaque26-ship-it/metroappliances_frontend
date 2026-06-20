@@ -1,0 +1,28 @@
+import { configureStore } from '@reduxjs/toolkit';
+import authReducer from './slices/authSlice';
+import dealerAuthReducer from './slices/dealerAuthSlice';
+import agentAuthReducer from './slices/agentAuthSlice';
+import { cartReducer, wishlistReducer, productsReducer } from './slices/shopSlices';
+import settingsReducer from './slices/settingsSlice';
+import compareReducer from './slices/compareSlice';
+import notificationReducer from './slices/notificationSlice';
+import dealerCartReducer   from './slices/dealerCartSlice';
+
+const store = configureStore({
+  reducer: {
+    auth:          authReducer,
+    dealerAuth:    dealerAuthReducer,
+    agentAuth:     agentAuthReducer,
+    cart:          cartReducer,
+    wishlist:      wishlistReducer,
+    products:      productsReducer,
+    settings:      settingsReducer,
+    compare:       compareReducer,
+    notifications: notificationReducer,
+    dealerCart:    dealerCartReducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }),
+});
+
+export default store;
