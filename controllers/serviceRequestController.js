@@ -2,7 +2,15 @@ const ServiceRequest = require('../models/ServiceRequest');
 const WarrantyCard   = require('../models/WarrantyCard');
 const AMCContract    = require('../models/AMCContract');
 const Technician     = require('../models/Technician');
-const { ok, created, paginated, fail, notFound, serverError } = require('../utils/response');
+const Notification   = require('../models/Notification');
+const { ok, created, paginated, fail, notFound, forbidden, serverError } = require('../utils/response');
+
+// Fire-and-forget customer notification via Sprint 8 Notification model
+async function notifyCustomer(userId, title, message, link = '') {
+  try {
+    await Notification.create({ user: userId, type: 'system', title, message, link });
+  } catch (_) {}
+}
 
 // ── Shared: push history entry ────────────────────────────────────────────────
 function pushHistory(sr, status, note, actorId, actorModel) {
@@ -68,6 +76,13 @@ exports.raiseServiceRequest = async (req, res) => {
 
     const io = req.app.locals.io;
     if (io) io.emit('service:request_raised', { ticketNumber: sr.ticketNumber, customerId: req.user._id });
+
+    notifyCustomer(
+      req.user._id,
+      `Complaint Raised: ${sr.ticketNumber}`,
+      `Your service request for "${sr.productName || sr.category}" has been submitted. We will contact you shortly.`,
+      `/my-service/track/${sr._id}`
+    );
 
     return created(res, { serviceRequest: sr });
   } catch (err) {
@@ -208,6 +223,24 @@ exports.updateServiceRequestStatus = async (req, res) => {
     await sr.save();
     const io = req.app.locals.io;
     if (io) io.emit('service:status_updated', { ticketNumber: sr.ticketNumber, status });
+
+    const statusLabels = {
+      verified: 'Your complaint has been verified by our team.',
+      assigned: 'A technician has been assigned to your request.',
+      travelling: 'Your technician is on the way.',
+      reached: 'Technician has reached your location.',
+      completed: 'Your service request has been completed. Please rate your experience.',
+      escalated: 'Your complaint has been escalated to our senior team.',
+    };
+    if (statusLabels[status]) {
+      notifyCustomer(
+        sr.customer,
+        `Ticket ${sr.ticketNumber}: ${status.charAt(0).toUpperCase() + status.slice(1).replace(/_/g, ' ')}`,
+        statusLabels[status],
+        `/my-service/track/${sr._id}`
+      );
+    }
+
     return ok(res, { serviceRequest: sr });
   } catch (err) {
     return serverError(res, err);
@@ -234,6 +267,14 @@ exports.assignTechnician = async (req, res) => {
 
     const io = req.app.locals.io;
     if (io) io.emit('service:technician_assigned', { ticketNumber: sr.ticketNumber, technicianId });
+
+    notifyCustomer(
+      sr.customer,
+      `Technician Assigned: ${sr.ticketNumber}`,
+      `${tech.name} has been assigned to your service request. Expected contact within 2 hours.`,
+      `/my-service/track/${sr._id}`
+    );
+
     return ok(res, { serviceRequest: sr });
   } catch (err) {
     return serverError(res, err);
@@ -392,24 +433,86 @@ exports.saveCustomerSignature = async (req, res) => {
   }
 };
 
+// ── Customer: upload attachment to a service request ─────────────────────────
+exports.uploadAttachment = async (req, res) => {
+  try {
+    const sr = await ServiceRequest.findOne({
+      _id: req.params.id,
+      customer: req.user._id,
+      isDeleted: false,
+    });
+    if (!sr) return notFound(res, 'Service request');
+    if (!req.file) return fail(res, 'No file uploaded', 400);
+
+    const mime = req.file.mimetype || '';
+    const attachment = {
+      url: req.file.path,
+      type: mime.startsWith('image/') ? 'image'
+          : mime === 'application/pdf' ? 'document'
+          : mime.startsWith('video/') ? 'video'
+          : 'image',
+      filename: req.file.originalname || req.file.filename,
+      uploadedBy: 'customer',
+    };
+    sr.attachments.push(attachment);
+    await sr.save();
+    return ok(res, { attachment: sr.attachments[sr.attachments.length - 1] });
+  } catch (err) {
+    return serverError(res, err);
+  }
+};
+
+// ── Technician: upload photos via Cloudinary (returns URL) ───────────────────
+exports.uploadTechnicianPhoto = async (req, res) => {
+  try {
+    const sr = await ServiceRequest.findOne({
+      _id: req.params.id,
+      assignedTechnician: req.technician._id,
+      isDeleted: false,
+    });
+    if (!sr) return notFound(res, 'Job');
+    if (!req.file) return fail(res, 'No file uploaded', 400);
+
+    const url = req.file.path;
+    sr.technicianPhotos.push(url);
+    await sr.save();
+    return ok(res, { url, technicianPhotos: sr.technicianPhotos });
+  } catch (err) {
+    return serverError(res, err);
+  }
+};
+
 // ── Admin: dashboard counts ───────────────────────────────────────────────────
 exports.getServiceDashboard = async (req, res) => {
   try {
-    const total = await ServiceRequest.countDocuments({ isDeleted: false });
-    const open  = await ServiceRequest.countDocuments({ isDeleted: false, status: 'open' });
-    const inProgress = await ServiceRequest.countDocuments({
-      isDeleted: false,
-      status: { $in: ['assigned','accepted','travelling','reached','diagnosis','repair','testing'] },
-    });
-    const completed = await ServiceRequest.countDocuments({ isDeleted: false, status: { $in: ['completed','closed'] } });
-    const escalated = await ServiceRequest.countDocuments({ isDeleted: false, 'escalation.isEscalated': true });
-    const urgent    = await ServiceRequest.countDocuments({ isDeleted: false, priority: 'urgent', status: { $nin: ['completed','closed','cancelled'] } });
-
     const todayStart = new Date(); todayStart.setHours(0, 0, 0, 0);
-    const raisedToday = await ServiceRequest.countDocuments({ isDeleted: false, createdAt: { $gte: todayStart } });
-    const closedToday = await ServiceRequest.countDocuments({ isDeleted: false, closedAt: { $gte: todayStart } });
+    const thirtyDaysLater = new Date(Date.now() + 30 * 86400000);
 
-    return ok(res, { total, open, inProgress, completed, escalated, urgent, raisedToday, closedToday });
+    const [
+      total, open, inProgress, completed, escalated, urgent,
+      raisedToday, closedToday, slaBreached, underWarranty, underAMC, cancelled,
+      amcRenewalDue,
+    ] = await Promise.all([
+      ServiceRequest.countDocuments({ isDeleted: false }),
+      ServiceRequest.countDocuments({ isDeleted: false, status: 'open' }),
+      ServiceRequest.countDocuments({ isDeleted: false, status: { $in: ['assigned','accepted','travelling','reached','diagnosis','repair','testing'] } }),
+      ServiceRequest.countDocuments({ isDeleted: false, status: { $in: ['completed','closed'] } }),
+      ServiceRequest.countDocuments({ isDeleted: false, 'escalation.isEscalated': true }),
+      ServiceRequest.countDocuments({ isDeleted: false, priority: 'urgent', status: { $nin: ['completed','closed','cancelled'] } }),
+      ServiceRequest.countDocuments({ isDeleted: false, createdAt: { $gte: todayStart } }),
+      ServiceRequest.countDocuments({ isDeleted: false, closedAt: { $gte: todayStart } }),
+      ServiceRequest.countDocuments({ isDeleted: false, 'sla.isBreached': true, status: { $nin: ['completed','closed','cancelled'] } }),
+      ServiceRequest.countDocuments({ isDeleted: false, isUnderWarranty: true, status: { $nin: ['completed','closed','cancelled'] } }),
+      ServiceRequest.countDocuments({ isDeleted: false, isUnderAMC: true, status: { $nin: ['completed','closed','cancelled'] } }),
+      ServiceRequest.countDocuments({ isDeleted: false, status: 'cancelled' }),
+      AMCContract.countDocuments({ isDeleted: false, status: { $in: ['active','renewal_due'] }, endDate: { $lte: thirtyDaysLater } }),
+    ]);
+
+    return ok(res, {
+      total, open, inProgress, completed, escalated, urgent,
+      raisedToday, closedToday, slaBreached, underWarranty, underAMC, cancelled,
+      amcRenewalDue,
+    });
   } catch (err) {
     return serverError(res, err);
   }

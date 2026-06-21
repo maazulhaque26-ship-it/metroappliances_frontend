@@ -1053,6 +1053,7 @@ const warrantyCtrl    = require('../controllers/warrantyController');
 const spareCtrl       = require('../controllers/sparePartController');
 const dispatchCtrl    = require('../controllers/serviceDispatchController');
 const svcReportCtrl   = require('../controllers/serviceReportController');
+const { serviceUpload } = require('../config/cloudinary');
 
 // Technician Auth
 router.post('/technician/auth/login',                    techAuthCtrl.loginTechnician);
@@ -1138,10 +1139,20 @@ router.post('/service/requests',                         protect, srCtrl.raiseSe
 router.get( '/service/requests',                         protect, srCtrl.getMyServiceRequests);
 router.get( '/service/requests/:id',                     protect, srCtrl.trackServiceRequest);
 router.post('/service/requests/:id/feedback',            protect, srCtrl.submitFeedback);
+router.post('/service/requests/:id/attachment',          protect, serviceUpload.single('file'), srCtrl.uploadAttachment);
+
+// Customer — generic file upload (returns Cloudinary URL; used by frontend before associating)
+router.post('/service/file-upload', protect, serviceUpload.single('file'), (req, res) => {
+  if (!req.file) return res.status(400).json({ success: false, message: 'No file uploaded' });
+  res.json({ success: true, url: req.file.path, filename: req.file.originalname });
+});
 
 // Customer — Warranty & AMC status
 router.get( '/service/warranty',                         protect, warrantyCtrl.getMyWarranties);
 router.get( '/service/warranty/check/:serialNumber',     protect, warrantyCtrl.checkWarrantyBySerial);
 router.get( '/service/amc',                              protect, warrantyCtrl.getMyAMCContracts);
+
+// Technician — photo upload via Cloudinary
+router.post('/technician/jobs/:id/photo-upload',         protectTechnician, serviceUpload.single('file'), srCtrl.uploadTechnicianPhoto);
 
 module.exports = router;

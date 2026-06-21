@@ -31,6 +31,26 @@ const categoryUpload = makeUploader('categories');
 const singleUpload   = makeUploader('general');
 const dealerUpload   = makeUploader('dealers');
 
+// Service upload — accepts images, PDFs, and videos (for after-sales attachments)
+const makeServiceUploader = (folder) => {
+  const storage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+      folder:        `metroappliances/${folder}`,
+      resource_type: 'auto',
+    },
+  });
+  const serviceFilter = (req, file, cb) => {
+    const ok = file.mimetype.startsWith('image/') ||
+               file.mimetype === 'application/pdf' ||
+               file.mimetype.startsWith('video/');
+    if (ok) cb(null, true);
+    else cb(new Error('Only image, PDF, or video files are allowed'), false);
+  };
+  return multer({ storage, fileFilter: serviceFilter, limits: { fileSize: 20 * 1024 * 1024 } });
+};
+const serviceUpload = makeServiceUploader('service');
+
 // Extract Cloudinary public_id from a URL for deletion.
 // URL pattern: .../upload/v<timestamp>/<public_id>.<ext>
 function cloudinaryPublicId(url) {
@@ -40,4 +60,4 @@ function cloudinaryPublicId(url) {
   return parts[1].replace(/^v\d+\//, '').replace(/\.[^.]+$/, '');
 }
 
-module.exports = { cloudinary, upload, reviewUpload, categoryUpload, singleUpload, dealerUpload, cloudinaryPublicId };
+module.exports = { cloudinary, upload, reviewUpload, categoryUpload, singleUpload, dealerUpload, serviceUpload, cloudinaryPublicId };
