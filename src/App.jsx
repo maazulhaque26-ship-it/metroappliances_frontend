@@ -154,6 +154,31 @@ const WarehouseReceiveStock     = lazy(() => import('./pages/warehouse/Warehouse
 const WarehouseCycleCount       = lazy(() => import('./pages/warehouse/WarehouseCycleCount'));
 const WarehouseAdjustment       = lazy(() => import('./pages/warehouse/WarehouseAdjustment'));
 
+// ── Sprint 10C: Procurement & Vendor Management — Admin pages ────────────────
+const AdminVendorDashboard       = lazy(() => import('./pages/admin/AdminVendorDashboard'));
+const AdminVendorList            = lazy(() => import('./pages/admin/AdminVendorList'));
+const AdminVendorDetail          = lazy(() => import('./pages/admin/AdminVendorDetail'));
+const AdminVendorPerformance     = lazy(() => import('./pages/admin/AdminVendorPerformance'));
+const AdminPurchaseRequisitions  = lazy(() => import('./pages/admin/AdminPurchaseRequisitions'));
+const AdminRFQList               = lazy(() => import('./pages/admin/AdminRFQList'));
+const AdminRFQDetail             = lazy(() => import('./pages/admin/AdminRFQDetail'));
+const AdminPurchaseOrders        = lazy(() => import('./pages/admin/AdminPurchaseOrders'));
+const AdminPurchaseOrderDetail   = lazy(() => import('./pages/admin/AdminPurchaseOrderDetail'));
+const AdminApprovalQueue         = lazy(() => import('./pages/admin/AdminApprovalQueue'));
+const AdminProcurementReports    = lazy(() => import('./pages/admin/AdminProcurementReports'));
+
+// ── Sprint 10C: Supplier Portal pages ────────────────────────────────────────
+const SupplierLogin         = lazy(() => import('./pages/supplier/SupplierLogin'));
+const SupplierLayout        = lazy(() => import('./pages/supplier/SupplierLayout'));
+const SupplierDashboard     = lazy(() => import('./pages/supplier/SupplierDashboard'));
+const SupplierPurchaseOrders = lazy(() => import('./pages/supplier/SupplierPurchaseOrders'));
+const SupplierOrderDetail   = lazy(() => import('./pages/supplier/SupplierOrderDetail'));
+const SupplierRFQs          = lazy(() => import('./pages/supplier/SupplierRFQs'));
+const SupplierInvoices      = lazy(() => import('./pages/supplier/SupplierInvoices'));
+const SupplierDocuments     = lazy(() => import('./pages/supplier/SupplierDocuments'));
+const SupplierNotifications = lazy(() => import('./pages/supplier/SupplierNotifications'));
+const SupplierProfile       = lazy(() => import('./pages/supplier/SupplierProfile'));
+
 // ── Sprint 9E: BI & Analytics Pages ──────────────────────────────────────────
 const AdminBIDashboard        = lazy(() => import('./pages/admin/AdminBIDashboard'));
 const AdminRevenueAnalytics   = lazy(() => import('./pages/admin/AdminRevenueAnalytics'));
@@ -199,6 +224,14 @@ function WarehouseRoute({ children }) {
   const { token, warehouseUser } = useSelector(s => s.warehouseAuth);
   if (!token) return <Navigate to="/warehouse/login" replace />;
   if (warehouseUser?.status !== 'active') return <Navigate to="/warehouse/login" replace />;
+  return children;
+}
+
+// Supplier route guard — reads supplierAuth slice (completely isolated, type:'supplier' JWT)
+function SupplierRoute({ children }) {
+  const { token, supplierUser } = useSelector(s => s.supplierAuth);
+  if (!token) return <Navigate to="/supplier/login" replace />;
+  if (supplierUser?.status !== 'active') return <Navigate to="/supplier/login" replace />;
   return children;
 }
 
@@ -435,6 +468,32 @@ export default function App() {
           <Route path="grn"         element={<WarehouseReceiveStock />} />
           <Route path="cycle-count" element={<WarehouseCycleCount />} />
           <Route path="adjustments" element={<WarehouseAdjustment />} />
+        </Route>
+
+        {/* Sprint 10C: Procurement & Vendor Management — Admin */}
+        <Route path="/admin/procurement"                     element={<AdminRoute><AdminVendorDashboard /></AdminRoute>} />
+        <Route path="/admin/procurement/vendors"             element={<AdminRoute><AdminVendorList /></AdminRoute>} />
+        <Route path="/admin/procurement/vendors/:id"         element={<AdminRoute><AdminVendorDetail /></AdminRoute>} />
+        <Route path="/admin/procurement/vendor-performance"  element={<AdminRoute><AdminVendorPerformance /></AdminRoute>} />
+        <Route path="/admin/procurement/requisitions"        element={<AdminRoute><AdminPurchaseRequisitions /></AdminRoute>} />
+        <Route path="/admin/procurement/rfq"                 element={<AdminRoute><AdminRFQList /></AdminRoute>} />
+        <Route path="/admin/procurement/rfq/:id"             element={<AdminRoute><AdminRFQDetail /></AdminRoute>} />
+        <Route path="/admin/procurement/orders"              element={<AdminRoute><AdminPurchaseOrders /></AdminRoute>} />
+        <Route path="/admin/procurement/orders/:id"          element={<AdminRoute><AdminPurchaseOrderDetail /></AdminRoute>} />
+        <Route path="/admin/procurement/approvals"           element={<AdminRoute><AdminApprovalQueue /></AdminRoute>} />
+        <Route path="/admin/procurement/reports"             element={<AdminRoute><AdminProcurementReports /></AdminRoute>} />
+
+        {/* Sprint 10C: Supplier Portal (isolated auth — type:'supplier' JWT) */}
+        <Route path="/supplier/login" element={<PageWrapper><SupplierLogin /></PageWrapper>} />
+        <Route path="/supplier" element={<SupplierRoute><SupplierLayout /></SupplierRoute>}>
+          <Route path="dashboard"     element={<SupplierDashboard />} />
+          <Route path="orders"        element={<SupplierPurchaseOrders />} />
+          <Route path="orders/:id"    element={<SupplierOrderDetail />} />
+          <Route path="rfq"           element={<SupplierRFQs />} />
+          <Route path="invoices"      element={<SupplierInvoices />} />
+          <Route path="documents"     element={<SupplierDocuments />} />
+          <Route path="notifications" element={<SupplierNotifications />} />
+          <Route path="profile"       element={<SupplierProfile />} />
         </Route>
 
         {/* Sprint 9E: BI & Analytics */}

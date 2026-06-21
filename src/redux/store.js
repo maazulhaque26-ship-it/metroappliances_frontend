@@ -3,6 +3,7 @@ import authReducer from './slices/authSlice';
 import dealerAuthReducer from './slices/dealerAuthSlice';
 import agentAuthReducer from './slices/agentAuthSlice';
 import warehouseAuthReducer from './slices/warehouseAuthSlice';
+import supplierAuthReducer  from './slices/supplierAuthSlice';
 import { cartReducer, wishlistReducer, productsReducer } from './slices/shopSlices';
 import settingsReducer from './slices/settingsSlice';
 import compareReducer from './slices/compareSlice';
@@ -15,6 +16,7 @@ const store = configureStore({
     dealerAuth:     dealerAuthReducer,
     agentAuth:      agentAuthReducer,
     warehouseAuth:  warehouseAuthReducer,
+    supplierAuth:   supplierAuthReducer,
     cart:           cartReducer,
     wishlist:       wishlistReducer,
     products:       productsReducer,

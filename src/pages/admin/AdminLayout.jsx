@@ -134,6 +134,20 @@ const NAV_GROUPS = [
     ],
   },
   {
+    label: 'Procurement',
+    items: [
+      { label: 'Proc Dashboard',    path: '/admin/procurement',                    icon: FiBarChart2,   roles: ['admin', 'super_admin'] },
+      { label: 'Vendors',           path: '/admin/procurement/vendors',             icon: FiBriefcase,   roles: ['admin', 'super_admin'] },
+      { label: 'Vendor Performance',path: '/admin/procurement/vendor-performance',  icon: FiActivity,    roles: ['admin', 'super_admin'] },
+      { label: 'Requisitions',      path: '/admin/procurement/requisitions',        icon: FiClipboard,   roles: ['admin', 'super_admin'] },
+      { label: 'RFQs',              path: '/admin/procurement/rfq',                 icon: FiFileText,    roles: ['admin', 'super_admin'] },
+      { label: 'Purchase Orders',   path: '/admin/procurement/orders',              icon: FiShoppingBag, roles: ['admin', 'super_admin'] },
+      { label: 'Approval Queue',    path: '/admin/procurement/approvals',           icon: FiShield,      roles: ['admin', 'super_admin'] },
+      { label: 'Supplier Users',    path: '/admin/supplier-users',                  icon: FiUsers,       roles: ['admin', 'super_admin'] },
+      { label: 'Proc Reports',      path: '/admin/procurement/reports',             icon: FiDownload,    roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
     label: 'Enterprise',
     items: [
       { label: 'Audit Log', path: '/admin/audit-log', icon: FiShield, roles: ['admin', 'super_admin'] },

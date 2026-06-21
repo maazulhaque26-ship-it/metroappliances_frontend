@@ -63,6 +63,31 @@ const PRESETS = {
   // Inventory — Batch statuses
   depleted:      { bg: '#F3F4F6', color: '#6B7280' },
   quarantine:    { bg: '#FEF3C7', color: '#92400E' },
+  // Procurement — Vendor statuses
+  pending_approval:   { bg: '#FEF3C7', color: '#92400E' },
+  blacklisted:        { bg: '#FEE2E2', color: '#991B1B' },
+  // Procurement — PO supplier response statuses
+  supplier_accepted:  { bg: '#D1FAE5', color: '#065F46' },
+  supplier_rejected:  { bg: '#FEE2E2', color: '#991B1B' },
+  partially_delivered:{ bg: '#DBEAFE', color: '#1E40AF' },
+  // Procurement — RFQ/PO workflow statuses
+  awarded:            { bg: '#D1FAE5', color: '#065F46' },
+  sent:               { bg: '#DBEAFE', color: '#1E40AF' },
+  acknowledged:       { bg: '#EDE9FE', color: '#5B21B6' },
+  published:          { bg: '#DBEAFE', color: '#1E40AF' },
+  // Procurement — Approval chain
+  pending_approval_step: { bg: '#FEF3C7', color: '#92400E' },
+  // Procurement — PR statuses
+  submitted:          { bg: '#DBEAFE', color: '#1E40AF' },
+  manager_review:     { bg: '#EDE9FE', color: '#5B21B6' },
+  finance_review:     { bg: '#FEF3C7', color: '#92400E' },
+  converted:          { bg: '#D1FAE5', color: '#065F46' },
+  // Procurement — Vendor/Quotation sub-statuses
+  invited:            { bg: '#F3F4F6', color: '#6B7280' },
+  viewed:             { bg: '#DBEAFE', color: '#1E40AF' },
+  responded:          { bg: '#EDE9FE', color: '#5B21B6' },
+  declined:           { bg: '#FEE2E2', color: '#991B1B' },
+  selected:           { bg: '#D1FAE5', color: '#065F46' },
 };
 
 export default function StatusBadge({ status, label, size = 'sm' }) {
