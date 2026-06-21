@@ -230,6 +230,16 @@ const WarehouseMobilePutaway   = lazy(() => import('./pages/warehouse/WarehouseM
 const WarehouseMobileBinLookup = lazy(() => import('./pages/warehouse/WarehouseMobileBinLookup'));
 const WarehouseMobileReturns   = lazy(() => import('./pages/warehouse/WarehouseMobileReturns'));
 
+// ── Sprint 11B: Customer Service Portal ──────────────────────────────────────
+const CustomerServiceRequests  = lazy(() => import('./pages/customer/CustomerServiceRequests'));
+const CustomerRaiseComplaint   = lazy(() => import('./pages/customer/CustomerRaiseComplaint'));
+const CustomerTrackComplaint   = lazy(() => import('./pages/customer/CustomerTrackComplaint'));
+const CustomerWarrantyStatus   = lazy(() => import('./pages/customer/CustomerWarrantyStatus'));
+const CustomerAMCStatus        = lazy(() => import('./pages/customer/CustomerAMCStatus'));
+const CustomerServiceHistory   = lazy(() => import('./pages/customer/CustomerServiceHistory'));
+const CustomerFeedback         = lazy(() => import('./pages/customer/CustomerFeedback'));
+const CustomerServiceDocuments = lazy(() => import('./pages/customer/CustomerServiceDocuments'));
+
 // ── Sprint 11A: After Sales Service — Admin + Technician Portal pages ────────
 const AdminServiceDashboard    = lazy(() => import('./pages/admin/AdminServiceDashboard'));
 const AdminServiceRequests     = lazy(() => import('./pages/admin/AdminServiceRequests'));
@@ -415,6 +425,16 @@ export default function App() {
           <Route path="/order/:orderId"       element={<PrivateRoute><OrderDetailPage /></PrivateRoute>} />
           <Route path="/track-order/:orderId" element={<PrivateRoute><TrackOrderPage /></PrivateRoute>} />
           <Route path="/wishlist"   element={<PrivateRoute><Wishlist /></PrivateRoute>} />
+
+          {/* Sprint 11B: Customer Service Portal */}
+          <Route path="/my-service"                       element={<PrivateRoute><CustomerServiceRequests /></PrivateRoute>} />
+          <Route path="/my-service/raise"                 element={<PrivateRoute><CustomerRaiseComplaint /></PrivateRoute>} />
+          <Route path="/my-service/track/:id"             element={<PrivateRoute><CustomerTrackComplaint /></PrivateRoute>} />
+          <Route path="/my-service/warranty"              element={<PrivateRoute><CustomerWarrantyStatus /></PrivateRoute>} />
+          <Route path="/my-service/amc"                   element={<PrivateRoute><CustomerAMCStatus /></PrivateRoute>} />
+          <Route path="/my-service/history"               element={<PrivateRoute><CustomerServiceHistory /></PrivateRoute>} />
+          <Route path="/my-service/feedback/:id"          element={<PrivateRoute><CustomerFeedback /></PrivateRoute>} />
+          <Route path="/my-service/documents"             element={<PrivateRoute><CustomerServiceDocuments /></PrivateRoute>} />
 
           <Route path="*" element={<NotFound />} />
         </Route>
