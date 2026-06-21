@@ -927,4 +927,121 @@ router.post( '/warehouse/barcodes/validate',             protectWarehouse, barco
 // Public barcode lookup (for QR code scan from product packaging — no auth required)
 router.get(  '/barcode/lookup/:value',                   barcodeCtrl.lookupBarcode);
 
+// ── Sprint 10F: IoT & Industry 4.0 ────────────────────────────────────────────
+const rfidCtrl         = require('../controllers/rfidController');
+const deviceCtrl       = require('../controllers/deviceController');
+const sensorCtrl       = require('../controllers/sensorController');
+const alertCtrl        = require('../controllers/alertController');
+const voiceCtrl        = require('../controllers/voicePickingController');
+const replenCtrl       = require('../controllers/replenishmentController');
+const liveDashCtrl     = require('../controllers/liveDashboardController');
+const iotReportCtrl    = require('../controllers/iotReportController');
+
+// Admin — RFID Tags
+router.get(  '/admin/rfid/tags',                         protect, admin, rfidCtrl.getTags);
+router.post( '/admin/rfid/tags',                         protect, admin, rfidCtrl.registerTag);
+router.put(  '/admin/rfid/tags/:id/assign',              protect, admin, rfidCtrl.assignTag);
+router.put(  '/admin/rfid/tags/:id/replace',             protect, admin, rfidCtrl.replaceTag);
+router.get(  '/admin/rfid/tags/:id/history',             protect, admin, rfidCtrl.getRFIDHistory);
+
+// Admin — RFID Readers
+router.get(  '/admin/rfid/readers',                      protect, admin, rfidCtrl.getReaders);
+router.post( '/admin/rfid/readers',                      protect, admin, rfidCtrl.createReader);
+router.put(  '/admin/rfid/readers/:id/status',           protect, admin, rfidCtrl.updateReaderStatus);
+
+// Admin — RFID Scans & Analytics
+router.post( '/admin/rfid/bulk-scan',                    protect, admin, rfidCtrl.bulkScan);
+router.get(  '/admin/rfid/inventory-count',              protect, admin, rfidCtrl.getInventoryCount);
+router.get(  '/admin/rfid/conflicts',                    protect, admin, rfidCtrl.detectConflicts);
+router.get(  '/admin/rfid/stats',                        protect, admin, rfidCtrl.getRFIDStats);
+
+// Admin — Warehouse Devices
+router.get(  '/admin/devices',                           protect, admin, deviceCtrl.getDevices);
+router.post( '/admin/devices',                           protect, admin, deviceCtrl.registerDevice);
+router.get(  '/admin/devices/stats',                     protect, admin, deviceCtrl.getDeviceStats);
+router.get(  '/admin/devices/:id',                       protect, admin, deviceCtrl.getDevice);
+router.put(  '/admin/devices/:id',                       protect, admin, deviceCtrl.updateDevice);
+router.delete('/admin/devices/:id',                      protect, admin, deviceCtrl.deleteDevice);
+router.post( '/admin/devices/:id/health',                protect, admin, deviceCtrl.recordHealth);
+router.get(  '/admin/devices/:id/health-history',        protect, admin, deviceCtrl.getHealthHistory);
+router.put(  '/admin/devices/:id/assign',                protect, admin, deviceCtrl.assignDevice);
+router.put(  '/admin/devices/:id/unassign',              protect, admin, deviceCtrl.unassignDevice);
+
+// Admin — Sensors
+router.get(  '/admin/sensors',                           protect, admin, sensorCtrl.getSensors);
+router.post( '/admin/sensors',                           protect, admin, sensorCtrl.registerSensor);
+router.get(  '/admin/sensors/stats',                     protect, admin, sensorCtrl.getSensorStats);
+router.get(  '/admin/sensors/readings',                  protect, admin, sensorCtrl.getReadings);
+router.get(  '/admin/sensors/warehouse/:warehouseId/by-zone', protect, admin, sensorCtrl.getSensorsByZone);
+router.put(  '/admin/sensors/:id',                       protect, admin, sensorCtrl.updateSensor);
+router.post( '/admin/sensors/:id/reading',               protect, admin, sensorCtrl.recordReading);
+router.get(  '/admin/sensors/:id/history',               protect, admin, sensorCtrl.getSensorHistory);
+router.put(  '/admin/sensors/:id/calibrate',             protect, admin, sensorCtrl.calibrateSensor);
+
+// Admin — Alerts
+router.get(  '/admin/alerts',                            protect, admin, alertCtrl.getAlerts);
+router.post( '/admin/alerts',                            protect, admin, alertCtrl.createAlert);
+router.get(  '/admin/alerts/stats',                      protect, admin, alertCtrl.getAlertStats);
+router.get(  '/admin/alerts/history',                    protect, admin, alertCtrl.getAlertHistory);
+router.put(  '/admin/alerts/:id/acknowledge',            protect, admin, alertCtrl.acknowledgeAlert);
+router.put(  '/admin/alerts/:id/resolve',                protect, admin, alertCtrl.resolveAlert);
+router.put(  '/admin/alerts/:id/dismiss',                protect, admin, alertCtrl.dismissAlert);
+
+// Admin — Voice Picking Sessions
+router.get(  '/admin/voice-sessions',                    protect, admin, voiceCtrl.getSessions);
+router.get(  '/admin/voice-sessions/:id',                protect, admin, voiceCtrl.getSession);
+router.get(  '/admin/voice-sessions/:id/logs',           protect, admin, voiceCtrl.getSessionLogs);
+
+// Admin — Replenishment
+router.get(  '/admin/replenishment/tasks',               protect, admin, replenCtrl.getTasks);
+router.post( '/admin/replenishment/generate',            protect, admin, replenCtrl.generateTasks);
+router.get(  '/admin/replenishment/stats',               protect, admin, replenCtrl.getReplenishmentStats);
+router.get(  '/admin/replenishment/recommendations',     protect, admin, replenCtrl.getRecommendations);
+router.get(  '/admin/replenishment/tasks/:id',           protect, admin, replenCtrl.getTask);
+router.put(  '/admin/replenishment/tasks/:id/approve',   protect, admin, replenCtrl.approveTask);
+router.put(  '/admin/replenishment/tasks/:id',           protect, admin, replenCtrl.updateTask);
+router.put(  '/admin/replenishment/tasks/:id/cancel',    protect, admin, replenCtrl.cancelTask);
+
+// Admin — Live Dashboard
+router.get(  '/admin/iot/dashboard',                     protect, admin, liveDashCtrl.getDashboardData);
+router.get(  '/admin/iot/inventory-movement',            protect, admin, liveDashCtrl.getInventoryMovement);
+router.get(  '/admin/iot/device-health',                 protect, admin, liveDashCtrl.getDeviceHealth);
+router.get(  '/admin/iot/rfid-activity',                 protect, admin, liveDashCtrl.getRFIDActivity);
+router.get(  '/admin/iot/active-alerts',                 protect, admin, liveDashCtrl.getActiveAlerts);
+router.get(  '/admin/iot/queue-status',                  protect, admin, liveDashCtrl.getQueueStatus);
+router.get(  '/admin/iot/occupancy',                     protect, admin, liveDashCtrl.getWarehouseOccupancy);
+
+// Admin — IoT Reports
+router.get(  '/admin/iot/reports/rfid-accuracy',         protect, admin, iotReportCtrl.getRFIDAccuracyReport);
+router.get(  '/admin/iot/reports/efficiency',            protect, admin, iotReportCtrl.getWarehouseEfficiencyReport);
+router.get(  '/admin/iot/reports/device-uptime',         protect, admin, iotReportCtrl.getDeviceUptimeReport);
+router.get(  '/admin/iot/reports/alert-history',         protect, admin, iotReportCtrl.getAlertHistoryReport);
+router.get(  '/admin/iot/reports/sensor-history',        protect, admin, iotReportCtrl.getSensorHistoryReport);
+router.get(  '/admin/iot/reports/replenishment',         protect, admin, iotReportCtrl.getReplenishmentReport);
+router.get(  '/admin/iot/reports/voice-picking',         protect, admin, iotReportCtrl.getVoicePickingReport);
+
+// Warehouse portal — RFID (handheld readers send scans here)
+router.post( '/warehouse/rfid/bulk-scan',                protectWarehouse, rfidCtrl.bulkScan);
+router.get(  '/warehouse/rfid/tags',                     protectWarehouse, rfidCtrl.getTags);
+
+// Warehouse portal — Device heartbeat
+router.post( '/warehouse/devices/:id/health',            protectWarehouse, deviceCtrl.recordHealth);
+router.get(  '/warehouse/devices',                       protectWarehouse, deviceCtrl.getDevices);
+
+// Warehouse portal — Voice Picking
+router.post( '/warehouse/voice/start',                   protectWarehouse, voiceCtrl.startSession);
+router.get(  '/warehouse/voice/:id',                     protectWarehouse, voiceCtrl.getSession);
+router.post( '/warehouse/voice/:id/next',                protectWarehouse, voiceCtrl.nextItem);
+router.post( '/warehouse/voice/:id/confirm',             protectWarehouse, voiceCtrl.confirmPick);
+router.post( '/warehouse/voice/:id/skip',                protectWarehouse, voiceCtrl.skipItem);
+router.post( '/warehouse/voice/:id/repeat',              protectWarehouse, voiceCtrl.repeatInstruction);
+router.post( '/warehouse/voice/:id/complete',            protectWarehouse, voiceCtrl.completeSession);
+
+// Warehouse portal — Replenishment tasks
+router.get(  '/warehouse/replenishment/tasks',           protectWarehouse, replenCtrl.getTasks);
+router.get(  '/warehouse/replenishment/tasks/:id',       protectWarehouse, replenCtrl.getTask);
+
+// Warehouse portal — Alerts
+router.get(  '/warehouse/alerts',                        protectWarehouse, alertCtrl.getAlerts);
+
 module.exports = router;
