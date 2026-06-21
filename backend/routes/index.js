@@ -663,6 +663,106 @@ router.get(  '/warehouse/adjustments',               protectWarehouse, stockAdj.
 router.get(  '/warehouse/cycle-counts',              protectWarehouse, cycleCount.warehouseGetCycleCounts);
 router.put(  '/warehouse/cycle-counts/:id/items',    protectWarehouse, cycleCount.warehouseUpdateCycleCount);
 
+// ── Sprint 10C: Procurement & Vendor Management ───────────────────────────────
+const vendorCtrl    = require('../controllers/vendorController');
+const supplierAuth  = require('../controllers/supplierAuthController');
+const prCtrl        = require('../controllers/purchaseRequisitionController');
+const rfqCtrl       = require('../controllers/rfqController');
+const poCtrl        = require('../controllers/purchaseOrderController');
+const procDash      = require('../controllers/procurementDashboardController');
+const procReport    = require('../controllers/procurementReportController');
+const supplierPortal = require('../controllers/supplierPortalController');
+const { protectSupplier } = require('../middleware/supplierAuth');
+
+// Admin — Vendor Management
+router.get(  '/admin/vendors',                           protect, admin, vendorCtrl.getVendors);
+router.post( '/admin/vendors',                           protect, admin, vendorCtrl.createVendor);
+router.get(  '/admin/vendors/dashboard',                 protect, admin, procDash.getDashboard);
+router.get(  '/admin/vendors/approval-queue',            protect, admin, procDash.getApprovalQueue);
+router.get(  '/admin/vendors/:id',                       protect, admin, vendorCtrl.getVendorById);
+router.put(  '/admin/vendors/:id',                       protect, admin, vendorCtrl.updateVendor);
+router.delete('/admin/vendors/:id',                      protect, admin, vendorCtrl.deleteVendor);
+router.put(  '/admin/vendors/:id/approve',               protect, admin, vendorCtrl.approveVendor);
+router.put(  '/admin/vendors/:id/blacklist',             protect, admin, vendorCtrl.blacklistVendor);
+router.get(  '/admin/vendors/:id/performance',           protect, admin, vendorCtrl.getVendorPerformance);
+router.post( '/admin/vendors/:id/contacts',              protect, admin, vendorCtrl.addContact);
+router.post( '/admin/vendors/:id/addresses',             protect, admin, vendorCtrl.addAddress);
+router.post( '/admin/vendors/:id/bank-accounts',         protect, admin, vendorCtrl.addBankAccount);
+router.post( '/admin/vendors/:id/documents',             protect, admin, vendorCtrl.addDocument);
+router.put(  '/admin/vendors/:id/documents/:docId/verify', protect, admin, vendorCtrl.verifyDocument);
+router.post( '/admin/vendors/:id/contracts',             protect, admin, vendorCtrl.addContract);
+router.post( '/admin/vendors/:id/ratings',               protect, admin, vendorCtrl.addRating);
+router.post( '/admin/vendors/:id/categories',            protect, admin, vendorCtrl.addCategory);
+
+// Admin — Supplier Portal Users
+router.get(  '/admin/supplier-users',                    protect, admin, supplierAuth.getSupplierUsers);
+router.post( '/admin/supplier-users',                    protect, admin, supplierAuth.createSupplierUser);
+router.put(  '/admin/supplier-users/:userId',            protect, admin, supplierAuth.updateSupplierUser);
+
+// Admin — Purchase Requisitions
+router.get(  '/admin/procurement/requisitions',          protect, admin, prCtrl.getRequisitions);
+router.post( '/admin/procurement/requisitions',          protect, admin, prCtrl.createRequisition);
+router.get(  '/admin/procurement/requisitions/:id',      protect, admin, prCtrl.getRequisitionById);
+router.put(  '/admin/procurement/requisitions/:id',      protect, admin, prCtrl.updateRequisition);
+router.put(  '/admin/procurement/requisitions/:id/submit',  protect, admin, prCtrl.submitRequisition);
+router.put(  '/admin/procurement/requisitions/:id/approve', protect, admin, prCtrl.approveRequisition);
+router.put(  '/admin/procurement/requisitions/:id/reject',  protect, admin, prCtrl.rejectRequisition);
+router.put(  '/admin/procurement/requisitions/:id/cancel',  protect, admin, prCtrl.cancelRequisition);
+
+// Admin — RFQ
+router.get(  '/admin/procurement/rfq',                   protect, admin, rfqCtrl.getRFQs);
+router.post( '/admin/procurement/rfq',                   protect, admin, rfqCtrl.createRFQ);
+router.get(  '/admin/procurement/rfq/:id',               protect, admin, rfqCtrl.getRFQById);
+router.put(  '/admin/procurement/rfq/:id',               protect, admin, rfqCtrl.updateRFQ);
+router.put(  '/admin/procurement/rfq/:id/publish',       protect, admin, rfqCtrl.publishRFQ);
+router.put(  '/admin/procurement/rfq/:id/close',         protect, admin, rfqCtrl.closeRFQ);
+router.put(  '/admin/procurement/rfq/:id/cancel',        protect, admin, rfqCtrl.cancelRFQ);
+router.put(  '/admin/procurement/rfq/:id/award/:vendorId', protect, admin, rfqCtrl.awardRFQ);
+router.put(  '/admin/procurement/rfq/:id/quotations/:vendorId', protect, admin, rfqCtrl.recordQuotation);
+
+// Admin — Purchase Orders
+router.get(  '/admin/procurement/orders',                protect, admin, poCtrl.getPOs);
+router.post( '/admin/procurement/orders',                protect, admin, poCtrl.createPO);
+router.get(  '/admin/procurement/orders/:id',            protect, admin, poCtrl.getPOById);
+router.put(  '/admin/procurement/orders/:id',            protect, admin, poCtrl.updatePO);
+router.put(  '/admin/procurement/orders/:id/submit',     protect, admin, poCtrl.submitPO);
+router.put(  '/admin/procurement/orders/:id/approve',    protect, admin, poCtrl.approvePO);
+router.put(  '/admin/procurement/orders/:id/reject',     protect, admin, poCtrl.rejectPO);
+router.put(  '/admin/procurement/orders/:id/release',    protect, admin, poCtrl.releasePO);
+router.put(  '/admin/procurement/orders/:id/send',       protect, admin, poCtrl.sendPO);
+router.put(  '/admin/procurement/orders/:id/cancel',     protect, admin, poCtrl.cancelPO);
+router.put(  '/admin/procurement/orders/:id/complete',   protect, admin, poCtrl.completePO);
+
+// Admin — Procurement Reports
+router.get(  '/admin/procurement/reports/spend',             protect, admin, procReport.getSpendReport);
+router.get(  '/admin/procurement/reports/vendor-performance',protect, admin, procReport.getVendorPerformanceReport);
+router.get(  '/admin/procurement/reports/open-orders',       protect, admin, procReport.getOpenOrdersReport);
+router.get(  '/admin/procurement/reports/delivery-delays',   protect, admin, procReport.getDeliveryDelaysReport);
+router.get(  '/admin/procurement/reports/supplier-ratings',  protect, admin, procReport.getSupplierRatingsReport);
+
+// Supplier Portal — Auth (public)
+router.post( '/supplier/auth/login',                     supplierAuth.login);
+router.post( '/supplier/auth/logout',                    supplierAuth.logout);
+router.get(  '/supplier/auth/me',                        protectSupplier, supplierAuth.me);
+
+// Supplier Portal — Dashboard
+router.get(  '/supplier/dashboard',                      protectSupplier, supplierPortal.getDashboard);
+
+// Supplier Portal — Purchase Orders
+router.get(  '/supplier/orders',                         protectSupplier, supplierPortal.getMyOrders);
+router.get(  '/supplier/orders/:id',                     protectSupplier, supplierPortal.getOrderDetail);
+router.put(  '/supplier/orders/:id/acknowledge',         protectSupplier, supplierPortal.acknowledgeOrder);
+router.put(  '/supplier/orders/:id/accept',              protectSupplier, supplierPortal.acceptOrder);
+router.put(  '/supplier/orders/:id/reject',              protectSupplier, supplierPortal.rejectOrder);
+
+// Supplier Portal — RFQ
+router.get(  '/supplier/rfq',                            protectSupplier, supplierPortal.getMyRFQs);
+router.put(  '/supplier/rfq/:id/quote',                  protectSupplier, rfqCtrl.supplierSubmitQuote);
+
+// Supplier Portal — Profile
+router.get(  '/supplier/profile',                        protectSupplier, supplierPortal.getProfile);
+router.put(  '/supplier/profile',                        protectSupplier, supplierPortal.updateProfile);
+
 // ── Sprint 9F: Audit Log ──────────────────────────────────────────────────────
 const audit    = require('../controllers/auditController');
 const AuditLog = require('../models/AuditLog');
@@ -703,5 +803,356 @@ router.use('/admin', (req, res, next) => {
   };
   next();
 });
+
+// ── Sprint 10D: Enterprise Dispatch & Logistics Engine ────────────────────────
+const dispatch        = require('../controllers/dispatchController');
+const shipment        = require('../controllers/shipmentController');
+const stockTransfer   = require('../controllers/stockTransferController');
+const challan         = require('../controllers/deliveryChallanController');
+const logisticsDash   = require('../controllers/logisticsDashboardController');
+
+// Admin — Logistics Dashboard & Reports
+router.get(  '/admin/logistics/dashboard',              protect, admin, logisticsDash.getDashboard);
+router.get(  '/admin/logistics/reports',                protect, admin, logisticsDash.getLogisticsReports);
+
+// Admin — Dispatch Management
+router.get(  '/admin/logistics/dispatches',             protect, admin, dispatch.listDispatches);
+router.post( '/admin/logistics/dispatches',             protect, admin, dispatch.createDispatch);
+router.get(  '/admin/logistics/dispatches/:id',         protect, admin, dispatch.getDispatchById);
+router.put(  '/admin/logistics/dispatches/:id/assign-picker', protect, admin, dispatch.assignPicker);
+router.put(  '/admin/logistics/dispatches/:id/status',  protect, admin, dispatch.updateDispatchStatus);
+router.put(  '/admin/logistics/dispatches/:id/cancel',  protect, admin, dispatch.cancelDispatch);
+
+// Admin — Shipment Management
+router.get(  '/admin/logistics/shipments',              protect, admin, shipment.getShipments);
+router.post( '/admin/logistics/shipments',              protect, admin, shipment.createShipment);
+router.get(  '/admin/logistics/shipments/:id',          protect, admin, shipment.getShipmentById);
+router.put(  '/admin/logistics/shipments/:id/status',   protect, admin, shipment.updateShipmentStatus);
+router.post( '/admin/logistics/shipments/:id/tracking-event', protect, admin, shipment.addTrackingEvent);
+
+// Admin — Courier Management
+router.get(  '/admin/logistics/couriers',               protect, admin, shipment.getCouriers);
+router.post( '/admin/logistics/couriers',               protect, admin, shipment.createCourier);
+router.get(  '/admin/logistics/couriers/:id',           protect, admin, shipment.getCourierById);
+router.put(  '/admin/logistics/couriers/:id',           protect, admin, shipment.updateCourier);
+router.delete('/admin/logistics/couriers/:id',          protect, admin, shipment.deleteCourier);
+
+// Admin — Stock Transfers
+router.get(  '/admin/logistics/transfers',              protect, admin, stockTransfer.getTransfers);
+router.post( '/admin/logistics/transfers',              protect, admin, stockTransfer.createTransfer);
+router.get(  '/admin/logistics/transfers/:id',          protect, admin, stockTransfer.getTransferById);
+router.put(  '/admin/logistics/transfers/:id/submit',   protect, admin, stockTransfer.submitTransfer);
+router.put(  '/admin/logistics/transfers/:id/approve',  protect, admin, stockTransfer.approveTransfer);
+router.put(  '/admin/logistics/transfers/:id/reject',   protect, admin, stockTransfer.rejectTransfer);
+router.put(  '/admin/logistics/transfers/:id/complete', protect, admin, stockTransfer.completeTransfer);
+router.put(  '/admin/logistics/transfers/:id/cancel',   protect, admin, stockTransfer.cancelTransfer);
+
+// Admin — Delivery Challans
+router.get(  '/admin/logistics/challans',               protect, admin, challan.getChallans);
+router.post( '/admin/logistics/challans/generate',      protect, admin, challan.generateChallan);
+router.get(  '/admin/logistics/challans/:id',           protect, admin, challan.getChallanById);
+router.put(  '/admin/logistics/challans/:id',           protect, admin, challan.updateChallan);
+
+// Warehouse portal — Picking Lists
+router.get(  '/warehouse/picking-lists',                protectWarehouse, dispatch.warehouseGetPickingLists);
+router.get(  '/warehouse/picking-lists/:id',            protectWarehouse, dispatch.warehouseGetPickingList);
+router.put(  '/warehouse/picking-lists/:id/start',      protectWarehouse, dispatch.warehouseStartPicking);
+router.put(  '/warehouse/picking-lists/:id/items',      protectWarehouse, dispatch.warehouseUpdatePickedQty);
+router.put(  '/warehouse/picking-lists/:id/complete',   protectWarehouse, dispatch.warehouseCompletePicking);
+
+// Warehouse portal — Packing
+router.post( '/warehouse/packages',                     protectWarehouse, dispatch.warehouseCreatePackage);
+router.get(  '/warehouse/dispatches/ready',             protectWarehouse, dispatch.warehouseGetReadyDispatches);
+
+// Warehouse portal — Shipment Tracking
+router.get(  '/warehouse/shipments',                    protectWarehouse, shipment.warehouseGetShipments);
+router.get(  '/warehouse/shipments/:id/tracking',       protectWarehouse, shipment.warehouseGetShipmentTracking);
+
+// Warehouse portal — Stock Transfers
+router.get(  '/warehouse/transfers',                    protectWarehouse, stockTransfer.warehouseGetTransfers);
+router.put(  '/warehouse/transfers/:id/ship',           protectWarehouse, stockTransfer.warehouseShipTransfer);
+router.put(  '/warehouse/transfers/:id/receive',        protectWarehouse, stockTransfer.warehouseReceiveTransfer);
+
+// ── Sprint 10E: Barcode & Scanning Engine ─────────────────────────────────────
+const barcodeCtrl    = require('../controllers/barcodeController');
+const scanCtrl       = require('../controllers/scanController');
+const putawayCtrl    = require('../controllers/putawayController');
+const warehouseMap   = require('../controllers/warehouseMapController');
+
+// Admin — Barcode Engine
+router.get(  '/admin/barcodes',                          protect, admin, barcodeCtrl.getBarcodes);
+router.post( '/admin/barcodes/generate',                 protect, admin, barcodeCtrl.generateBarcode);
+router.post( '/admin/barcodes/assign',                   protect, admin, barcodeCtrl.assignBarcode);
+router.post( '/admin/barcodes/validate',                 protect, admin, barcodeCtrl.validateBarcode);
+router.post( '/admin/barcodes/qr',                       protect, admin, barcodeCtrl.generateQR);
+router.get(  '/admin/barcodes/stats',                    protect, admin, barcodeCtrl.getBarcodeStats);
+router.get(  '/admin/barcodes/lookup/:value',            protect, admin, barcodeCtrl.lookupBarcode);
+router.get(  '/admin/barcodes/entity/:entityType/:entityId', protect, admin, barcodeCtrl.getBarcodesByEntity);
+router.put(  '/admin/barcodes/:id/deactivate',           protect, admin, barcodeCtrl.deactivateBarcode);
+router.post( '/admin/barcodes/:id/print',                protect, admin, barcodeCtrl.recordPrint);
+
+// Admin — Scanner Activity
+router.get(  '/admin/scan-logs',                         protect, admin, scanCtrl.getScanLogs);
+router.get(  '/admin/scan-logs/activity',                protect, admin, scanCtrl.getScanActivity);
+router.get(  '/admin/scan-logs/report',                  protect, admin, scanCtrl.getScanReport);
+router.post( '/admin/scan-logs/scan',                    protect, admin, scanCtrl.processScan);
+
+// Admin — Warehouse Map
+router.get(  '/admin/warehouse-map/:warehouseId',        protect, admin, warehouseMap.getWarehouseMapData);
+router.get(  '/admin/warehouse-map/:warehouseId/search', protect, admin, warehouseMap.searchBin);
+router.get(  '/admin/warehouse-map/:warehouseId/utilization', protect, admin, warehouseMap.getBinUtilizationReport);
+
+// Admin — Smart Putaway
+router.post( '/admin/putaway/recommend',                 protect, admin, putawayCtrl.getPutawayRecommendations);
+router.post( '/admin/putaway/confirm',                   protect, admin, putawayCtrl.confirmPutaway);
+router.get(  '/admin/putaway/bin/:binId',                protect, admin, putawayCtrl.getBinContents);
+
+// Warehouse portal — Scanner
+router.post( '/warehouse/scan',                          protectWarehouse, scanCtrl.warehouseScan);
+router.get(  '/warehouse/scan-logs',                     protectWarehouse, scanCtrl.getScanLogs);
+
+// Warehouse portal — Putaway
+router.post( '/warehouse/putaway/recommend',             protectWarehouse, putawayCtrl.getPutawayRecommendations);
+router.post( '/warehouse/putaway/confirm',               protectWarehouse, putawayCtrl.confirmPutaway);
+router.get(  '/warehouse/putaway/bin/:binId',            protectWarehouse, putawayCtrl.getBinContents);
+
+// Warehouse portal — Bin Lookup
+router.get(  '/warehouse/bins/:warehouseId/search',      protectWarehouse, warehouseMap.searchBin);
+router.get(  '/warehouse/bins/:binId/contents',          protectWarehouse, putawayCtrl.getBinContents);
+
+// Warehouse portal — Barcode lookup
+router.get(  '/warehouse/barcodes/lookup/:value',        protectWarehouse, barcodeCtrl.lookupBarcode);
+router.post( '/warehouse/barcodes/validate',             protectWarehouse, barcodeCtrl.validateBarcode);
+
+// Public barcode lookup (for QR code scan from product packaging — no auth required)
+router.get(  '/barcode/lookup/:value',                   barcodeCtrl.lookupBarcode);
+
+// ── Sprint 10F: IoT & Industry 4.0 ────────────────────────────────────────────
+const rfidCtrl         = require('../controllers/rfidController');
+const deviceCtrl       = require('../controllers/deviceController');
+const sensorCtrl       = require('../controllers/sensorController');
+const alertCtrl        = require('../controllers/alertController');
+const voiceCtrl        = require('../controllers/voicePickingController');
+const replenCtrl       = require('../controllers/replenishmentController');
+const liveDashCtrl     = require('../controllers/liveDashboardController');
+const iotReportCtrl    = require('../controllers/iotReportController');
+
+// Admin — RFID Tags
+router.get(  '/admin/rfid/tags',                         protect, admin, rfidCtrl.getTags);
+router.post( '/admin/rfid/tags',                         protect, admin, rfidCtrl.registerTag);
+router.put(  '/admin/rfid/tags/:id/assign',              protect, admin, rfidCtrl.assignTag);
+router.put(  '/admin/rfid/tags/:id/replace',             protect, admin, rfidCtrl.replaceTag);
+router.get(  '/admin/rfid/tags/:id/history',             protect, admin, rfidCtrl.getRFIDHistory);
+
+// Admin — RFID Readers
+router.get(  '/admin/rfid/readers',                      protect, admin, rfidCtrl.getReaders);
+router.post( '/admin/rfid/readers',                      protect, admin, rfidCtrl.createReader);
+router.put(  '/admin/rfid/readers/:id/status',           protect, admin, rfidCtrl.updateReaderStatus);
+
+// Admin — RFID Scans & Analytics
+router.post( '/admin/rfid/bulk-scan',                    protect, admin, rfidCtrl.bulkScan);
+router.get(  '/admin/rfid/inventory-count',              protect, admin, rfidCtrl.getInventoryCount);
+router.get(  '/admin/rfid/conflicts',                    protect, admin, rfidCtrl.detectConflicts);
+router.get(  '/admin/rfid/stats',                        protect, admin, rfidCtrl.getRFIDStats);
+
+// Admin — Warehouse Devices
+router.get(  '/admin/devices',                           protect, admin, deviceCtrl.getDevices);
+router.post( '/admin/devices',                           protect, admin, deviceCtrl.registerDevice);
+router.get(  '/admin/devices/stats',                     protect, admin, deviceCtrl.getDeviceStats);
+router.get(  '/admin/devices/:id',                       protect, admin, deviceCtrl.getDevice);
+router.put(  '/admin/devices/:id',                       protect, admin, deviceCtrl.updateDevice);
+router.delete('/admin/devices/:id',                      protect, admin, deviceCtrl.deleteDevice);
+router.post( '/admin/devices/:id/health',                protect, admin, deviceCtrl.recordHealth);
+router.get(  '/admin/devices/:id/health-history',        protect, admin, deviceCtrl.getHealthHistory);
+router.put(  '/admin/devices/:id/assign',                protect, admin, deviceCtrl.assignDevice);
+router.put(  '/admin/devices/:id/unassign',              protect, admin, deviceCtrl.unassignDevice);
+
+// Admin — Sensors
+router.get(  '/admin/sensors',                           protect, admin, sensorCtrl.getSensors);
+router.post( '/admin/sensors',                           protect, admin, sensorCtrl.registerSensor);
+router.get(  '/admin/sensors/stats',                     protect, admin, sensorCtrl.getSensorStats);
+router.get(  '/admin/sensors/readings',                  protect, admin, sensorCtrl.getReadings);
+router.get(  '/admin/sensors/warehouse/:warehouseId/by-zone', protect, admin, sensorCtrl.getSensorsByZone);
+router.put(  '/admin/sensors/:id',                       protect, admin, sensorCtrl.updateSensor);
+router.post( '/admin/sensors/:id/reading',               protect, admin, sensorCtrl.recordReading);
+router.get(  '/admin/sensors/:id/history',               protect, admin, sensorCtrl.getSensorHistory);
+router.put(  '/admin/sensors/:id/calibrate',             protect, admin, sensorCtrl.calibrateSensor);
+
+// Admin — Alerts
+router.get(  '/admin/alerts',                            protect, admin, alertCtrl.getAlerts);
+router.post( '/admin/alerts',                            protect, admin, alertCtrl.createAlert);
+router.get(  '/admin/alerts/stats',                      protect, admin, alertCtrl.getAlertStats);
+router.get(  '/admin/alerts/history',                    protect, admin, alertCtrl.getAlertHistory);
+router.put(  '/admin/alerts/:id/acknowledge',            protect, admin, alertCtrl.acknowledgeAlert);
+router.put(  '/admin/alerts/:id/resolve',                protect, admin, alertCtrl.resolveAlert);
+router.put(  '/admin/alerts/:id/dismiss',                protect, admin, alertCtrl.dismissAlert);
+
+// Admin — Voice Picking Sessions
+router.get(  '/admin/voice-sessions',                    protect, admin, voiceCtrl.getSessions);
+router.get(  '/admin/voice-sessions/:id',                protect, admin, voiceCtrl.getSession);
+router.get(  '/admin/voice-sessions/:id/logs',           protect, admin, voiceCtrl.getSessionLogs);
+
+// Admin — Replenishment
+router.get(  '/admin/replenishment/tasks',               protect, admin, replenCtrl.getTasks);
+router.post( '/admin/replenishment/generate',            protect, admin, replenCtrl.generateTasks);
+router.get(  '/admin/replenishment/stats',               protect, admin, replenCtrl.getReplenishmentStats);
+router.get(  '/admin/replenishment/recommendations',     protect, admin, replenCtrl.getRecommendations);
+router.get(  '/admin/replenishment/tasks/:id',           protect, admin, replenCtrl.getTask);
+router.put(  '/admin/replenishment/tasks/:id/approve',   protect, admin, replenCtrl.approveTask);
+router.put(  '/admin/replenishment/tasks/:id',           protect, admin, replenCtrl.updateTask);
+router.put(  '/admin/replenishment/tasks/:id/cancel',    protect, admin, replenCtrl.cancelTask);
+
+// Admin — Live Dashboard
+router.get(  '/admin/iot/dashboard',                     protect, admin, liveDashCtrl.getDashboardData);
+router.get(  '/admin/iot/inventory-movement',            protect, admin, liveDashCtrl.getInventoryMovement);
+router.get(  '/admin/iot/device-health',                 protect, admin, liveDashCtrl.getDeviceHealth);
+router.get(  '/admin/iot/rfid-activity',                 protect, admin, liveDashCtrl.getRFIDActivity);
+router.get(  '/admin/iot/active-alerts',                 protect, admin, liveDashCtrl.getActiveAlerts);
+router.get(  '/admin/iot/queue-status',                  protect, admin, liveDashCtrl.getQueueStatus);
+router.get(  '/admin/iot/occupancy',                     protect, admin, liveDashCtrl.getWarehouseOccupancy);
+
+// Admin — IoT Reports
+router.get(  '/admin/iot/reports/rfid-accuracy',         protect, admin, iotReportCtrl.getRFIDAccuracyReport);
+router.get(  '/admin/iot/reports/efficiency',            protect, admin, iotReportCtrl.getWarehouseEfficiencyReport);
+router.get(  '/admin/iot/reports/device-uptime',         protect, admin, iotReportCtrl.getDeviceUptimeReport);
+router.get(  '/admin/iot/reports/alert-history',         protect, admin, iotReportCtrl.getAlertHistoryReport);
+router.get(  '/admin/iot/reports/sensor-history',        protect, admin, iotReportCtrl.getSensorHistoryReport);
+router.get(  '/admin/iot/reports/replenishment',         protect, admin, iotReportCtrl.getReplenishmentReport);
+router.get(  '/admin/iot/reports/voice-picking',         protect, admin, iotReportCtrl.getVoicePickingReport);
+
+// Warehouse portal — RFID (handheld readers send scans here)
+router.post( '/warehouse/rfid/bulk-scan',                protectWarehouse, rfidCtrl.bulkScan);
+router.get(  '/warehouse/rfid/tags',                     protectWarehouse, rfidCtrl.getTags);
+
+// Warehouse portal — Device heartbeat
+router.post( '/warehouse/devices/:id/health',            protectWarehouse, deviceCtrl.recordHealth);
+router.get(  '/warehouse/devices',                       protectWarehouse, deviceCtrl.getDevices);
+
+// Warehouse portal — Voice Picking
+router.post( '/warehouse/voice/start',                   protectWarehouse, voiceCtrl.startSession);
+router.get(  '/warehouse/voice/:id',                     protectWarehouse, voiceCtrl.getSession);
+router.post( '/warehouse/voice/:id/next',                protectWarehouse, voiceCtrl.nextItem);
+router.post( '/warehouse/voice/:id/confirm',             protectWarehouse, voiceCtrl.confirmPick);
+router.post( '/warehouse/voice/:id/skip',                protectWarehouse, voiceCtrl.skipItem);
+router.post( '/warehouse/voice/:id/repeat',              protectWarehouse, voiceCtrl.repeatInstruction);
+router.post( '/warehouse/voice/:id/complete',            protectWarehouse, voiceCtrl.completeSession);
+
+// Warehouse portal — Replenishment tasks
+router.get(  '/warehouse/replenishment/tasks',           protectWarehouse, replenCtrl.getTasks);
+router.get(  '/warehouse/replenishment/tasks/:id',       protectWarehouse, replenCtrl.getTask);
+
+// Warehouse portal — Alerts
+router.get(  '/warehouse/alerts',                        protectWarehouse, alertCtrl.getAlerts);
+
+// ─── Sprint 11A: After Sales Service ─────────────────────────────────────────
+const { protectTechnician } = require('../middleware/technicianAuth');
+const techAuthCtrl    = require('../controllers/technicianAuthController');
+const techCtrl        = require('../controllers/technicianController');
+const srCtrl          = require('../controllers/serviceRequestController');
+const warrantyCtrl    = require('../controllers/warrantyController');
+const spareCtrl       = require('../controllers/sparePartController');
+const dispatchCtrl    = require('../controllers/serviceDispatchController');
+const svcReportCtrl   = require('../controllers/serviceReportController');
+const { serviceUpload } = require('../config/cloudinary');
+
+// Technician Auth
+router.post('/technician/auth/login',                    techAuthCtrl.loginTechnician);
+router.get( '/technician/auth/me',                       protectTechnician, techAuthCtrl.getTechnicianProfile);
+router.put( '/technician/auth/profile',                  protectTechnician, techAuthCtrl.updateTechnicianProfile);
+router.put( '/technician/auth/availability',             protectTechnician, techAuthCtrl.updateAvailability);
+router.put( '/technician/auth/location',                 protectTechnician, techAuthCtrl.updateLocation);
+
+// Technician Portal — Jobs
+router.get( '/technician/jobs',                          protectTechnician, srCtrl.getTechnicianJobs);
+router.get( '/technician/jobs/:id',                      protectTechnician, srCtrl.getTechnicianJobDetail);
+router.put( '/technician/jobs/:id/status',               protectTechnician, srCtrl.updateJobStatus);
+router.post('/technician/jobs/:id/photos',               protectTechnician, srCtrl.uploadJobPhotos);
+router.post('/technician/jobs/:id/signature',            protectTechnician, srCtrl.saveCustomerSignature);
+
+// Technician Portal — Spare Parts
+router.post('/technician/parts/:id/consume',             protectTechnician, spareCtrl.consumePart);
+
+// Admin — Technician Management
+router.post('/admin/technicians',                        protect, admin, techCtrl.createTechnician);
+router.get( '/admin/technicians',                        protect, admin, techCtrl.getTechnicians);
+router.get( '/admin/technicians/stats',                  protect, admin, techCtrl.getTechnicianStats);
+router.get( '/admin/technicians/:id',                    protect, admin, techCtrl.getTechnician);
+router.put( '/admin/technicians/:id',                    protect, admin, techCtrl.updateTechnician);
+router.delete('/admin/technicians/:id',                  protect, admin, techCtrl.deleteTechnician);
+router.post('/admin/technicians/:id/reset-password',     protect, admin, techCtrl.resetTechnicianPassword);
+router.post('/admin/technicians/:id/token',              protect, superAdmin, techCtrl.generateTechnicianToken);
+router.get( '/admin/technicians/:id/workload',           protect, admin, techCtrl.getTechnicianWorkload);
+
+// Admin — Service Requests
+router.get( '/admin/service/dashboard',                  protect, admin, srCtrl.getServiceDashboard);
+router.get( '/admin/service/requests',                   protect, admin, srCtrl.getServiceRequests);
+router.get( '/admin/service/requests/:id',               protect, admin, srCtrl.getServiceRequest);
+router.put( '/admin/service/requests/:id/status',        protect, admin, srCtrl.updateServiceRequestStatus);
+router.put( '/admin/service/requests/:id/assign',        protect, admin, srCtrl.assignTechnician);
+router.put( '/admin/service/requests/:id/escalate',      protect, admin, srCtrl.escalateServiceRequest);
+router.post('/admin/service/requests/:id/comment',       protect, admin, srCtrl.addComment);
+
+// Admin — Dispatch
+router.get( '/admin/service/dispatch/board',             protect, admin, dispatchCtrl.getDispatchBoard);
+router.get( '/admin/service/dispatch/:serviceRequestId/recommendations', protect, admin, dispatchCtrl.getDispatchRecommendations);
+router.post('/admin/service/dispatch/:serviceRequestId/auto-assign',     protect, admin, dispatchCtrl.autoAssign);
+
+// Admin — Warranty
+router.post('/admin/warranty',                           protect, admin, warrantyCtrl.createWarranty);
+router.get( '/admin/warranty',                           protect, admin, warrantyCtrl.getWarranties);
+router.get( '/admin/warranty/stats',                     protect, admin, warrantyCtrl.getWarrantyStats);
+router.get( '/admin/warranty/:id',                       protect, admin, warrantyCtrl.getWarranty);
+router.put( '/admin/warranty/:id/activate',              protect, admin, warrantyCtrl.activateWarranty);
+router.put( '/admin/warranty/:id/transfer',              protect, admin, warrantyCtrl.transferWarranty);
+router.put( '/admin/warranty/:id/void',                  protect, admin, warrantyCtrl.voidWarranty);
+
+// Admin — AMC Contracts
+router.post('/admin/amc',                                protect, admin, warrantyCtrl.createAMC);
+router.get( '/admin/amc',                                protect, admin, warrantyCtrl.getAMCContracts);
+router.get( '/admin/amc/stats',                          protect, admin, warrantyCtrl.getAMCStats);
+router.get( '/admin/amc/:id',                            protect, admin, warrantyCtrl.getAMCContract);
+router.put( '/admin/amc/:id/activate',                   protect, admin, warrantyCtrl.activateAMC);
+router.post('/admin/amc/:id/visit',                      protect, admin, warrantyCtrl.scheduleAMCVisit);
+
+// Admin — Spare Parts
+router.post('/admin/spare-parts',                        protect, admin, spareCtrl.createSparePart);
+router.get( '/admin/spare-parts',                        protect, admin, spareCtrl.getSpareParts);
+router.get( '/admin/spare-parts/stats',                  protect, admin, spareCtrl.getSparePartStats);
+router.get( '/admin/spare-parts/categories',             protect, admin, spareCtrl.getCategories);
+router.get( '/admin/spare-parts/:id',                    protect, admin, spareCtrl.getSparePart);
+router.put( '/admin/spare-parts/:id',                    protect, admin, spareCtrl.updateSparePart);
+router.delete('/admin/spare-parts/:id',                  protect, admin, spareCtrl.deleteSparePart);
+router.put( '/admin/spare-parts/:id/stock',              protect, admin, spareCtrl.adjustStock);
+
+// Admin — Service Reports
+router.get( '/admin/service/reports/summary',            protect, admin, svcReportCtrl.getServiceSummaryReport);
+router.get( '/admin/service/reports/technician-performance', protect, admin, svcReportCtrl.getTechnicianPerformanceReport);
+router.get( '/admin/service/reports/ftfr',               protect, admin, svcReportCtrl.getFTFRReport);
+router.get( '/admin/service/reports/warranty-claims',    protect, admin, svcReportCtrl.getWarrantyClaimsReport);
+router.get( '/admin/service/reports/csat',               protect, admin, svcReportCtrl.getCSATReport);
+router.get( '/admin/service/reports/parts-consumption',  protect, admin, svcReportCtrl.getPartsConsumptionReport);
+router.get( '/admin/service/reports/sla',                protect, admin, svcReportCtrl.getSLAReport);
+router.get( '/admin/service/reports/amc-revenue',        protect, admin, svcReportCtrl.getAMCRevenueReport);
+
+// Customer — Service Requests
+router.post('/service/requests',                         protect, srCtrl.raiseServiceRequest);
+router.get( '/service/requests',                         protect, srCtrl.getMyServiceRequests);
+router.get( '/service/requests/:id',                     protect, srCtrl.trackServiceRequest);
+router.post('/service/requests/:id/feedback',            protect, srCtrl.submitFeedback);
+router.post('/service/requests/:id/attachment',          protect, serviceUpload.single('file'), srCtrl.uploadAttachment);
+
+// Customer — generic file upload (returns Cloudinary URL; used by frontend before associating)
+router.post('/service/file-upload', protect, serviceUpload.single('file'), (req, res) => {
+  if (!req.file) return res.status(400).json({ success: false, message: 'No file uploaded' });
+  res.json({ success: true, url: req.file.path, filename: req.file.originalname });
+});
+
+// Customer — Warranty & AMC status
+router.get( '/service/warranty',                         protect, warrantyCtrl.getMyWarranties);
+router.get( '/service/warranty/check/:serialNumber',     protect, warrantyCtrl.checkWarrantyBySerial);
+router.get( '/service/amc',                              protect, warrantyCtrl.getMyAMCContracts);
+
+// Technician — photo upload via Cloudinary
+router.post('/technician/jobs/:id/photo-upload',         protectTechnician, serviceUpload.single('file'), srCtrl.uploadTechnicianPhoto);
 
 module.exports = router;

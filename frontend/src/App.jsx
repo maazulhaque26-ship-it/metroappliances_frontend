@@ -154,6 +154,46 @@ const WarehouseReceiveStock     = lazy(() => import('./pages/warehouse/Warehouse
 const WarehouseCycleCount       = lazy(() => import('./pages/warehouse/WarehouseCycleCount'));
 const WarehouseAdjustment       = lazy(() => import('./pages/warehouse/WarehouseAdjustment'));
 
+// ── Sprint 10C: Procurement & Vendor Management — Admin pages ────────────────
+const AdminVendorDashboard       = lazy(() => import('./pages/admin/AdminVendorDashboard'));
+const AdminVendorList            = lazy(() => import('./pages/admin/AdminVendorList'));
+const AdminVendorDetail          = lazy(() => import('./pages/admin/AdminVendorDetail'));
+const AdminVendorPerformance     = lazy(() => import('./pages/admin/AdminVendorPerformance'));
+const AdminPurchaseRequisitions  = lazy(() => import('./pages/admin/AdminPurchaseRequisitions'));
+const AdminRFQList               = lazy(() => import('./pages/admin/AdminRFQList'));
+const AdminRFQDetail             = lazy(() => import('./pages/admin/AdminRFQDetail'));
+const AdminPurchaseOrders        = lazy(() => import('./pages/admin/AdminPurchaseOrders'));
+const AdminPurchaseOrderDetail   = lazy(() => import('./pages/admin/AdminPurchaseOrderDetail'));
+const AdminApprovalQueue         = lazy(() => import('./pages/admin/AdminApprovalQueue'));
+const AdminProcurementReports    = lazy(() => import('./pages/admin/AdminProcurementReports'));
+
+// ── Sprint 10C: Supplier Portal pages ────────────────────────────────────────
+const SupplierLogin         = lazy(() => import('./pages/supplier/SupplierLogin'));
+const SupplierLayout        = lazy(() => import('./pages/supplier/SupplierLayout'));
+const SupplierDashboard     = lazy(() => import('./pages/supplier/SupplierDashboard'));
+const SupplierPurchaseOrders = lazy(() => import('./pages/supplier/SupplierPurchaseOrders'));
+const SupplierOrderDetail   = lazy(() => import('./pages/supplier/SupplierOrderDetail'));
+const SupplierRFQs          = lazy(() => import('./pages/supplier/SupplierRFQs'));
+const SupplierInvoices      = lazy(() => import('./pages/supplier/SupplierInvoices'));
+const SupplierDocuments     = lazy(() => import('./pages/supplier/SupplierDocuments'));
+const SupplierNotifications = lazy(() => import('./pages/supplier/SupplierNotifications'));
+const SupplierProfile       = lazy(() => import('./pages/supplier/SupplierProfile'));
+
+// ── Sprint 10D: Enterprise Dispatch & Logistics — Admin pages ────────────────
+const AdminLogisticsDashboard = lazy(() => import('./pages/admin/AdminLogisticsDashboard'));
+const AdminDispatchQueue      = lazy(() => import('./pages/admin/AdminDispatchQueue'));
+const AdminShipmentList       = lazy(() => import('./pages/admin/AdminShipmentList'));
+const AdminCourierManagement  = lazy(() => import('./pages/admin/AdminCourierManagement'));
+const AdminStockTransfers     = lazy(() => import('./pages/admin/AdminStockTransfers'));
+const AdminDeliveryChallans   = lazy(() => import('./pages/admin/AdminDeliveryChallans'));
+
+// ── Sprint 10D: Warehouse Portal logistics pages ──────────────────────────────
+const WarehousePickingList      = lazy(() => import('./pages/warehouse/WarehousePickingList'));
+const WarehousePacking          = lazy(() => import('./pages/warehouse/WarehousePacking'));
+const WarehouseDispatch         = lazy(() => import('./pages/warehouse/WarehouseDispatch'));
+const WarehouseTransfers        = lazy(() => import('./pages/warehouse/WarehouseTransfers'));
+const WarehouseShipmentTracking = lazy(() => import('./pages/warehouse/WarehouseShipmentTracking'));
+
 // ── Sprint 9E: BI & Analytics Pages ──────────────────────────────────────────
 const AdminBIDashboard        = lazy(() => import('./pages/admin/AdminBIDashboard'));
 const AdminRevenueAnalytics   = lazy(() => import('./pages/admin/AdminRevenueAnalytics'));
@@ -164,6 +204,56 @@ const AdminTerritoryAnalytics = lazy(() => import('./pages/admin/AdminTerritoryA
 const AdminLeadFunnel         = lazy(() => import('./pages/admin/AdminLeadFunnel'));
 const AdminReports            = lazy(() => import('./pages/admin/AdminReports'));
 const AdminTargets            = lazy(() => import('./pages/admin/AdminTargets'));
+
+// ── Sprint 10F: IoT & Industry 4.0 — Admin pages ─────────────────────────────
+const AdminIoTDashboard           = lazy(() => import('./pages/admin/AdminIoTDashboard'));
+const AdminRFIDManagement         = lazy(() => import('./pages/admin/AdminRFIDManagement'));
+const AdminWarehouseDevices       = lazy(() => import('./pages/admin/AdminWarehouseDevices'));
+const AdminSensorDashboard        = lazy(() => import('./pages/admin/AdminSensorDashboard'));
+const AdminAlertCenter            = lazy(() => import('./pages/admin/AdminAlertCenter'));
+const AdminAutomationRules        = lazy(() => import('./pages/admin/AdminAutomationRules'));
+const AdminReplenishmentDashboard = lazy(() => import('./pages/admin/AdminReplenishmentDashboard'));
+
+// ── Sprint 10E: Barcode & Scanning — Admin pages ─────────────────────────────
+const AdminBarcodeDashboard   = lazy(() => import('./pages/admin/AdminBarcodeDashboard'));
+const AdminBarcodeGenerator   = lazy(() => import('./pages/admin/AdminBarcodeGenerator'));
+const AdminLabelCenter        = lazy(() => import('./pages/admin/AdminLabelCenter'));
+const AdminWarehouseMap       = lazy(() => import('./pages/admin/AdminWarehouseMap'));
+const AdminBinManagement      = lazy(() => import('./pages/admin/AdminBinManagement'));
+const AdminScannerActivity    = lazy(() => import('./pages/admin/AdminScannerActivity'));
+const AdminAutomationDashboard= lazy(() => import('./pages/admin/AdminAutomationDashboard'));
+
+// ── Sprint 10E: Warehouse Mobile pages ────────────────────────────────────────
+const WarehouseMobileDashboard = lazy(() => import('./pages/warehouse/WarehouseMobileDashboard'));
+const WarehouseMobileScan      = lazy(() => import('./pages/warehouse/WarehouseMobileScan'));
+const WarehouseMobilePutaway   = lazy(() => import('./pages/warehouse/WarehouseMobilePutaway'));
+const WarehouseMobileBinLookup = lazy(() => import('./pages/warehouse/WarehouseMobileBinLookup'));
+const WarehouseMobileReturns   = lazy(() => import('./pages/warehouse/WarehouseMobileReturns'));
+
+// ── Sprint 11B: Customer Service Portal ──────────────────────────────────────
+const CustomerServiceRequests  = lazy(() => import('./pages/customer/CustomerServiceRequests'));
+const CustomerRaiseComplaint   = lazy(() => import('./pages/customer/CustomerRaiseComplaint'));
+const CustomerTrackComplaint   = lazy(() => import('./pages/customer/CustomerTrackComplaint'));
+const CustomerWarrantyStatus   = lazy(() => import('./pages/customer/CustomerWarrantyStatus'));
+const CustomerAMCStatus        = lazy(() => import('./pages/customer/CustomerAMCStatus'));
+const CustomerServiceHistory   = lazy(() => import('./pages/customer/CustomerServiceHistory'));
+const CustomerFeedback         = lazy(() => import('./pages/customer/CustomerFeedback'));
+const CustomerServiceDocuments = lazy(() => import('./pages/customer/CustomerServiceDocuments'));
+
+// ── Sprint 11A: After Sales Service — Admin + Technician Portal pages ────────
+const AdminServiceDashboard    = lazy(() => import('./pages/admin/AdminServiceDashboard'));
+const AdminServiceRequests     = lazy(() => import('./pages/admin/AdminServiceRequests'));
+const AdminServiceRequestDetail= lazy(() => import('./pages/admin/AdminServiceRequestDetail'));
+const AdminTechnicians11A      = lazy(() => import('./pages/admin/AdminTechnicians'));
+const AdminWarranty            = lazy(() => import('./pages/admin/AdminWarranty'));
+const AdminSpareParts          = lazy(() => import('./pages/admin/AdminSpareParts'));
+const AdminServiceReports      = lazy(() => import('./pages/admin/AdminServiceReports'));
+const TechnicianLogin          = lazy(() => import('./pages/technician/TechnicianLogin'));
+const TechnicianLayout         = lazy(() => import('./pages/technician/TechnicianLayout'));
+const TechnicianDashboard      = lazy(() => import('./pages/technician/TechnicianDashboard'));
+const TechnicianJobs           = lazy(() => import('./pages/technician/TechnicianJobs'));
+const TechnicianJobDetail      = lazy(() => import('./pages/technician/TechnicianJobDetail'));
+const TechnicianProfile        = lazy(() => import('./pages/technician/TechnicianProfile'));
 
 // ── Guards ────────────────────────────────────────────────────────────────────
 function PrivateRoute({ children }) {
@@ -199,6 +289,22 @@ function WarehouseRoute({ children }) {
   const { token, warehouseUser } = useSelector(s => s.warehouseAuth);
   if (!token) return <Navigate to="/warehouse/login" replace />;
   if (warehouseUser?.status !== 'active') return <Navigate to="/warehouse/login" replace />;
+  return children;
+}
+
+// Supplier route guard — reads supplierAuth slice (completely isolated, type:'supplier' JWT)
+function SupplierRoute({ children }) {
+  const { token, supplierUser } = useSelector(s => s.supplierAuth);
+  if (!token) return <Navigate to="/supplier/login" replace />;
+  if (supplierUser?.status !== 'active') return <Navigate to="/supplier/login" replace />;
+  return children;
+}
+
+// Technician route guard — reads technicianAuth slice (type:'technician' JWT)
+function TechnicianRoute({ children }) {
+  const { token, technician } = useSelector(s => s.technicianAuth);
+  if (!token) return <Navigate to="/technician/login" replace />;
+  if (technician?.status !== 'active') return <Navigate to="/technician/login" replace />;
   return children;
 }
 
@@ -320,6 +426,16 @@ export default function App() {
           <Route path="/track-order/:orderId" element={<PrivateRoute><TrackOrderPage /></PrivateRoute>} />
           <Route path="/wishlist"   element={<PrivateRoute><Wishlist /></PrivateRoute>} />
 
+          {/* Sprint 11B: Customer Service Portal */}
+          <Route path="/my-service"                       element={<PrivateRoute><CustomerServiceRequests /></PrivateRoute>} />
+          <Route path="/my-service/raise"                 element={<PrivateRoute><CustomerRaiseComplaint /></PrivateRoute>} />
+          <Route path="/my-service/track/:id"             element={<PrivateRoute><CustomerTrackComplaint /></PrivateRoute>} />
+          <Route path="/my-service/warranty"              element={<PrivateRoute><CustomerWarrantyStatus /></PrivateRoute>} />
+          <Route path="/my-service/amc"                   element={<PrivateRoute><CustomerAMCStatus /></PrivateRoute>} />
+          <Route path="/my-service/history"               element={<PrivateRoute><CustomerServiceHistory /></PrivateRoute>} />
+          <Route path="/my-service/feedback/:id"          element={<PrivateRoute><CustomerFeedback /></PrivateRoute>} />
+          <Route path="/my-service/documents"             element={<PrivateRoute><CustomerServiceDocuments /></PrivateRoute>} />
+
           <Route path="*" element={<NotFound />} />
         </Route>
 
@@ -429,13 +545,79 @@ export default function App() {
         {/* Sprint 10B: Warehouse Portal (isolated auth — type:'warehouse' JWT) */}
         <Route path="/warehouse/login" element={<PageWrapper><WarehouseLogin /></PageWrapper>} />
         <Route path="/warehouse" element={<WarehouseRoute><WarehouseLayout /></WarehouseRoute>}>
-          <Route path="dashboard"   element={<WarehouseDashboard />} />
-          <Route path="inventory"   element={<WarehouseInventoryLookup />} />
-          <Route path="receive"     element={<WarehouseReceiveStock />} />
-          <Route path="grn"         element={<WarehouseReceiveStock />} />
-          <Route path="cycle-count" element={<WarehouseCycleCount />} />
-          <Route path="adjustments" element={<WarehouseAdjustment />} />
+          <Route path="dashboard"         element={<WarehouseDashboard />} />
+          <Route path="inventory"         element={<WarehouseInventoryLookup />} />
+          <Route path="receive"           element={<WarehouseReceiveStock />} />
+          <Route path="grn"               element={<WarehouseReceiveStock />} />
+          <Route path="cycle-count"       element={<WarehouseCycleCount />} />
+          <Route path="adjustments"       element={<WarehouseAdjustment />} />
+          {/* Sprint 10D: Logistics */}
+          <Route path="picking"           element={<WarehousePickingList />} />
+          <Route path="packing"           element={<WarehousePacking />} />
+          <Route path="dispatch"          element={<WarehouseDispatch />} />
+          <Route path="transfers"         element={<WarehouseTransfers />} />
+          <Route path="shipment-tracking" element={<WarehouseShipmentTracking />} />
+          {/* Sprint 10E: Mobile Operations */}
+          <Route path="mobile/dashboard"  element={<WarehouseMobileDashboard />} />
+          <Route path="mobile/scan"       element={<WarehouseMobileScan />} />
+          <Route path="mobile/putaway"    element={<WarehouseMobilePutaway />} />
+          <Route path="mobile/bin-lookup" element={<WarehouseMobileBinLookup />} />
+          <Route path="mobile/returns"    element={<WarehouseMobileReturns />} />
         </Route>
+
+        {/* Sprint 10C: Procurement & Vendor Management — Admin */}
+        <Route path="/admin/procurement"                     element={<AdminRoute><AdminVendorDashboard /></AdminRoute>} />
+        <Route path="/admin/procurement/vendors"             element={<AdminRoute><AdminVendorList /></AdminRoute>} />
+        <Route path="/admin/procurement/vendors/:id"         element={<AdminRoute><AdminVendorDetail /></AdminRoute>} />
+        <Route path="/admin/procurement/vendor-performance"  element={<AdminRoute><AdminVendorPerformance /></AdminRoute>} />
+        <Route path="/admin/procurement/requisitions"        element={<AdminRoute><AdminPurchaseRequisitions /></AdminRoute>} />
+        <Route path="/admin/procurement/rfq"                 element={<AdminRoute><AdminRFQList /></AdminRoute>} />
+        <Route path="/admin/procurement/rfq/:id"             element={<AdminRoute><AdminRFQDetail /></AdminRoute>} />
+        <Route path="/admin/procurement/orders"              element={<AdminRoute><AdminPurchaseOrders /></AdminRoute>} />
+        <Route path="/admin/procurement/orders/:id"          element={<AdminRoute><AdminPurchaseOrderDetail /></AdminRoute>} />
+        <Route path="/admin/procurement/approvals"           element={<AdminRoute><AdminApprovalQueue /></AdminRoute>} />
+        <Route path="/admin/procurement/reports"             element={<AdminRoute><AdminProcurementReports /></AdminRoute>} />
+
+        {/* Sprint 10C: Supplier Portal (isolated auth — type:'supplier' JWT) */}
+        <Route path="/supplier/login" element={<PageWrapper><SupplierLogin /></PageWrapper>} />
+        <Route path="/supplier" element={<SupplierRoute><SupplierLayout /></SupplierRoute>}>
+          <Route path="dashboard"     element={<SupplierDashboard />} />
+          <Route path="orders"        element={<SupplierPurchaseOrders />} />
+          <Route path="orders/:id"    element={<SupplierOrderDetail />} />
+          <Route path="rfq"           element={<SupplierRFQs />} />
+          <Route path="invoices"      element={<SupplierInvoices />} />
+          <Route path="documents"     element={<SupplierDocuments />} />
+          <Route path="notifications" element={<SupplierNotifications />} />
+          <Route path="profile"       element={<SupplierProfile />} />
+        </Route>
+
+        {/* Sprint 10D: Logistics — Admin */}
+        <Route path="/admin/logistics"                  element={<AdminRoute><AdminLogisticsDashboard /></AdminRoute>} />
+        <Route path="/admin/logistics/dispatches"       element={<AdminRoute><AdminDispatchQueue /></AdminRoute>} />
+        <Route path="/admin/logistics/dispatches/:id"   element={<AdminRoute><AdminDispatchQueue /></AdminRoute>} />
+        <Route path="/admin/logistics/shipments"        element={<AdminRoute><AdminShipmentList /></AdminRoute>} />
+        <Route path="/admin/logistics/shipments/:id"    element={<AdminRoute><AdminShipmentList /></AdminRoute>} />
+        <Route path="/admin/logistics/couriers"         element={<AdminRoute><AdminCourierManagement /></AdminRoute>} />
+        <Route path="/admin/logistics/transfers"        element={<AdminRoute><AdminStockTransfers /></AdminRoute>} />
+        <Route path="/admin/logistics/challans"         element={<AdminRoute><AdminDeliveryChallans /></AdminRoute>} />
+
+        {/* Sprint 10F: IoT & Industry 4.0 — Admin */}
+        <Route path="/admin/iot"               element={<AdminRoute><AdminIoTDashboard /></AdminRoute>} />
+        <Route path="/admin/iot/rfid"          element={<AdminRoute><AdminRFIDManagement /></AdminRoute>} />
+        <Route path="/admin/iot/devices"       element={<AdminRoute><AdminWarehouseDevices /></AdminRoute>} />
+        <Route path="/admin/iot/sensors"       element={<AdminRoute><AdminSensorDashboard /></AdminRoute>} />
+        <Route path="/admin/iot/alerts"        element={<AdminRoute><AdminAlertCenter /></AdminRoute>} />
+        <Route path="/admin/iot/automation"    element={<AdminRoute><AdminAutomationRules /></AdminRoute>} />
+        <Route path="/admin/iot/replenishment" element={<AdminRoute><AdminReplenishmentDashboard /></AdminRoute>} />
+
+        {/* Sprint 10E: Barcode & Scanning — Admin */}
+        <Route path="/admin/barcodes"          element={<AdminRoute><AdminBarcodeDashboard /></AdminRoute>} />
+        <Route path="/admin/barcodes/generate" element={<AdminRoute><AdminBarcodeGenerator /></AdminRoute>} />
+        <Route path="/admin/barcodes/labels"   element={<AdminRoute><AdminLabelCenter /></AdminRoute>} />
+        <Route path="/admin/warehouse-map"     element={<AdminRoute><AdminWarehouseMap /></AdminRoute>} />
+        <Route path="/admin/bin-management"    element={<AdminRoute><AdminBinManagement /></AdminRoute>} />
+        <Route path="/admin/scanner-activity"  element={<AdminRoute><AdminScannerActivity /></AdminRoute>} />
+        <Route path="/admin/automation"        element={<AdminRoute><AdminAutomationDashboard /></AdminRoute>} />
 
         {/* Sprint 9E: BI & Analytics */}
         <Route path="/admin/bi/dashboard"    element={<AdminRoute><AdminBIDashboard /></AdminRoute>} />
@@ -459,6 +641,24 @@ export default function App() {
           <Route path="visits/:id"          element={<AgentVisitDetail />} />
           <Route path="tasks"               element={<AgentTasks />} />
           <Route path="profile"             element={<AgentProfile />} />
+        </Route>
+
+        {/* Sprint 11A: After Sales Service — Admin pages */}
+        <Route path="/admin/service"                     element={<AdminRoute><AdminServiceDashboard /></AdminRoute>} />
+        <Route path="/admin/service/requests"            element={<AdminRoute><AdminServiceRequests /></AdminRoute>} />
+        <Route path="/admin/service/requests/:id"        element={<AdminRoute><AdminServiceRequestDetail /></AdminRoute>} />
+        <Route path="/admin/service/technicians"         element={<AdminRoute><AdminTechnicians11A /></AdminRoute>} />
+        <Route path="/admin/service/warranty"            element={<AdminRoute><AdminWarranty /></AdminRoute>} />
+        <Route path="/admin/service/spare-parts"         element={<AdminRoute><AdminSpareParts /></AdminRoute>} />
+        <Route path="/admin/service/reports"             element={<AdminRoute><AdminServiceReports /></AdminRoute>} />
+
+        {/* Sprint 11A: Technician Portal (isolated auth — type:'technician' JWT) */}
+        <Route path="/technician/login" element={<PageWrapper><TechnicianLogin /></PageWrapper>} />
+        <Route path="/technician" element={<TechnicianRoute><TechnicianLayout /></TechnicianRoute>}>
+          <Route path="dashboard" element={<TechnicianDashboard />} />
+          <Route path="jobs"      element={<TechnicianJobs />} />
+          <Route path="jobs/:id"  element={<TechnicianJobDetail />} />
+          <Route path="profile"   element={<TechnicianProfile />} />
         </Route>
 
       </Routes>
