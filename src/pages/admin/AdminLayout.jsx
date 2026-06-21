@@ -11,6 +11,7 @@ import {
   FiZap, FiLayers, FiTarget, FiRadio, FiMessageSquare, FiBriefcase,
   FiBarChart2, FiTrendingUp, FiMap, FiMapPin, FiActivity, FiDownload, FiSliders,
   FiBox, FiDatabase, FiRefreshCw, FiAlertTriangle, FiFileText, FiClipboard,
+  FiCamera,
 } from 'react-icons/fi';
 import Logo from '../../components/ui/Logo';
 
@@ -156,6 +157,18 @@ const NAV_GROUPS = [
       { label: 'Couriers',        path: '/admin/logistics/couriers',    icon: FiZap,        roles: ['admin', 'super_admin'] },
       { label: 'Stock Transfers', path: '/admin/logistics/transfers',   icon: FiRefreshCw,  roles: ['admin', 'super_admin'] },
       { label: 'Del. Challans',   path: '/admin/logistics/challans',    icon: FiFileText,   roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
+    label: 'Barcode & Scanning',
+    items: [
+      { label: 'Barcode Dashboard',  path: '/admin/barcodes',          icon: FiCamera,      roles: ['admin', 'super_admin'] },
+      { label: 'Generator',          path: '/admin/barcodes/generate',  icon: FiHash,        roles: ['admin', 'super_admin'] },
+      { label: 'Label Center',       path: '/admin/barcodes/labels',    icon: FiFileText,    roles: ['admin', 'super_admin'] },
+      { label: 'Warehouse Map',      path: '/admin/warehouse-map',      icon: FiMapPin,      roles: ['admin', 'super_admin'] },
+      { label: 'Bin Management',     path: '/admin/bin-management',     icon: FiBox,         roles: ['admin', 'super_admin'] },
+      { label: 'Scanner Activity',   path: '/admin/scanner-activity',   icon: FiActivity,    roles: ['admin', 'super_admin'] },
+      { label: 'Automation',         path: '/admin/automation',         icon: FiZap,         roles: ['admin', 'super_admin'] },
     ],
   },
   {

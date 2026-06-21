@@ -205,6 +205,22 @@ const AdminLeadFunnel         = lazy(() => import('./pages/admin/AdminLeadFunnel
 const AdminReports            = lazy(() => import('./pages/admin/AdminReports'));
 const AdminTargets            = lazy(() => import('./pages/admin/AdminTargets'));
 
+// ── Sprint 10E: Barcode & Scanning — Admin pages ─────────────────────────────
+const AdminBarcodeDashboard   = lazy(() => import('./pages/admin/AdminBarcodeDashboard'));
+const AdminBarcodeGenerator   = lazy(() => import('./pages/admin/AdminBarcodeGenerator'));
+const AdminLabelCenter        = lazy(() => import('./pages/admin/AdminLabelCenter'));
+const AdminWarehouseMap       = lazy(() => import('./pages/admin/AdminWarehouseMap'));
+const AdminBinManagement      = lazy(() => import('./pages/admin/AdminBinManagement'));
+const AdminScannerActivity    = lazy(() => import('./pages/admin/AdminScannerActivity'));
+const AdminAutomationDashboard= lazy(() => import('./pages/admin/AdminAutomationDashboard'));
+
+// ── Sprint 10E: Warehouse Mobile pages ────────────────────────────────────────
+const WarehouseMobileDashboard = lazy(() => import('./pages/warehouse/WarehouseMobileDashboard'));
+const WarehouseMobileScan      = lazy(() => import('./pages/warehouse/WarehouseMobileScan'));
+const WarehouseMobilePutaway   = lazy(() => import('./pages/warehouse/WarehouseMobilePutaway'));
+const WarehouseMobileBinLookup = lazy(() => import('./pages/warehouse/WarehouseMobileBinLookup'));
+const WarehouseMobileReturns   = lazy(() => import('./pages/warehouse/WarehouseMobileReturns'));
+
 // ── Guards ────────────────────────────────────────────────────────────────────
 function PrivateRoute({ children }) {
   const { token } = useSelector(s => s.auth);
@@ -489,6 +505,12 @@ export default function App() {
           <Route path="dispatch"          element={<WarehouseDispatch />} />
           <Route path="transfers"         element={<WarehouseTransfers />} />
           <Route path="shipment-tracking" element={<WarehouseShipmentTracking />} />
+          {/* Sprint 10E: Mobile Operations */}
+          <Route path="mobile/dashboard"  element={<WarehouseMobileDashboard />} />
+          <Route path="mobile/scan"       element={<WarehouseMobileScan />} />
+          <Route path="mobile/putaway"    element={<WarehouseMobilePutaway />} />
+          <Route path="mobile/bin-lookup" element={<WarehouseMobileBinLookup />} />
+          <Route path="mobile/returns"    element={<WarehouseMobileReturns />} />
         </Route>
 
         {/* Sprint 10C: Procurement & Vendor Management — Admin */}
@@ -527,7 +549,14 @@ export default function App() {
         <Route path="/admin/logistics/transfers"        element={<AdminRoute><AdminStockTransfers /></AdminRoute>} />
         <Route path="/admin/logistics/challans"         element={<AdminRoute><AdminDeliveryChallans /></AdminRoute>} />
 
-        {/* Sprint 10D: Warehouse Portal logistics pages */}
+        {/* Sprint 10E: Barcode & Scanning — Admin */}
+        <Route path="/admin/barcodes"          element={<AdminRoute><AdminBarcodeDashboard /></AdminRoute>} />
+        <Route path="/admin/barcodes/generate" element={<AdminRoute><AdminBarcodeGenerator /></AdminRoute>} />
+        <Route path="/admin/barcodes/labels"   element={<AdminRoute><AdminLabelCenter /></AdminRoute>} />
+        <Route path="/admin/warehouse-map"     element={<AdminRoute><AdminWarehouseMap /></AdminRoute>} />
+        <Route path="/admin/bin-management"    element={<AdminRoute><AdminBinManagement /></AdminRoute>} />
+        <Route path="/admin/scanner-activity"  element={<AdminRoute><AdminScannerActivity /></AdminRoute>} />
+        <Route path="/admin/automation"        element={<AdminRoute><AdminAutomationDashboard /></AdminRoute>} />
 
         {/* Sprint 9E: BI & Analytics */}
         <Route path="/admin/bi/dashboard"    element={<AdminRoute><AdminBIDashboard /></AdminRoute>} />
