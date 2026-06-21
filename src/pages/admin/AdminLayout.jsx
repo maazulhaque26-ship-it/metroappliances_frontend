@@ -11,7 +11,7 @@ import {
   FiZap, FiLayers, FiTarget, FiRadio, FiMessageSquare, FiBriefcase,
   FiBarChart2, FiTrendingUp, FiMap, FiMapPin, FiActivity, FiDownload, FiSliders,
   FiBox, FiDatabase, FiRefreshCw, FiAlertTriangle, FiFileText, FiClipboard,
-  FiCamera,
+  FiCamera, FiCpu, FiThermometer, FiWifi,
 } from 'react-icons/fi';
 import Logo from '../../components/ui/Logo';
 
@@ -169,6 +169,18 @@ const NAV_GROUPS = [
       { label: 'Bin Management',     path: '/admin/bin-management',     icon: FiBox,         roles: ['admin', 'super_admin'] },
       { label: 'Scanner Activity',   path: '/admin/scanner-activity',   icon: FiActivity,    roles: ['admin', 'super_admin'] },
       { label: 'Automation',         path: '/admin/automation',         icon: FiZap,         roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
+    label: 'IoT & Industry 4.0',
+    items: [
+      { label: 'IoT Dashboard',      path: '/admin/iot',                icon: FiWifi,           roles: ['admin', 'super_admin'] },
+      { label: 'RFID Management',    path: '/admin/iot/rfid',           icon: FiRadio,          roles: ['admin', 'super_admin'] },
+      { label: 'Devices',            path: '/admin/iot/devices',        icon: FiCpu,            roles: ['admin', 'super_admin'] },
+      { label: 'Sensors',            path: '/admin/iot/sensors',        icon: FiThermometer,    roles: ['admin', 'super_admin'] },
+      { label: 'Alert Center',       path: '/admin/iot/alerts',         icon: FiAlertTriangle,  roles: ['admin', 'super_admin'] },
+      { label: 'Automation Rules',   path: '/admin/iot/automation',     icon: FiZap,            roles: ['admin', 'super_admin'] },
+      { label: 'Replenishment',      path: '/admin/iot/replenishment',  icon: FiPackage,        roles: ['admin', 'super_admin'] },
     ],
   },
   {

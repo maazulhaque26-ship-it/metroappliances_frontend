@@ -205,6 +205,15 @@ const AdminLeadFunnel         = lazy(() => import('./pages/admin/AdminLeadFunnel
 const AdminReports            = lazy(() => import('./pages/admin/AdminReports'));
 const AdminTargets            = lazy(() => import('./pages/admin/AdminTargets'));
 
+// ── Sprint 10F: IoT & Industry 4.0 — Admin pages ─────────────────────────────
+const AdminIoTDashboard           = lazy(() => import('./pages/admin/AdminIoTDashboard'));
+const AdminRFIDManagement         = lazy(() => import('./pages/admin/AdminRFIDManagement'));
+const AdminWarehouseDevices       = lazy(() => import('./pages/admin/AdminWarehouseDevices'));
+const AdminSensorDashboard        = lazy(() => import('./pages/admin/AdminSensorDashboard'));
+const AdminAlertCenter            = lazy(() => import('./pages/admin/AdminAlertCenter'));
+const AdminAutomationRules        = lazy(() => import('./pages/admin/AdminAutomationRules'));
+const AdminReplenishmentDashboard = lazy(() => import('./pages/admin/AdminReplenishmentDashboard'));
+
 // ── Sprint 10E: Barcode & Scanning — Admin pages ─────────────────────────────
 const AdminBarcodeDashboard   = lazy(() => import('./pages/admin/AdminBarcodeDashboard'));
 const AdminBarcodeGenerator   = lazy(() => import('./pages/admin/AdminBarcodeGenerator'));
@@ -548,6 +557,15 @@ export default function App() {
         <Route path="/admin/logistics/couriers"         element={<AdminRoute><AdminCourierManagement /></AdminRoute>} />
         <Route path="/admin/logistics/transfers"        element={<AdminRoute><AdminStockTransfers /></AdminRoute>} />
         <Route path="/admin/logistics/challans"         element={<AdminRoute><AdminDeliveryChallans /></AdminRoute>} />
+
+        {/* Sprint 10F: IoT & Industry 4.0 — Admin */}
+        <Route path="/admin/iot"               element={<AdminRoute><AdminIoTDashboard /></AdminRoute>} />
+        <Route path="/admin/iot/rfid"          element={<AdminRoute><AdminRFIDManagement /></AdminRoute>} />
+        <Route path="/admin/iot/devices"       element={<AdminRoute><AdminWarehouseDevices /></AdminRoute>} />
+        <Route path="/admin/iot/sensors"       element={<AdminRoute><AdminSensorDashboard /></AdminRoute>} />
+        <Route path="/admin/iot/alerts"        element={<AdminRoute><AdminAlertCenter /></AdminRoute>} />
+        <Route path="/admin/iot/automation"    element={<AdminRoute><AdminAutomationRules /></AdminRoute>} />
+        <Route path="/admin/iot/replenishment" element={<AdminRoute><AdminReplenishmentDashboard /></AdminRoute>} />
 
         {/* Sprint 10E: Barcode & Scanning — Admin */}
         <Route path="/admin/barcodes"          element={<AdminRoute><AdminBarcodeDashboard /></AdminRoute>} />
