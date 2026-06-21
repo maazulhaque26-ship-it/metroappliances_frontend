@@ -8,8 +8,6 @@ import ChartCard    from '../../components/shared/ChartCard';
 import LoadingState from '../../components/shared/LoadingState';
 import ErrorState   from '../../components/shared/ErrorState';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { formatters } from '../../services/formatters';
-
 const fmtCurrency = (v) => `₹${(v || 0).toLocaleString('en-IN')}`;
 
 export default function AdminVendorDashboard() {

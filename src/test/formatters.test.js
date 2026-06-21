@@ -24,6 +24,6 @@ describe('formatPct', () => {
 });
 
 describe('formatGST', () => {
-  it('formats GSTIN',     () => expect(formatGST('29ABCDE1234F1Z5')).toBe('29 ABCDE1234 F 1 Z5'));
+  it('formats GSTIN',     () => expect(formatGST('29ABCDE1234F1Z5')).toBe('29 ABCDE1234F 1 Z 5'));
   it('handles null',      () => expect(formatGST(null)).toBe('—'));
 });

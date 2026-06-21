@@ -39,7 +39,7 @@ describe('MetricCard — warehouse KPIs', () => {
   it('renders metric with warehouse value', () => {
     render(
       <Provider store={mockStore}>
-        <MetricCard label="Total Warehouses" value={5} icon={FiPackage} accentColor="#FF7A00" />
+        <MetricCard title="Total Warehouses" value={5} icon={FiPackage} accent="#FF7A00" />
       </Provider>
     );
     expect(screen.getByText('Total Warehouses')).toBeTruthy();

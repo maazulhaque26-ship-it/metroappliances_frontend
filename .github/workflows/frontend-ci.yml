@@ -2,13 +2,13 @@ name: Frontend CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, master, develop]
   pull_request:
-    branches: [main]
+    branches: [main, master]
 
 jobs:
   build:
-    name: Install · Build · Validate
+    name: Install · Test · Build · Validate
     runs-on: ubuntu-latest
 
     steps:
@@ -27,8 +27,10 @@ jobs:
       - name: Type-check / lint (if configured)
         run: npm run lint --if-present
 
+      - name: Run unit tests
+        run: npm test
+
       # Build with stub env vars so Vite doesn't complain about missing VITE_ vars.
-      # Vercel injects the real values at deploy time.
       - name: Build
         run: npm run build
         env:
@@ -44,7 +46,7 @@ jobs:
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         with:
           name: frontend-dist
           path: dist/
