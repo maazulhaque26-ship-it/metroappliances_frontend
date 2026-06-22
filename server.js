@@ -161,6 +161,7 @@ app.use('/api/dealer/auth/forgot-password', authLimiter);
 app.use('/api/agent/auth/login',           authLimiter);
 app.use('/api/warehouse/auth/login',       authLimiter);
 app.use('/api/supplier/auth/login',        authLimiter);
+app.use('/api/engineer/auth/login',        authLimiter);
 app.use('/api',                            apiLimiter, dbGuard, routes);
 
 // ─── 404 ──────────────────────────────────────────────────────────────────────
