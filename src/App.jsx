@@ -265,6 +265,19 @@ const AdminBOMDetail              = lazy(() => import('./pages/admin/AdminBOMDet
 const AdminProductionOrders       = lazy(() => import('./pages/admin/AdminProductionOrders'));
 const AdminProductionOrderDetail  = lazy(() => import('./pages/admin/AdminProductionOrderDetail'));
 
+// ── Sprint 12B: Enterprise Production Planning & Scheduling ─────────────────
+const AdminManufacturingPlanningDashboard = lazy(() => import('./pages/admin/AdminManufacturingPlanningDashboard'));
+const AdminProductionPlans                = lazy(() => import('./pages/admin/AdminProductionPlans'));
+const AdminProductionPlanDetail           = lazy(() => import('./pages/admin/AdminProductionPlanDetail'));
+const AdminMasterSchedule                 = lazy(() => import('./pages/admin/AdminMasterSchedule'));
+const AdminCapacityPlanning               = lazy(() => import('./pages/admin/AdminCapacityPlanning'));
+const AdminMachineCalendar                = lazy(() => import('./pages/admin/AdminMachineCalendar'));
+const AdminProductionCalendar             = lazy(() => import('./pages/admin/AdminProductionCalendar'));
+const AdminPlanningScenarios              = lazy(() => import('./pages/admin/AdminPlanningScenarios'));
+const AdminPlanningReports                = lazy(() => import('./pages/admin/AdminPlanningReports'));
+const AdminPlanningSettings               = lazy(() => import('./pages/admin/AdminPlanningSettings'));
+const AdminSchedulingBoard                = lazy(() => import('./pages/admin/AdminSchedulingBoard'));
+
 // ── Sprint 11B: Customer Service Portal ──────────────────────────────────────
 const CustomerServiceRequests  = lazy(() => import('./pages/customer/CustomerServiceRequests'));
 const CustomerRaiseComplaint   = lazy(() => import('./pages/customer/CustomerRaiseComplaint'));
@@ -733,6 +746,19 @@ export default function App() {
         <Route path="/admin/manufacturing/bom/:id"       element={<AdminRoute><AdminBOMDetail /></AdminRoute>} />
         <Route path="/admin/manufacturing/orders"        element={<AdminRoute><AdminProductionOrders /></AdminRoute>} />
         <Route path="/admin/manufacturing/orders/:id"    element={<AdminRoute><AdminProductionOrderDetail /></AdminRoute>} />
+
+        {/* Sprint 12B: Enterprise Production Planning & Scheduling — Admin */}
+        <Route path="/admin/manufacturing/planning"                    element={<AdminRoute><AdminManufacturingPlanningDashboard /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/plans"              element={<AdminRoute><AdminProductionPlans /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/plans/:id"          element={<AdminRoute><AdminProductionPlanDetail /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/mps"                element={<AdminRoute><AdminMasterSchedule /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/capacity"           element={<AdminRoute><AdminCapacityPlanning /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/machine-cal"        element={<AdminRoute><AdminMachineCalendar /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/prod-cal"           element={<AdminRoute><AdminProductionCalendar /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/scenarios"          element={<AdminRoute><AdminPlanningScenarios /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/reports"            element={<AdminRoute><AdminPlanningReports /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/settings"           element={<AdminRoute><AdminPlanningSettings /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/scheduling"         element={<AdminRoute><AdminSchedulingBoard /></AdminRoute>} />
 
         {/* Sprint 11C: Installation Engineer Portal (isolated auth — type:'engineer' JWT, green) */}
         <Route path="/engineer/login" element={<PageWrapper><EngineerLogin /></PageWrapper>} />

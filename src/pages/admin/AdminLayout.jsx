@@ -11,7 +11,7 @@ import {
   FiZap, FiLayers, FiTarget, FiRadio, FiMessageSquare, FiBriefcase,
   FiBarChart2, FiTrendingUp, FiMap, FiMapPin, FiActivity, FiDownload, FiSliders,
   FiBox, FiDatabase, FiRefreshCw, FiAlertTriangle, FiFileText, FiClipboard,
-  FiCamera, FiCpu, FiThermometer, FiWifi, FiTool, FiClock,
+  FiCamera, FiCpu, FiThermometer, FiWifi, FiTool, FiClock, FiCalendar,
 } from 'react-icons/fi';
 import Logo from '../../components/ui/Logo';
 
@@ -214,6 +214,21 @@ const NAV_GROUPS = [
       { label: 'Shift Planner',     path: '/admin/manufacturing/shifts',          icon: FiClock,     roles: ['admin', 'super_admin'] },
       { label: 'Bill of Materials', path: '/admin/manufacturing/bom',             icon: FiList,      roles: ['admin', 'super_admin'] },
       { label: 'Production Orders', path: '/admin/manufacturing/orders',          icon: FiClipboard, roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
+    label: 'Production Planning',
+    items: [
+      { label: 'Planning Dashboard', path: '/admin/manufacturing/planning',                  icon: FiBarChart2,  roles: ['admin', 'super_admin'] },
+      { label: 'Production Plans',   path: '/admin/manufacturing/planning/plans',            icon: FiCalendar,   roles: ['admin', 'super_admin'] },
+      { label: 'Master Schedule',    path: '/admin/manufacturing/planning/mps',              icon: FiClipboard,  roles: ['admin', 'super_admin'] },
+      { label: 'Capacity Planning',  path: '/admin/manufacturing/planning/capacity',         icon: FiTrendingUp, roles: ['admin', 'super_admin'] },
+      { label: 'Scheduling Board',   path: '/admin/manufacturing/planning/scheduling',       icon: FiActivity,   roles: ['admin', 'super_admin'] },
+      { label: 'Machine Calendar',   path: '/admin/manufacturing/planning/machine-cal',      icon: FiTool,       roles: ['admin', 'super_admin'] },
+      { label: 'Production Calendar',path: '/admin/manufacturing/planning/prod-cal',         icon: FiClock,      roles: ['admin', 'super_admin'] },
+      { label: 'Scenarios',          path: '/admin/manufacturing/planning/scenarios',        icon: FiLayers,     roles: ['admin', 'super_admin'] },
+      { label: 'Planning Reports',   path: '/admin/manufacturing/planning/reports',          icon: FiFileText,   roles: ['admin', 'super_admin'] },
+      { label: 'Planning Settings',  path: '/admin/manufacturing/planning/settings',         icon: FiSliders,    roles: ['admin', 'super_admin'] },
     ],
   },
   {
