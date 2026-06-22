@@ -1424,4 +1424,154 @@ router.get(    '/admin/mrp/safety-stock/:id',  protect, admin, ssCtrl.getRule);
 router.put(    '/admin/mrp/safety-stock/:id',  protect, admin, ssCtrl.updateRule);
 router.delete( '/admin/mrp/safety-stock/:id',  protect, admin, ssCtrl.deleteRule);
 
+// ─── Sprint 12D: Enterprise MES ──────────────────────────────────────────────
+const woCtrl       = require('../controllers/workOrderController');
+const execCtrl     = require('../controllers/executionController');
+const qualCtrl     = require('../controllers/qualityController');
+const oeeCtrl      = require('../controllers/oeeController');
+const dtCtrl       = require('../controllers/downtimeController');
+const toolCtrl     = require('../controllers/toolController');
+const opCtrl       = require('../controllers/operatorController');
+const laborCtrl    = require('../controllers/laborController');
+const mesDashCtrl  = require('../controllers/mesDashboardController');
+
+// MES Dashboard & Reports
+router.get( '/admin/mes/dashboard',                protect, admin, mesDashCtrl.getDashboard);
+router.get( '/admin/mes/reports/production-trend', protect, admin, mesDashCtrl.getProductionTrend);
+router.get( '/admin/mes/reports/oee-trend',        protect, admin, mesDashCtrl.getOEETrend);
+router.get( '/admin/mes/reports/downtime-analysis',protect, admin, mesDashCtrl.getDowntimeAnalysis);
+router.get( '/admin/mes/reports/quality-trend',    protect, admin, mesDashCtrl.getQualityTrend);
+router.get( '/admin/mes/reports/labor',            protect, admin, mesDashCtrl.getLaborReport);
+router.get( '/admin/mes/events',                   protect, admin, mesDashCtrl.getProductionEvents);
+
+// Work Orders
+router.get(    '/admin/mes/work-orders',                       protect, admin, woCtrl.getWorkOrders);
+router.post(   '/admin/mes/work-orders',                       protect, admin, woCtrl.createWorkOrder);
+router.get(    '/admin/mes/work-orders/:id',                   protect, admin, woCtrl.getWorkOrder);
+router.put(    '/admin/mes/work-orders/:id',                   protect, admin, woCtrl.updateWorkOrder);
+router.delete( '/admin/mes/work-orders/:id',                   protect, admin, woCtrl.deleteWorkOrder);
+router.patch(  '/admin/mes/work-orders/:id/release',           protect, admin, woCtrl.releaseWorkOrder);
+router.patch(  '/admin/mes/work-orders/:id/start',             protect, admin, woCtrl.startWorkOrder);
+router.patch(  '/admin/mes/work-orders/:id/pause',             protect, admin, woCtrl.pauseWorkOrder);
+router.patch(  '/admin/mes/work-orders/:id/complete',          protect, admin, woCtrl.completeWorkOrder);
+router.patch(  '/admin/mes/work-orders/:id/cancel',            protect, admin, woCtrl.cancelWorkOrder);
+
+// Work Order Operations
+router.post( '/admin/mes/work-orders/:id/operations',                    protect, admin, woCtrl.createOperation);
+router.put(  '/admin/mes/work-orders/:id/operations/:opId',              protect, admin, woCtrl.updateOperation);
+router.patch('/admin/mes/work-orders/:id/operations/:opId/complete',     protect, admin, woCtrl.completeOperation);
+
+// Production Execution
+router.get(  '/admin/mes/executions',                  protect, admin, execCtrl.getExecutions);
+router.post( '/admin/mes/executions/start',            protect, admin, execCtrl.startExecution);
+router.get(  '/admin/mes/executions/:id',              protect, admin, execCtrl.getExecution);
+router.put(  '/admin/mes/executions/:id',              protect, admin, execCtrl.updateExecution);
+router.patch('/admin/mes/executions/:id/pause',        protect, admin, execCtrl.pauseExecution);
+router.patch('/admin/mes/executions/:id/complete',     protect, admin, execCtrl.completeExecution);
+
+// Operation Executions
+router.get(  '/admin/mes/operation-executions',        protect, admin, execCtrl.getOperationExecutions);
+router.post( '/admin/mes/operation-executions',        protect, admin, execCtrl.recordOperationExecution);
+
+// Quality – Inspections
+router.get(    '/admin/mes/quality/inspections',       protect, admin, qualCtrl.getInspections);
+router.post(   '/admin/mes/quality/inspections',       protect, admin, qualCtrl.createInspection);
+router.get(    '/admin/mes/quality/inspections/:id',   protect, admin, qualCtrl.getInspection);
+router.put(    '/admin/mes/quality/inspections/:id',   protect, admin, qualCtrl.updateInspection);
+router.delete( '/admin/mes/quality/inspections/:id',   protect, admin, qualCtrl.deleteInspection);
+
+// Quality – Checkpoints
+router.get(    '/admin/mes/quality/checkpoints',       protect, admin, qualCtrl.getCheckpoints);
+router.post(   '/admin/mes/quality/checkpoints',       protect, admin, qualCtrl.createCheckpoint);
+router.put(    '/admin/mes/quality/checkpoints/:id',   protect, admin, qualCtrl.updateCheckpoint);
+router.delete( '/admin/mes/quality/checkpoints/:id',   protect, admin, qualCtrl.deleteCheckpoint);
+
+// Quality – Defects
+router.get( '/admin/mes/quality/defects',              protect, admin, qualCtrl.getDefects);
+router.post('/admin/mes/quality/defects',              protect, admin, qualCtrl.createDefect);
+router.get( '/admin/mes/quality/defects/:id',          protect, admin, qualCtrl.getDefect);
+router.put( '/admin/mes/quality/defects/:id',          protect, admin, qualCtrl.updateDefect);
+
+// Quality – Scrap
+router.get( '/admin/mes/quality/scrap',                protect, admin, qualCtrl.getScrap);
+router.post('/admin/mes/quality/scrap',                protect, admin, qualCtrl.createScrap);
+router.put( '/admin/mes/quality/scrap/:id',            protect, admin, qualCtrl.updateScrap);
+
+// Quality – Rework
+router.get( '/admin/mes/quality/rework',               protect, admin, qualCtrl.getRework);
+router.post('/admin/mes/quality/rework',               protect, admin, qualCtrl.createRework);
+router.put( '/admin/mes/quality/rework/:id',           protect, admin, qualCtrl.updateRework);
+
+// OEE
+router.get(  '/admin/mes/oee',                         protect, admin, oeeCtrl.getOEERecords);
+router.post( '/admin/mes/oee',                         protect, admin, oeeCtrl.recordOEE);
+router.get(  '/admin/mes/oee/summary',                 protect, admin, oeeCtrl.getOEESummary);
+router.get(  '/admin/mes/oee/:id',                     protect, admin, oeeCtrl.getOEERecord);
+
+// Machine Runtime
+router.get( '/admin/mes/machine-runtime',              protect, admin, oeeCtrl.getMachineRuntimes);
+router.get( '/admin/mes/machine-runtime/:id',          protect, admin, oeeCtrl.getMachineRuntime);
+router.put( '/admin/mes/machine-runtime/:id',          protect, admin, oeeCtrl.updateMachineRuntime);
+
+// Downtime
+router.get(    '/admin/mes/downtime',                         protect, admin, dtCtrl.getDowntimes);
+router.post(   '/admin/mes/downtime',                         protect, admin, dtCtrl.createDowntime);
+router.get(    '/admin/mes/downtime/:id',                     protect, admin, dtCtrl.getDowntime);
+router.patch(  '/admin/mes/downtime/:id/resolve',             protect, admin, dtCtrl.resolveDowntime);
+router.delete( '/admin/mes/downtime/:id',                     protect, admin, dtCtrl.deleteDowntime);
+
+// Downtime Reasons
+router.get(    '/admin/mes/downtime-reasons',          protect, admin, dtCtrl.getDowntimeReasons);
+router.post(   '/admin/mes/downtime-reasons',          protect, admin, dtCtrl.createDowntimeReason);
+router.put(    '/admin/mes/downtime-reasons/:id',      protect, admin, dtCtrl.updateDowntimeReason);
+router.delete( '/admin/mes/downtime-reasons/:id',      protect, admin, dtCtrl.deleteDowntimeReason);
+
+// Maintenance Triggers
+router.get(    '/admin/mes/maintenance-triggers',      protect, admin, dtCtrl.getMaintenanceTriggers);
+router.post(   '/admin/mes/maintenance-triggers',      protect, admin, dtCtrl.createMaintenanceTrigger);
+router.get(    '/admin/mes/maintenance-triggers/:id',  protect, admin, dtCtrl.getMaintenanceTrigger);
+router.put(    '/admin/mes/maintenance-triggers/:id',  protect, admin, dtCtrl.updateMaintenanceTrigger);
+router.delete( '/admin/mes/maintenance-triggers/:id',  protect, admin, dtCtrl.deleteMaintenanceTrigger);
+
+// Tools
+router.get(    '/admin/mes/tools',                     protect, admin, toolCtrl.getTools);
+router.post(   '/admin/mes/tools',                     protect, admin, toolCtrl.createTool);
+router.get(    '/admin/mes/tools/:id',                 protect, admin, toolCtrl.getTool);
+router.put(    '/admin/mes/tools/:id',                 protect, admin, toolCtrl.updateTool);
+router.delete( '/admin/mes/tools/:id',                 protect, admin, toolCtrl.deleteTool);
+
+// Tool Usage
+router.get(  '/admin/mes/tool-usage',                  protect, admin, toolCtrl.getToolUsages);
+router.post( '/admin/mes/tool-usage/start',            protect, admin, toolCtrl.startToolUsage);
+router.patch('/admin/mes/tool-usage/:id/end',          protect, admin, toolCtrl.endToolUsage);
+
+// Tool Calibration
+router.get( '/admin/mes/tool-calibrations',            protect, admin, toolCtrl.getCalibrations);
+router.post('/admin/mes/tool-calibrations',            protect, admin, toolCtrl.createCalibration);
+
+// Operators – Shifts
+router.get(    '/admin/mes/operator-shifts',           protect, admin, opCtrl.getShiftAssignments);
+router.post(   '/admin/mes/operator-shifts',           protect, admin, opCtrl.assignShift);
+router.put(    '/admin/mes/operator-shifts/:id',       protect, admin, opCtrl.updateShiftAssignment);
+router.delete( '/admin/mes/operator-shifts/:id',       protect, admin, opCtrl.deleteShiftAssignment);
+
+// Operators – Attendance
+router.get(  '/admin/mes/attendance',                  protect, admin, opCtrl.getAttendance);
+router.post( '/admin/mes/attendance',                  protect, admin, opCtrl.recordAttendance);
+router.patch('/admin/mes/attendance/:id/clock-out',    protect, admin, opCtrl.clockOut);
+
+// Operators – Skills
+router.get(    '/admin/mes/operator-skills',           protect, admin, opCtrl.getSkills);
+router.post(   '/admin/mes/operator-skills',           protect, admin, opCtrl.addSkill);
+router.put(    '/admin/mes/operator-skills/:id',       protect, admin, opCtrl.updateSkill);
+router.delete( '/admin/mes/operator-skills/:id',       protect, admin, opCtrl.deleteSkill);
+
+// Labor Tracking
+router.get(    '/admin/mes/labor',                     protect, admin, laborCtrl.getLaborEntries);
+router.post(   '/admin/mes/labor',                     protect, admin, laborCtrl.createLaborEntry);
+router.get(    '/admin/mes/labor/summary',             protect, admin, laborCtrl.getLaborSummary);
+router.get(    '/admin/mes/labor/:id',                 protect, admin, laborCtrl.getLaborEntry);
+router.put(    '/admin/mes/labor/:id',                 protect, admin, laborCtrl.updateLaborEntry);
+router.delete( '/admin/mes/labor/:id',                 protect, admin, laborCtrl.deleteLaborEntry);
+
 module.exports = router;
