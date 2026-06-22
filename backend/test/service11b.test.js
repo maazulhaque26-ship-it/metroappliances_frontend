@@ -1,18 +1,15 @@
 'use strict';
 const mongoose = require('mongoose');
-const { MongoMemoryServer } = require('mongodb-memory-server');
 
-let mongod;
+const MONGO_URI = process.env.MONGO_TEST_URI || 'mongodb://localhost:27017/metro_test_service11b';
 
 beforeAll(async () => {
-  mongod = await MongoMemoryServer.create();
-  await mongoose.connect(mongod.getUri());
+  await mongoose.connect(MONGO_URI);
 });
 
 afterAll(async () => {
   await mongoose.connection.dropDatabase();
-  await mongoose.disconnect();
-  await mongod.stop();
+  await mongoose.connection.close();
 });
 
 afterEach(async () => {
