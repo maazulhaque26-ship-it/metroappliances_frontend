@@ -279,6 +279,25 @@ const AdminProductionSuggestions = lazy(() => import('./pages/admin/AdminProduct
 const AdminSafetyStock           = lazy(() => import('./pages/admin/AdminSafetyStock'));
 const AdminMRPReports            = lazy(() => import('./pages/admin/AdminMRPReports'));
 
+// ── Sprint 12D: Enterprise MES ───────────────────────────────────────────────
+const AdminMESDashboard       = lazy(() => import('./pages/admin/AdminMESDashboard'));
+const AdminWorkOrders         = lazy(() => import('./pages/admin/AdminWorkOrders'));
+const AdminWorkOrderDetail    = lazy(() => import('./pages/admin/AdminWorkOrderDetail'));
+const AdminOperations         = lazy(() => import('./pages/admin/AdminOperations'));
+const AdminProductionExecution= lazy(() => import('./pages/admin/AdminProductionExecution'));
+const AdminQualityInspection  = lazy(() => import('./pages/admin/AdminQualityInspection'));
+const AdminQualityDashboard   = lazy(() => import('./pages/admin/AdminQualityDashboard'));
+const AdminDowntimeDashboard  = lazy(() => import('./pages/admin/AdminDowntimeDashboard'));
+const AdminOEEDashboard       = lazy(() => import('./pages/admin/AdminOEEDashboard'));
+const AdminOperatorManagement = lazy(() => import('./pages/admin/AdminOperatorManagement'));
+const AdminOperatorAttendance = lazy(() => import('./pages/admin/AdminOperatorAttendance'));
+const AdminToolManagement     = lazy(() => import('./pages/admin/AdminToolManagement'));
+const AdminMachineRuntime     = lazy(() => import('./pages/admin/AdminMachineRuntime'));
+const AdminProductionEvents   = lazy(() => import('./pages/admin/AdminProductionEvents'));
+const AdminScrapManagement    = lazy(() => import('./pages/admin/AdminScrapManagement'));
+const AdminReworkManagement   = lazy(() => import('./pages/admin/AdminReworkManagement'));
+const AdminMESReports         = lazy(() => import('./pages/admin/AdminMESReports'));
+
 // ── Sprint 12B: Enterprise Production Planning & Scheduling ─────────────────
 const AdminManufacturingPlanningDashboard = lazy(() => import('./pages/admin/AdminManufacturingPlanningDashboard'));
 const AdminProductionPlans                = lazy(() => import('./pages/admin/AdminProductionPlans'));
@@ -787,6 +806,25 @@ export default function App() {
         <Route path="/admin/mrp/production-suggestions"   element={<AdminRoute><AdminProductionSuggestions /></AdminRoute>} />
         <Route path="/admin/mrp/safety-stock"             element={<AdminRoute><AdminSafetyStock /></AdminRoute>} />
         <Route path="/admin/mrp/reports"                  element={<AdminRoute><AdminMRPReports /></AdminRoute>} />
+
+        {/* Sprint 12D: Enterprise MES */}
+        <Route path="/admin/mes"                          element={<AdminRoute><AdminMESDashboard /></AdminRoute>} />
+        <Route path="/admin/mes/work-orders"              element={<AdminRoute><AdminWorkOrders /></AdminRoute>} />
+        <Route path="/admin/mes/work-orders/:id"          element={<AdminRoute><AdminWorkOrderDetail /></AdminRoute>} />
+        <Route path="/admin/mes/operations"               element={<AdminRoute><AdminOperations /></AdminRoute>} />
+        <Route path="/admin/mes/execution"                element={<AdminRoute><AdminProductionExecution /></AdminRoute>} />
+        <Route path="/admin/mes/quality"                  element={<AdminRoute><AdminQualityInspection /></AdminRoute>} />
+        <Route path="/admin/mes/quality-dashboard"        element={<AdminRoute><AdminQualityDashboard /></AdminRoute>} />
+        <Route path="/admin/mes/downtime"                 element={<AdminRoute><AdminDowntimeDashboard /></AdminRoute>} />
+        <Route path="/admin/mes/oee"                      element={<AdminRoute><AdminOEEDashboard /></AdminRoute>} />
+        <Route path="/admin/mes/operators"                element={<AdminRoute><AdminOperatorManagement /></AdminRoute>} />
+        <Route path="/admin/mes/attendance"               element={<AdminRoute><AdminOperatorAttendance /></AdminRoute>} />
+        <Route path="/admin/mes/tools"                    element={<AdminRoute><AdminToolManagement /></AdminRoute>} />
+        <Route path="/admin/mes/machine-runtime"          element={<AdminRoute><AdminMachineRuntime /></AdminRoute>} />
+        <Route path="/admin/mes/events"                   element={<AdminRoute><AdminProductionEvents /></AdminRoute>} />
+        <Route path="/admin/mes/scrap"                    element={<AdminRoute><AdminScrapManagement /></AdminRoute>} />
+        <Route path="/admin/mes/rework"                   element={<AdminRoute><AdminReworkManagement /></AdminRoute>} />
+        <Route path="/admin/mes/reports"                  element={<AdminRoute><AdminMESReports /></AdminRoute>} />
 
         {/* Sprint 11C: Installation Engineer Portal (isolated auth — type:'engineer' JWT, green) */}
         <Route path="/engineer/login" element={<PageWrapper><EngineerLogin /></PageWrapper>} />

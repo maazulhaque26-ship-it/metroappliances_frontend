@@ -248,6 +248,27 @@ const NAV_GROUPS = [
     ],
   },
   {
+    label: 'MES',
+    items: [
+      { label: 'MES Dashboard',         path: '/admin/mes',                        icon: FiActivity,     roles: ['admin', 'super_admin'] },
+      { label: 'Work Orders',           path: '/admin/mes/work-orders',            icon: FiClipboard,    roles: ['admin', 'super_admin'] },
+      { label: 'Operations',            path: '/admin/mes/operations',             icon: FiLayers,       roles: ['admin', 'super_admin'] },
+      { label: 'Production Execution',  path: '/admin/mes/execution',              icon: FiZap,          roles: ['admin', 'super_admin'] },
+      { label: 'Quality Inspection',    path: '/admin/mes/quality',                icon: FiShield,       roles: ['admin', 'super_admin'] },
+      { label: 'Quality Dashboard',     path: '/admin/mes/quality-dashboard',      icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
+      { label: 'OEE Dashboard',         path: '/admin/mes/oee',                    icon: FiTrendingUp,   roles: ['admin', 'super_admin'] },
+      { label: 'Downtime',              path: '/admin/mes/downtime',               icon: FiAlertTriangle,roles: ['admin', 'super_admin'] },
+      { label: 'Machine Runtime',       path: '/admin/mes/machine-runtime',        icon: FiCpu,          roles: ['admin', 'super_admin'] },
+      { label: 'Tool Management',       path: '/admin/mes/tools',                  icon: FiTool,         roles: ['admin', 'super_admin'] },
+      { label: 'Operator Management',   path: '/admin/mes/operators',              icon: FiUsers,        roles: ['admin', 'super_admin'] },
+      { label: 'Attendance',            path: '/admin/mes/attendance',             icon: FiClock,        roles: ['admin', 'super_admin'] },
+      { label: 'Scrap',                 path: '/admin/mes/scrap',                  icon: FiBox,          roles: ['admin', 'super_admin'] },
+      { label: 'Rework',                path: '/admin/mes/rework',                 icon: FiRefreshCw,    roles: ['admin', 'super_admin'] },
+      { label: 'Production Events',     path: '/admin/mes/events',                 icon: FiRadio,        roles: ['admin', 'super_admin'] },
+      { label: 'MES Reports',           path: '/admin/mes/reports',                icon: FiFileText,     roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
     label: 'Enterprise',
     items: [
       { label: 'Audit Log', path: '/admin/audit-log', icon: FiShield, roles: ['admin', 'super_admin'] },
