@@ -1155,4 +1155,74 @@ router.get( '/service/amc',                              protect, warrantyCtrl.g
 // Technician — photo upload via Cloudinary
 router.post('/technician/jobs/:id/photo-upload',         protectTechnician, serviceUpload.single('file'), srCtrl.uploadTechnicianPhoto);
 
+// ─── Sprint 11C: Product Registration + Installation Management ───────────────
+const { protectEngineer }  = require('../middleware/engineerAuth');
+const engAuthCtrl   = require('../controllers/installationEngineerAuthController');
+const engAdminCtrl  = require('../controllers/installationEngineerController');
+const prodRegCtrl   = require('../controllers/productRegistrationController');
+const installCtrl   = require('../controllers/installationRequestController');
+const installDispatch = require('../controllers/installationDispatchController');
+const installPortal = require('../controllers/installationPortalController');
+
+// Customer — Product Registration
+router.post('/product-registrations',                    protect, prodRegCtrl.registerProduct);
+router.get( '/product-registrations',                    protect, prodRegCtrl.getMyRegistrations);
+router.get( '/product-registrations/:id',                protect, prodRegCtrl.getMyRegistration);
+
+// Customer — Installation Requests
+router.post('/installation/requests',                    protect, installCtrl.bookInstallation);
+router.get( '/installation/requests',                    protect, installCtrl.getMyInstallations);
+router.get( '/installation/requests/:id',                protect, installCtrl.trackInstallation);
+router.post('/installation/requests/:id/feedback',       protect, installCtrl.submitInstallationFeedback);
+router.post('/installation/requests/:id/location-photo', protect, serviceUpload.single('file'), installCtrl.uploadLocationPhoto);
+
+// Engineer Auth (7th JWT stack — type:'engineer')
+router.post('/engineer/auth/login',                      engAuthCtrl.loginEngineer);
+router.get( '/engineer/auth/me',                         protectEngineer, engAuthCtrl.getEngineerProfile);
+router.put( '/engineer/auth/profile',                    protectEngineer, engAuthCtrl.updateEngineerProfile);
+router.put( '/engineer/auth/availability',               protectEngineer, engAuthCtrl.updateAvailability);
+router.put( '/engineer/auth/location',                   protectEngineer, engAuthCtrl.updateLocation);
+
+// Engineer Portal — Jobs
+router.get( '/engineer/jobs',                            protectEngineer, installPortal.getEngineerJobs);
+router.get( '/engineer/dashboard',                       protectEngineer, installPortal.getEngineerDashboard);
+router.get( '/engineer/jobs/:id',                        protectEngineer, installPortal.getEngineerJobDetail);
+router.put( '/engineer/jobs/:id/status',                 protectEngineer, installPortal.updateJobStatus);
+router.put( '/engineer/jobs/:id/checklist',              protectEngineer, installPortal.updateChecklist);
+router.post('/engineer/jobs/:id/photo',                  protectEngineer, serviceUpload.single('file'), installPortal.uploadJobPhoto);
+router.post('/engineer/jobs/:id/signature',              protectEngineer, installPortal.saveSignature);
+router.put( '/engineer/jobs/:id/demo',                   protectEngineer, installPortal.saveDemoNotes);
+
+// Admin — Installation Engineers
+router.post('/admin/installation-engineers',             protect, admin, engAdminCtrl.createEngineer);
+router.get( '/admin/installation-engineers',             protect, admin, engAdminCtrl.getEngineers);
+router.get( '/admin/installation-engineers/stats',       protect, admin, engAdminCtrl.getEngineerStats);
+router.get( '/admin/installation-engineers/:id',         protect, admin, engAdminCtrl.getEngineer);
+router.put( '/admin/installation-engineers/:id',         protect, admin, engAdminCtrl.updateEngineer);
+router.delete('/admin/installation-engineers/:id',       protect, admin, engAdminCtrl.deleteEngineer);
+router.post('/admin/installation-engineers/:id/reset-password', protect, admin, engAdminCtrl.resetEngineerPassword);
+router.post('/admin/installation-engineers/:id/token',   protect, superAdmin, engAdminCtrl.generateEngineerToken);
+router.get( '/admin/installation-engineers/:id/workload', protect, admin, engAdminCtrl.getEngineerWorkload);
+
+// Admin — Installation Requests
+router.get( '/admin/installation/dashboard',             protect, admin, installCtrl.getInstallationDashboard);
+router.get( '/admin/installation/requests',              protect, admin, installCtrl.getAdminInstallations);
+router.get( '/admin/installation/requests/:id',          protect, admin, installCtrl.getAdminInstallation);
+router.put( '/admin/installation/requests/:id/status',   protect, admin, installCtrl.updateInstallationStatus);
+router.put( '/admin/installation/requests/:id/assign',   protect, admin, installCtrl.assignEngineer);
+router.get( '/admin/installation/reports',               protect, admin, installCtrl.getInstallationReports);
+
+// Admin — Installation Dispatch
+router.get( '/admin/installation/dispatch/:requestId/recommendations', protect, admin, installDispatch.getDispatchRecommendations);
+router.post('/admin/installation/dispatch/:requestId/auto-assign',     protect, admin, installDispatch.autoAssign);
+
+// Admin — Product Registrations
+router.get( '/admin/product-registrations',              protect, admin, prodRegCtrl.getAllRegistrations);
+router.get( '/admin/product-registrations/stats',        protect, admin, prodRegCtrl.getRegistrationStats);
+router.get( '/admin/product-registrations/:id',          protect, admin, prodRegCtrl.getRegistration);
+router.put( '/admin/product-registrations/:id/verify',   protect, admin, prodRegCtrl.verifyRegistration);
+router.put( '/admin/product-registrations/:id/invalidate', protect, admin, prodRegCtrl.invalidateRegistration);
+router.put( '/admin/product-registrations/:id/activate-warranty', protect, admin, prodRegCtrl.activateWarrantyForRegistration);
+router.put( '/admin/product-registrations/:id/transfer', protect, admin, prodRegCtrl.transferOwnership);
+
 module.exports = router;

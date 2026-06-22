@@ -11,6 +11,7 @@ import {
   FiZap, FiLayers, FiTarget, FiRadio, FiMessageSquare, FiBriefcase,
   FiBarChart2, FiTrendingUp, FiMap, FiMapPin, FiActivity, FiDownload, FiSliders,
   FiBox, FiDatabase, FiRefreshCw, FiAlertTriangle, FiFileText, FiClipboard,
+  FiCamera, FiCpu, FiThermometer, FiWifi, FiTool,
 } from 'react-icons/fi';
 import Logo from '../../components/ui/Logo';
 
@@ -131,6 +132,76 @@ const NAV_GROUPS = [
       { label: 'Batches',        path: '/admin/inventory/batches',          icon: FiClipboard,     roles: ['admin', 'super_admin'] },
       { label: 'Serials',        path: '/admin/inventory/serials',          icon: FiHash,          roles: ['admin', 'super_admin'] },
       { label: 'Reservations',   path: '/admin/inventory/reservations',     icon: FiAlertTriangle, roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
+    label: 'Procurement',
+    items: [
+      { label: 'Proc Dashboard',    path: '/admin/procurement',                    icon: FiBarChart2,   roles: ['admin', 'super_admin'] },
+      { label: 'Vendors',           path: '/admin/procurement/vendors',             icon: FiBriefcase,   roles: ['admin', 'super_admin'] },
+      { label: 'Vendor Performance',path: '/admin/procurement/vendor-performance',  icon: FiActivity,    roles: ['admin', 'super_admin'] },
+      { label: 'Requisitions',      path: '/admin/procurement/requisitions',        icon: FiClipboard,   roles: ['admin', 'super_admin'] },
+      { label: 'RFQs',              path: '/admin/procurement/rfq',                 icon: FiFileText,    roles: ['admin', 'super_admin'] },
+      { label: 'Purchase Orders',   path: '/admin/procurement/orders',              icon: FiShoppingBag, roles: ['admin', 'super_admin'] },
+      { label: 'Approval Queue',    path: '/admin/procurement/approvals',           icon: FiShield,      roles: ['admin', 'super_admin'] },
+      { label: 'Supplier Users',    path: '/admin/supplier-users',                  icon: FiUsers,       roles: ['admin', 'super_admin'] },
+      { label: 'Proc Reports',      path: '/admin/procurement/reports',             icon: FiDownload,    roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
+    label: 'Logistics',
+    items: [
+      { label: 'Logistics Dash',  path: '/admin/logistics',             icon: FiTrendingUp, roles: ['admin', 'super_admin'] },
+      { label: 'Dispatch Queue',  path: '/admin/logistics/dispatches',  icon: FiBox,        roles: ['admin', 'super_admin'] },
+      { label: 'Shipments',       path: '/admin/logistics/shipments',   icon: FiPackage,    roles: ['admin', 'super_admin'] },
+      { label: 'Couriers',        path: '/admin/logistics/couriers',    icon: FiZap,        roles: ['admin', 'super_admin'] },
+      { label: 'Stock Transfers', path: '/admin/logistics/transfers',   icon: FiRefreshCw,  roles: ['admin', 'super_admin'] },
+      { label: 'Del. Challans',   path: '/admin/logistics/challans',    icon: FiFileText,   roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
+    label: 'Barcode & Scanning',
+    items: [
+      { label: 'Barcode Dashboard',  path: '/admin/barcodes',          icon: FiCamera,      roles: ['admin', 'super_admin'] },
+      { label: 'Generator',          path: '/admin/barcodes/generate',  icon: FiHash,        roles: ['admin', 'super_admin'] },
+      { label: 'Label Center',       path: '/admin/barcodes/labels',    icon: FiFileText,    roles: ['admin', 'super_admin'] },
+      { label: 'Warehouse Map',      path: '/admin/warehouse-map',      icon: FiMapPin,      roles: ['admin', 'super_admin'] },
+      { label: 'Bin Management',     path: '/admin/bin-management',     icon: FiBox,         roles: ['admin', 'super_admin'] },
+      { label: 'Scanner Activity',   path: '/admin/scanner-activity',   icon: FiActivity,    roles: ['admin', 'super_admin'] },
+      { label: 'Automation',         path: '/admin/automation',         icon: FiZap,         roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
+    label: 'IoT & Industry 4.0',
+    items: [
+      { label: 'IoT Dashboard',      path: '/admin/iot',                icon: FiWifi,           roles: ['admin', 'super_admin'] },
+      { label: 'RFID Management',    path: '/admin/iot/rfid',           icon: FiRadio,          roles: ['admin', 'super_admin'] },
+      { label: 'Devices',            path: '/admin/iot/devices',        icon: FiCpu,            roles: ['admin', 'super_admin'] },
+      { label: 'Sensors',            path: '/admin/iot/sensors',        icon: FiThermometer,    roles: ['admin', 'super_admin'] },
+      { label: 'Alert Center',       path: '/admin/iot/alerts',         icon: FiAlertTriangle,  roles: ['admin', 'super_admin'] },
+      { label: 'Automation Rules',   path: '/admin/iot/automation',     icon: FiZap,            roles: ['admin', 'super_admin'] },
+      { label: 'Replenishment',      path: '/admin/iot/replenishment',  icon: FiPackage,        roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
+    label: 'After Sales Service',
+    items: [
+      { label: 'Service Dashboard', path: '/admin/service',               icon: FiTool,        roles: ['admin', 'super_admin'] },
+      { label: 'Service Requests',  path: '/admin/service/requests',      icon: FiClipboard,   roles: ['admin', 'super_admin'] },
+      { label: 'Technicians',       path: '/admin/service/technicians',   icon: FiUsers,       roles: ['admin', 'super_admin'] },
+      { label: 'Warranty & AMC',    path: '/admin/service/warranty',      icon: FiShield,      roles: ['admin', 'super_admin'] },
+      { label: 'Spare Parts',       path: '/admin/service/spare-parts',   icon: FiPackage,     roles: ['admin', 'super_admin'] },
+      { label: 'Service Reports',   path: '/admin/service/reports',       icon: FiBarChart2,   roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
+    label: 'Installation',
+    items: [
+      { label: 'Installation Dashboard', path: '/admin/installation',                icon: FiZap,       roles: ['admin', 'super_admin'] },
+      { label: 'Install Requests',       path: '/admin/installation/requests',       icon: FiClipboard, roles: ['admin', 'super_admin'] },
+      { label: 'Engineers',              path: '/admin/installation-engineers',       icon: FiUsers,     roles: ['admin', 'super_admin'] },
+      { label: 'Product Registrations',  path: '/admin/product-registrations',        icon: FiPackage,   roles: ['admin', 'super_admin'] },
+      { label: 'Install Reports',        path: '/admin/installation/reports',         icon: FiBarChart2, roles: ['admin', 'super_admin'] },
     ],
   },
   {

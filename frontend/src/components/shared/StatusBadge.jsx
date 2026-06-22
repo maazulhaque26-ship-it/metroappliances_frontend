@@ -63,6 +63,83 @@ const PRESETS = {
   // Inventory — Batch statuses
   depleted:      { bg: '#F3F4F6', color: '#6B7280' },
   quarantine:    { bg: '#FEF3C7', color: '#92400E' },
+  // Procurement — Vendor statuses
+  pending_approval:   { bg: '#FEF3C7', color: '#92400E' },
+  blacklisted:        { bg: '#FEE2E2', color: '#991B1B' },
+  // Procurement — PO supplier response statuses
+  supplier_accepted:  { bg: '#D1FAE5', color: '#065F46' },
+  supplier_rejected:  { bg: '#FEE2E2', color: '#991B1B' },
+  partially_delivered:{ bg: '#DBEAFE', color: '#1E40AF' },
+  // Procurement — RFQ/PO workflow statuses
+  awarded:            { bg: '#D1FAE5', color: '#065F46' },
+  sent:               { bg: '#DBEAFE', color: '#1E40AF' },
+  acknowledged:       { bg: '#EDE9FE', color: '#5B21B6' },
+  published:          { bg: '#DBEAFE', color: '#1E40AF' },
+  // Procurement — Approval chain
+  pending_approval_step: { bg: '#FEF3C7', color: '#92400E' },
+  // Procurement — PR statuses
+  submitted:          { bg: '#DBEAFE', color: '#1E40AF' },
+  manager_review:     { bg: '#EDE9FE', color: '#5B21B6' },
+  finance_review:     { bg: '#FEF3C7', color: '#92400E' },
+  converted:          { bg: '#D1FAE5', color: '#065F46' },
+  // Procurement — Vendor/Quotation sub-statuses
+  invited:            { bg: '#F3F4F6', color: '#6B7280' },
+  viewed:             { bg: '#DBEAFE', color: '#1E40AF' },
+  responded:          { bg: '#EDE9FE', color: '#5B21B6' },
+  declined:           { bg: '#FEE2E2', color: '#991B1B' },
+  selected:           { bg: '#D1FAE5', color: '#065F46' },
+  // Sprint 10D — Dispatch/Picking statuses
+  picking:            { bg: '#FEF3C7', color: '#92400E' },
+  picked:             { bg: '#D1FAE5', color: '#065F46' },
+  packing:            { bg: '#DBEAFE', color: '#1E40AF' },
+  packed:             { bg: '#EDE9FE', color: '#5B21B6' },
+  ready:              { bg: '#D1FAE5', color: '#065F46' },
+  assigned:           { bg: '#DBEAFE', color: '#1E40AF' },
+  dispatched:         { bg: '#CFFAFE', color: '#0E7490' },
+  in_transit:         { bg: '#DBEAFE', color: '#1E40AF' },
+  out_for_delivery:   { bg: '#FEF3C7', color: '#92400E' },
+  failed:             { bg: '#FEE2E2', color: '#991B1B' },
+  // Shipment additional
+  in_progress:        { bg: '#DBEAFE', color: '#1E40AF' },
+  // Challan
+  generated:          { bg: '#DBEAFE', color: '#1E40AF' },
+  // Transfer
+  received:           { bg: '#EDE9FE', color: '#5B21B6' },
+  // Sprint 11A — Service Request statuses
+  open:               { bg: '#DBEAFE', color: '#1E40AF' },
+  verified:           { bg: '#EDE9FE', color: '#5B21B6' },
+  warranty_check:     { bg: '#FEF3C7', color: '#92400E' },
+  accepted:           { bg: '#CFFAFE', color: '#0E7490' },
+  travelling:         { bg: '#DBEAFE', color: '#1E40AF' },
+  reached:            { bg: '#EDE9FE', color: '#5B21B6' },
+  diagnosis:          { bg: '#FEF3C7', color: '#92400E' },
+  repair:             { bg: '#FFF7ED', color: '#9A3412' },
+  testing:            { bg: '#DBEAFE', color: '#1E40AF' },
+  awaiting_confirmation: { bg: '#FEF3C7', color: '#92400E' },
+  closed:             { bg: '#D1FAE5', color: '#065F46' },
+  escalated:          { bg: '#FEE2E2', color: '#991B1B' },
+  reopened:           { bg: '#FEF3C7', color: '#92400E' },
+  // Warranty/AMC statuses
+  amc_active:         { bg: '#D1FAE5', color: '#065F46' },
+  pending_activation: { bg: '#FEF3C7', color: '#92400E' },
+  transferred:        { bg: '#EDE9FE', color: '#5B21B6' },
+  void:               { bg: '#F3F4F6', color: '#6B7280' },
+  renewal_due:        { bg: '#FEF3C7', color: '#92400E' },
+  on_leave:           { bg: '#DBEAFE', color: '#1E40AF' },
+  // Sprint 11C — Installation Request statuses
+  confirmed:          { bg: '#D1FAE5', color: '#065F46' },
+  arrived:            { bg: '#EDE9FE', color: '#5B21B6' },
+  demo_in_progress:   { bg: '#FEF3C7', color: '#92400E' },
+  rescheduled:        { bg: '#DBEAFE', color: '#1E40AF' },
+  // Sprint 11C — Product Registration statuses
+  warranty_activated: { bg: '#D1FAE5', color: '#065F46' },
+  invalid:            { bg: '#FEE2E2', color: '#991B1B' },
+  // Sprint 11C — Priority
+  normal:             { bg: '#F3F4F6', color: '#6B7280' },
+  vip:                { bg: '#FEF3C7', color: '#92400E' },
+  // Sprint 11C — Engineer availability
+  engineer_active:    { bg: '#D1FAE5', color: '#065F46' },
+  engineer_inactive:  { bg: '#F3F4F6', color: '#6B7280' },
 };
 
 export default function StatusBadge({ status, label, size = 'sm' }) {

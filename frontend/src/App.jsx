@@ -230,6 +230,30 @@ const WarehouseMobilePutaway   = lazy(() => import('./pages/warehouse/WarehouseM
 const WarehouseMobileBinLookup = lazy(() => import('./pages/warehouse/WarehouseMobileBinLookup'));
 const WarehouseMobileReturns   = lazy(() => import('./pages/warehouse/WarehouseMobileReturns'));
 
+// ── Sprint 11C: Product Registration + Installation Management ───────────────
+const CustomerProductRegistration = lazy(() => import('./pages/customer/CustomerProductRegistration'));
+const CustomerRegistrationHistory = lazy(() => import('./pages/customer/CustomerRegistrationHistory'));
+const CustomerProductRegistrationDetail = lazy(() => import('./pages/customer/CustomerProductRegistrationDetail'));
+const CustomerBookInstallation    = lazy(() => import('./pages/customer/CustomerBookInstallation'));
+const CustomerInstallations       = lazy(() => import('./pages/customer/CustomerInstallations'));
+const CustomerInstallationStatus  = lazy(() => import('./pages/customer/CustomerInstallationStatus'));
+const CustomerInstallationFeedback= lazy(() => import('./pages/customer/CustomerInstallationFeedback'));
+
+const EngineerLogin              = lazy(() => import('./pages/engineer/EngineerLogin'));
+const EngineerLayout             = lazy(() => import('./pages/engineer/EngineerLayout'));
+const EngineerDashboard          = lazy(() => import('./pages/engineer/EngineerDashboard'));
+const EngineerInstallations      = lazy(() => import('./pages/engineer/EngineerInstallations'));
+const EngineerInstallationDetail = lazy(() => import('./pages/engineer/EngineerInstallationDetail'));
+const EngineerRoutePlaceholder   = lazy(() => import('./pages/engineer/EngineerRoutePlaceholder'));
+const EngineerProfile            = lazy(() => import('./pages/engineer/EngineerProfile'));
+
+const AdminInstallationDashboard      = lazy(() => import('./pages/admin/AdminInstallationDashboard'));
+const AdminInstallationRequests       = lazy(() => import('./pages/admin/AdminInstallationRequests'));
+const AdminInstallationRequestDetail  = lazy(() => import('./pages/admin/AdminInstallationRequestDetail'));
+const AdminInstallationEngineers      = lazy(() => import('./pages/admin/AdminInstallationEngineers'));
+const AdminProductRegistrations       = lazy(() => import('./pages/admin/AdminProductRegistrations'));
+const AdminInstallationReports        = lazy(() => import('./pages/admin/AdminInstallationReports'));
+
 // ── Sprint 11B: Customer Service Portal ──────────────────────────────────────
 const CustomerServiceRequests  = lazy(() => import('./pages/customer/CustomerServiceRequests'));
 const CustomerRaiseComplaint   = lazy(() => import('./pages/customer/CustomerRaiseComplaint'));
@@ -305,6 +329,14 @@ function TechnicianRoute({ children }) {
   const { token, technician } = useSelector(s => s.technicianAuth);
   if (!token) return <Navigate to="/technician/login" replace />;
   if (technician?.status !== 'active') return <Navigate to="/technician/login" replace />;
+  return children;
+}
+
+// Engineer route guard — reads engineerAuth slice (type:'engineer' JWT, green portal)
+function EngineerRoute({ children }) {
+  const { token, engineer } = useSelector(s => s.engineerAuth);
+  if (!token) return <Navigate to="/engineer/login" replace />;
+  if (engineer?.status !== 'active') return <Navigate to="/engineer/login" replace />;
   return children;
 }
 
@@ -435,6 +467,17 @@ export default function App() {
           <Route path="/my-service/history"               element={<PrivateRoute><CustomerServiceHistory /></PrivateRoute>} />
           <Route path="/my-service/feedback/:id"          element={<PrivateRoute><CustomerFeedback /></PrivateRoute>} />
           <Route path="/my-service/documents"             element={<PrivateRoute><CustomerServiceDocuments /></PrivateRoute>} />
+
+          {/* Sprint 11C: Product Registration */}
+          <Route path="/my-products/register"             element={<PrivateRoute><CustomerProductRegistration /></PrivateRoute>} />
+          <Route path="/my-products"                      element={<PrivateRoute><CustomerRegistrationHistory /></PrivateRoute>} />
+          <Route path="/my-products/:id"                   element={<PrivateRoute><CustomerProductRegistrationDetail /></PrivateRoute>} />
+
+          {/* Sprint 11C: Installation Requests */}
+          <Route path="/my-installations/book"            element={<PrivateRoute><CustomerBookInstallation /></PrivateRoute>} />
+          <Route path="/my-installations"                 element={<PrivateRoute><CustomerInstallations /></PrivateRoute>} />
+          <Route path="/my-installations/:id"             element={<PrivateRoute><CustomerInstallationStatus /></PrivateRoute>} />
+          <Route path="/my-installations/:id/feedback"    element={<PrivateRoute><CustomerInstallationFeedback /></PrivateRoute>} />
 
           <Route path="*" element={<NotFound />} />
         </Route>
@@ -659,6 +702,24 @@ export default function App() {
           <Route path="jobs"      element={<TechnicianJobs />} />
           <Route path="jobs/:id"  element={<TechnicianJobDetail />} />
           <Route path="profile"   element={<TechnicianProfile />} />
+        </Route>
+
+        {/* Sprint 11C: Installation Management — Admin */}
+        <Route path="/admin/installation"              element={<AdminRoute><AdminInstallationDashboard /></AdminRoute>} />
+        <Route path="/admin/installation/requests"     element={<AdminRoute><AdminInstallationRequests /></AdminRoute>} />
+        <Route path="/admin/installation/requests/:id" element={<AdminRoute><AdminInstallationRequestDetail /></AdminRoute>} />
+        <Route path="/admin/installation-engineers"    element={<AdminRoute><AdminInstallationEngineers /></AdminRoute>} />
+        <Route path="/admin/product-registrations"     element={<AdminRoute><AdminProductRegistrations /></AdminRoute>} />
+        <Route path="/admin/installation/reports"      element={<AdminRoute><AdminInstallationReports /></AdminRoute>} />
+
+        {/* Sprint 11C: Installation Engineer Portal (isolated auth — type:'engineer' JWT, green) */}
+        <Route path="/engineer/login" element={<PageWrapper><EngineerLogin /></PageWrapper>} />
+        <Route path="/engineer" element={<EngineerRoute><EngineerLayout /></EngineerRoute>}>
+          <Route path="dashboard" element={<EngineerDashboard />} />
+          <Route path="jobs"      element={<EngineerInstallations />} />
+          <Route path="jobs/:id"  element={<EngineerInstallationDetail />} />
+          <Route path="route"     element={<EngineerRoutePlaceholder />} />
+          <Route path="profile"   element={<EngineerProfile />} />
         </Route>
 
       </Routes>
