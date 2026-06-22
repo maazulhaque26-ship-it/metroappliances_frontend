@@ -126,6 +126,20 @@ const PRESETS = {
   void:               { bg: '#F3F4F6', color: '#6B7280' },
   renewal_due:        { bg: '#FEF3C7', color: '#92400E' },
   on_leave:           { bg: '#DBEAFE', color: '#1E40AF' },
+  // Sprint 11C — Installation Request statuses
+  confirmed:          { bg: '#D1FAE5', color: '#065F46' },
+  arrived:            { bg: '#EDE9FE', color: '#5B21B6' },
+  demo_in_progress:   { bg: '#FEF3C7', color: '#92400E' },
+  rescheduled:        { bg: '#DBEAFE', color: '#1E40AF' },
+  // Sprint 11C — Product Registration statuses
+  warranty_activated: { bg: '#D1FAE5', color: '#065F46' },
+  invalid:            { bg: '#FEE2E2', color: '#991B1B' },
+  // Sprint 11C — Priority
+  normal:             { bg: '#F3F4F6', color: '#6B7280' },
+  vip:                { bg: '#FEF3C7', color: '#92400E' },
+  // Sprint 11C — Engineer availability
+  engineer_active:    { bg: '#D1FAE5', color: '#065F46' },
+  engineer_inactive:  { bg: '#F3F4F6', color: '#6B7280' },
 };
 
 export default function StatusBadge({ status, label, size = 'sm' }) {

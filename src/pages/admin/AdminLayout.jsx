@@ -195,6 +195,16 @@ const NAV_GROUPS = [
     ],
   },
   {
+    label: 'Installation',
+    items: [
+      { label: 'Installation Dashboard', path: '/admin/installation',                icon: FiZap,       roles: ['admin', 'super_admin'] },
+      { label: 'Install Requests',       path: '/admin/installation/requests',       icon: FiClipboard, roles: ['admin', 'super_admin'] },
+      { label: 'Engineers',              path: '/admin/installation-engineers',       icon: FiUsers,     roles: ['admin', 'super_admin'] },
+      { label: 'Product Registrations',  path: '/admin/product-registrations',        icon: FiPackage,   roles: ['admin', 'super_admin'] },
+      { label: 'Install Reports',        path: '/admin/installation/reports',         icon: FiBarChart2, roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
     label: 'Enterprise',
     items: [
       { label: 'Audit Log', path: '/admin/audit-log', icon: FiShield, roles: ['admin', 'super_admin'] },
