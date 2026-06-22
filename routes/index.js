@@ -1293,4 +1293,65 @@ router.patch(  '/admin/production-orders/:id/cancel',            protect, admin,
 router.post(   '/admin/production-orders/:id/batches',           protect, admin, prodCtrl.createBatch);
 router.put(    '/admin/production-orders/:id/batches/:batchId',  protect, admin, prodCtrl.updateBatch);
 
+// ─── Sprint 12B: Enterprise Production Planning & Scheduling ─────────────────
+const planCtrl      = require('../controllers/productionPlanController');
+const capPlanCtrl   = require('../controllers/capacityPlanController');
+const calCtrl       = require('../controllers/calendarController');
+const planDashCtrl  = require('../controllers/planningDashboardController');
+
+// Planning Dashboard & Forecasts
+router.get( '/admin/planning/dashboard',            protect, admin, planDashCtrl.getDashboard);
+router.get( '/admin/planning/schedule-adherence',   protect, admin, planDashCtrl.getScheduleAdherence);
+router.get( '/admin/planning/capacity-forecast',    protect, admin, planDashCtrl.getCapacityForecast);
+router.get( '/admin/planning/resource-utilization', protect, admin, planDashCtrl.getResourceUtilization);
+
+// Production Plans
+router.post(   '/admin/production-plans',              protect, admin, planCtrl.createPlan);
+router.get(    '/admin/production-plans',              protect, admin, planCtrl.getPlans);
+router.get(    '/admin/production-plans/:id',          protect, admin, planCtrl.getPlan);
+router.put(    '/admin/production-plans/:id',          protect, admin, planCtrl.updatePlan);
+router.delete( '/admin/production-plans/:id',          protect, admin, planCtrl.deletePlan);
+router.patch(  '/admin/production-plans/:id/submit',   protect, admin, planCtrl.submitPlan);
+router.patch(  '/admin/production-plans/:id/review',   protect, admin, planCtrl.reviewPlan);
+router.patch(  '/admin/production-plans/:id/approve',  protect, admin, planCtrl.approvePlan);
+router.patch(  '/admin/production-plans/:id/release',  protect, admin, planCtrl.releasePlan);
+router.patch(  '/admin/production-plans/:id/cancel',   protect, admin, planCtrl.cancelPlan);
+router.post(   '/admin/production-plans/:id/clone',    protect, admin, planCtrl.clonePlan);
+
+// Capacity Planning
+router.get(  '/admin/capacity-planning/analysis',         protect, admin, capPlanCtrl.getCapacityAnalysis);
+router.get(  '/admin/capacity-planning/factory/:factoryId', protect, admin, capPlanCtrl.getFactoryCapacity);
+router.get(  '/admin/capacity-planning/bottlenecks',      protect, admin, capPlanCtrl.getBottlenecks);
+router.get(  '/admin/capacity-planning',                  protect, admin, capPlanCtrl.getCapacityPlans);
+router.post( '/admin/capacity-planning',                  protect, admin, capPlanCtrl.createCapacityPlan);
+router.put(  '/admin/capacity-planning/:id',              protect, admin, capPlanCtrl.updateCapacityPlan);
+
+// Machine Calendar
+router.get(  '/admin/machine-calendar',       protect, admin, calCtrl.getMachineCalendar);
+router.get(  '/admin/machine-calendar/bulk',  protect, admin, calCtrl.getMachineCalendarBulk);
+router.post( '/admin/machine-calendar',       protect, admin, calCtrl.setMachineAvailability);
+
+// Production Calendar
+router.get(  '/admin/production-calendar',           protect, admin, calCtrl.getProductionCalendar);
+router.post( '/admin/production-calendar',           protect, admin, calCtrl.setProductionDay);
+router.post( '/admin/production-calendar/generate',  protect, admin, calCtrl.generateCalendar);
+
+// Holiday Calendar
+router.get(    '/admin/holidays',      protect, admin, calCtrl.getHolidays);
+router.post(   '/admin/holidays',      protect, admin, calCtrl.createHoliday);
+router.put(    '/admin/holidays/:id',  protect, admin, calCtrl.updateHoliday);
+router.delete( '/admin/holidays/:id',  protect, admin, calCtrl.deleteHoliday);
+
+// Planning Constraints
+router.get(    '/admin/planning-constraints',      protect, admin, calCtrl.getConstraints);
+router.post(   '/admin/planning-constraints',      protect, admin, calCtrl.createConstraint);
+router.put(    '/admin/planning-constraints/:id',  protect, admin, calCtrl.updateConstraint);
+router.delete( '/admin/planning-constraints/:id',  protect, admin, calCtrl.deleteConstraint);
+
+// Planning Scenarios
+router.get(    '/admin/planning-scenarios',      protect, admin, planDashCtrl.getScenarios);
+router.post(   '/admin/planning-scenarios',      protect, admin, planDashCtrl.createScenario);
+router.put(    '/admin/planning-scenarios/:id',  protect, admin, planDashCtrl.updateScenario);
+router.delete( '/admin/planning-scenarios/:id',  protect, admin, planDashCtrl.deleteScenario);
+
 module.exports = router;
