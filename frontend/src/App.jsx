@@ -254,6 +254,184 @@ const AdminInstallationEngineers      = lazy(() => import('./pages/admin/AdminIn
 const AdminProductRegistrations       = lazy(() => import('./pages/admin/AdminProductRegistrations'));
 const AdminInstallationReports        = lazy(() => import('./pages/admin/AdminInstallationReports'));
 
+// ── Sprint 12A: Manufacturing ERP Foundation — Admin pages ───────────────────
+const AdminManufacturingDashboard = lazy(() => import('./pages/admin/AdminManufacturingDashboard'));
+const AdminFactories              = lazy(() => import('./pages/admin/AdminFactories'));
+const AdminWorkCenters            = lazy(() => import('./pages/admin/AdminWorkCenters'));
+const AdminMachines               = lazy(() => import('./pages/admin/AdminMachines'));
+const AdminShiftPlanner           = lazy(() => import('./pages/admin/AdminShiftPlanner'));
+const AdminBOMList                = lazy(() => import('./pages/admin/AdminBOMList'));
+const AdminBOMDetail              = lazy(() => import('./pages/admin/AdminBOMDetail'));
+const AdminProductionOrders       = lazy(() => import('./pages/admin/AdminProductionOrders'));
+const AdminProductionOrderDetail  = lazy(() => import('./pages/admin/AdminProductionOrderDetail'));
+
+// ── Sprint 12C: Enterprise MRP ───────────────────────────────────────────────
+const AdminMRPDashboard          = lazy(() => import('./pages/admin/AdminMRPDashboard'));
+const AdminMRPRuns               = lazy(() => import('./pages/admin/AdminMRPRuns'));
+const AdminMRPRunDetail          = lazy(() => import('./pages/admin/AdminMRPRunDetail'));
+const AdminMaterialRequirements  = lazy(() => import('./pages/admin/AdminMaterialRequirements'));
+const AdminMRPReservations       = lazy(() => import('./pages/admin/AdminMRPReservations'));
+const AdminMRPShortages          = lazy(() => import('./pages/admin/AdminMRPShortages'));
+const AdminInventoryProjection   = lazy(() => import('./pages/admin/AdminInventoryProjection'));
+const AdminDemandForecast        = lazy(() => import('./pages/admin/AdminDemandForecast'));
+const AdminPurchaseSuggestions   = lazy(() => import('./pages/admin/AdminPurchaseSuggestions'));
+const AdminProductionSuggestions = lazy(() => import('./pages/admin/AdminProductionSuggestions'));
+const AdminSafetyStock           = lazy(() => import('./pages/admin/AdminSafetyStock'));
+const AdminMRPReports            = lazy(() => import('./pages/admin/AdminMRPReports'));
+
+// ── Sprint 12D: Enterprise MES ───────────────────────────────────────────────
+const AdminMESDashboard       = lazy(() => import('./pages/admin/AdminMESDashboard'));
+const AdminWorkOrders         = lazy(() => import('./pages/admin/AdminWorkOrders'));
+const AdminWorkOrderDetail    = lazy(() => import('./pages/admin/AdminWorkOrderDetail'));
+const AdminOperations         = lazy(() => import('./pages/admin/AdminOperations'));
+const AdminProductionExecution= lazy(() => import('./pages/admin/AdminProductionExecution'));
+const AdminQualityInspection  = lazy(() => import('./pages/admin/AdminQualityInspection'));
+const AdminQualityDashboard   = lazy(() => import('./pages/admin/AdminQualityDashboard'));
+const AdminDowntimeDashboard  = lazy(() => import('./pages/admin/AdminDowntimeDashboard'));
+const AdminOEEDashboard       = lazy(() => import('./pages/admin/AdminOEEDashboard'));
+const AdminOperatorManagement = lazy(() => import('./pages/admin/AdminOperatorManagement'));
+const AdminOperatorAttendance = lazy(() => import('./pages/admin/AdminOperatorAttendance'));
+const AdminToolManagement     = lazy(() => import('./pages/admin/AdminToolManagement'));
+const AdminMachineRuntime     = lazy(() => import('./pages/admin/AdminMachineRuntime'));
+const AdminProductionEvents   = lazy(() => import('./pages/admin/AdminProductionEvents'));
+const AdminScrapManagement    = lazy(() => import('./pages/admin/AdminScrapManagement'));
+const AdminReworkManagement   = lazy(() => import('./pages/admin/AdminReworkManagement'));
+const AdminMESReports         = lazy(() => import('./pages/admin/AdminMESReports'));
+
+// ── Sprint 12E: Enterprise QMS ───────────────────────────────────────────────
+const AdminQMSDashboard        = lazy(() => import('./pages/admin/AdminQMSDashboard'));
+const AdminInspectionPlans     = lazy(() => import('./pages/admin/AdminInspectionPlans'));
+const AdminInspectionLots      = lazy(() => import('./pages/admin/AdminInspectionLots'));
+const AdminInspectionDetail    = lazy(() => import('./pages/admin/AdminInspectionDetail'));
+const AdminCertificates        = lazy(() => import('./pages/admin/AdminCertificates'));
+const AdminCAPA                = lazy(() => import('./pages/admin/AdminCAPA'));
+const AdminCAPADetail          = lazy(() => import('./pages/admin/AdminCAPADetail'));
+const AdminNonConformance      = lazy(() => import('./pages/admin/AdminNonConformance'));
+const AdminAuditPrograms       = lazy(() => import('./pages/admin/AdminAuditPrograms'));
+const AdminAudits              = lazy(() => import('./pages/admin/AdminAudits'));
+const AdminCalibrationDashboard = lazy(() => import('./pages/admin/AdminCalibrationDashboard'));
+const AdminGaugeManagement     = lazy(() => import('./pages/admin/AdminGaugeManagement'));
+const AdminSupplierQuality     = lazy(() => import('./pages/admin/AdminSupplierQuality'));
+const AdminQualityReports      = lazy(() => import('./pages/admin/AdminQualityReports'));
+const AdminDocumentControl     = lazy(() => import('./pages/admin/AdminDocumentControl'));
+
+// ── Sprint 12F: Enterprise Asset Management (EAM / CMMS) ────────────────────
+const AdminEAMDashboard         = lazy(() => import('./pages/admin/AdminEAMDashboard'));
+const AdminAssets               = lazy(() => import('./pages/admin/AdminAssets'));
+const AdminAssetDetail          = lazy(() => import('./pages/admin/AdminAssetDetail'));
+const AdminAssetHierarchy       = lazy(() => import('./pages/admin/AdminAssetHierarchy'));
+const AdminMaintenancePlans     = lazy(() => import('./pages/admin/AdminMaintenancePlans'));
+const AdminMaintenanceCalendar  = lazy(() => import('./pages/admin/AdminMaintenanceCalendar'));
+const AdminMaintenanceWorkOrders = lazy(() => import('./pages/admin/AdminMaintenanceWorkOrders'));
+const AdminMaintenanceRequests  = lazy(() => import('./pages/admin/AdminMaintenanceRequests'));
+const AdminBreakdowns           = lazy(() => import('./pages/admin/AdminBreakdowns'));
+const AdminMeters               = lazy(() => import('./pages/admin/AdminMeters'));
+const AdminConditionMonitoring  = lazy(() => import('./pages/admin/AdminConditionMonitoring'));
+const AdminMaintenanceReports   = lazy(() => import('./pages/admin/AdminMaintenanceReports'));
+const AdminMaintenanceAnalytics = lazy(() => import('./pages/admin/AdminMaintenanceAnalytics'));
+const AdminAssetWarranty        = lazy(() => import('./pages/admin/AdminAssetWarranty'));
+const AdminMaintenanceInventory = lazy(() => import('./pages/admin/AdminMaintenanceInventory'));
+const AdminMaintenanceContracts = lazy(() => import('./pages/admin/AdminMaintenanceContracts'));
+
+// ── Sprint 13A: Enterprise Finance & General Ledger ──────────────────────────
+const AdminFinanceDashboard     = lazy(() => import('./pages/admin/AdminFinanceDashboard'));
+const AdminChartOfAccounts      = lazy(() => import('./pages/admin/AdminChartOfAccounts'));
+const AdminAccountGroups        = lazy(() => import('./pages/admin/AdminAccountGroups'));
+const AdminJournalEntries       = lazy(() => import('./pages/admin/AdminJournalEntries'));
+const AdminJournalDetail        = lazy(() => import('./pages/admin/AdminJournalDetail'));
+const AdminGeneralLedger        = lazy(() => import('./pages/admin/AdminGeneralLedger'));
+const AdminFiscalYears          = lazy(() => import('./pages/admin/AdminFiscalYears'));
+const AdminAccountingPeriods    = lazy(() => import('./pages/admin/AdminAccountingPeriods'));
+const AdminCostCenters          = lazy(() => import('./pages/admin/AdminCostCenters'));
+const AdminProfitCenters        = lazy(() => import('./pages/admin/AdminProfitCenters'));
+const AdminPostingRules         = lazy(() => import('./pages/admin/AdminPostingRules'));
+const AdminVoucherSeries        = lazy(() => import('./pages/admin/AdminVoucherSeries'));
+const AdminTrialBalance         = lazy(() => import('./pages/admin/AdminTrialBalance'));
+const AdminBalanceSheet         = lazy(() => import('./pages/admin/AdminBalanceSheet'));
+const AdminProfitAndLoss        = lazy(() => import('./pages/admin/AdminProfitAndLoss'));
+const AdminCashBook             = lazy(() => import('./pages/admin/AdminCashBook'));
+const AdminBankBook             = lazy(() => import('./pages/admin/AdminBankBook'));
+const AdminFinancialSettings    = lazy(() => import('./pages/admin/AdminFinancialSettings'));
+
+// ── Sprint 13B: Enterprise Accounts Payable ───────────────────────────────────
+const AdminAccountsPayableDashboard = lazy(() => import('./pages/admin/AdminAccountsPayableDashboard'));
+const AdminVendorBills              = lazy(() => import('./pages/admin/AdminVendorBills'));
+const AdminVendorBillDetail         = lazy(() => import('./pages/admin/AdminVendorBillDetail'));
+const AdminVendorPayments           = lazy(() => import('./pages/admin/AdminVendorPayments'));
+const AdminPaymentRun               = lazy(() => import('./pages/admin/AdminPaymentRun'));
+const AdminVendorLedger             = lazy(() => import('./pages/admin/AdminVendorLedger'));
+const AdminVendorStatements         = lazy(() => import('./pages/admin/AdminVendorStatements'));
+const AdminVendorAging              = lazy(() => import('./pages/admin/AdminVendorAging'));
+const AdminDebitNotes               = lazy(() => import('./pages/admin/AdminDebitNotes'));
+const AdminCreditNotes              = lazy(() => import('./pages/admin/AdminCreditNotes'));
+const AdminInvoiceMatching          = lazy(() => import('./pages/admin/AdminInvoiceMatching'));
+const AdminPaymentAdvice            = lazy(() => import('./pages/admin/AdminPaymentAdvice'));
+const AdminAccountsPayableReports   = lazy(() => import('./pages/admin/AdminAccountsPayableReports'));
+
+// ── Sprint 13C: Enterprise Accounts Receivable ───────────────────────────────
+const AdminAccountsReceivableDashboard = lazy(() => import('./pages/admin/AdminAccountsReceivableDashboard'));
+const AdminCustomerInvoices            = lazy(() => import('./pages/admin/AdminCustomerInvoices'));
+const AdminCustomerInvoiceDetail       = lazy(() => import('./pages/admin/AdminCustomerInvoiceDetail'));
+const AdminCustomerReceipts            = lazy(() => import('./pages/admin/AdminCustomerReceipts'));
+const AdminReceiptAllocation           = lazy(() => import('./pages/admin/AdminReceiptAllocation'));
+const AdminCustomerLedger              = lazy(() => import('./pages/admin/AdminCustomerLedger'));
+const AdminCustomerStatements          = lazy(() => import('./pages/admin/AdminCustomerStatements'));
+const AdminCustomerAging               = lazy(() => import('./pages/admin/AdminCustomerAging'));
+const AdminCollections                 = lazy(() => import('./pages/admin/AdminCollections'));
+const AdminCreditManagement            = lazy(() => import('./pages/admin/AdminCreditManagement'));
+const AdminPromiseToPay                = lazy(() => import('./pages/admin/AdminPromiseToPay'));
+const AdminWriteOffs                   = lazy(() => import('./pages/admin/AdminWriteOffs'));
+const AdminBadDebt                     = lazy(() => import('./pages/admin/AdminBadDebt'));
+const AdminAccountsReceivableReports   = lazy(() => import('./pages/admin/AdminAccountsReceivableReports'));
+
+// ── Sprint 13D: Enterprise Tax & Compliance Engine ───────────────────────────
+const AdminTaxDashboard      = lazy(() => import('./pages/admin/AdminTaxDashboard'));
+const AdminTaxCodes          = lazy(() => import('./pages/admin/AdminTaxCodes'));
+const AdminTaxRates          = lazy(() => import('./pages/admin/AdminTaxRates'));
+const AdminGSTDashboard      = lazy(() => import('./pages/admin/AdminGSTDashboard'));
+const AdminGSTReturns        = lazy(() => import('./pages/admin/AdminGSTReturns'));
+const AdminInputCredit       = lazy(() => import('./pages/admin/AdminInputCredit'));
+const AdminOutputTax         = lazy(() => import('./pages/admin/AdminOutputTax'));
+const AdminTDSDashboard      = lazy(() => import('./pages/admin/AdminTDSDashboard'));
+const AdminTDSCertificates   = lazy(() => import('./pages/admin/AdminTDSCertificates'));
+const AdminComplianceCalendar = lazy(() => import('./pages/admin/AdminComplianceCalendar'));
+const AdminEInvoice          = lazy(() => import('./pages/admin/AdminEInvoice'));
+const AdminEWayBill          = lazy(() => import('./pages/admin/AdminEWayBill'));
+const AdminTaxReports        = lazy(() => import('./pages/admin/AdminTaxReports'));
+
+// ── Sprint 13E: Enterprise Banking & Treasury ────────────────────────────────
+const AdminBankingDashboard    = lazy(() => import('./pages/admin/AdminBankingDashboard'));
+const AdminBanks               = lazy(() => import('./pages/admin/AdminBanks'));
+const AdminBankAccounts        = lazy(() => import('./pages/admin/AdminBankAccounts'));
+const AdminBankStatements      = lazy(() => import('./pages/admin/AdminBankStatements'));
+const AdminReconciliation      = lazy(() => import('./pages/admin/AdminReconciliation'));
+const AdminBankCashBook        = lazy(() => import('./pages/admin/AdminBankCashBook'));
+const AdminPettyCash           = lazy(() => import('./pages/admin/AdminPettyCash'));
+const AdminCashTransfers       = lazy(() => import('./pages/admin/AdminCashTransfers'));
+const AdminChequeBooks         = lazy(() => import('./pages/admin/AdminChequeBooks'));
+const AdminTreasury            = lazy(() => import('./pages/admin/AdminTreasury'));
+const AdminCashForecast        = lazy(() => import('./pages/admin/AdminCashForecast'));
+const AdminLiquidityForecast   = lazy(() => import('./pages/admin/AdminLiquidityForecast'));
+const AdminInvestments         = lazy(() => import('./pages/admin/AdminInvestments'));
+const AdminFixedDeposits       = lazy(() => import('./pages/admin/AdminFixedDeposits'));
+const AdminBankGuarantees      = lazy(() => import('./pages/admin/AdminBankGuarantees'));
+const AdminLettersOfCredit     = lazy(() => import('./pages/admin/AdminLettersOfCredit'));
+const AdminFXManagement        = lazy(() => import('./pages/admin/AdminFXManagement'));
+const AdminBankingReports      = lazy(() => import('./pages/admin/AdminBankingReports'));
+
+// ── Sprint 12B: Enterprise Production Planning & Scheduling ─────────────────
+const AdminManufacturingPlanningDashboard = lazy(() => import('./pages/admin/AdminManufacturingPlanningDashboard'));
+const AdminProductionPlans                = lazy(() => import('./pages/admin/AdminProductionPlans'));
+const AdminProductionPlanDetail           = lazy(() => import('./pages/admin/AdminProductionPlanDetail'));
+const AdminMasterSchedule                 = lazy(() => import('./pages/admin/AdminMasterSchedule'));
+const AdminCapacityPlanning               = lazy(() => import('./pages/admin/AdminCapacityPlanning'));
+const AdminMachineCalendar                = lazy(() => import('./pages/admin/AdminMachineCalendar'));
+const AdminProductionCalendar             = lazy(() => import('./pages/admin/AdminProductionCalendar'));
+const AdminPlanningScenarios              = lazy(() => import('./pages/admin/AdminPlanningScenarios'));
+const AdminPlanningReports                = lazy(() => import('./pages/admin/AdminPlanningReports'));
+const AdminPlanningSettings               = lazy(() => import('./pages/admin/AdminPlanningSettings'));
+const AdminSchedulingBoard                = lazy(() => import('./pages/admin/AdminSchedulingBoard'));
+
 // ── Sprint 11B: Customer Service Portal ──────────────────────────────────────
 const CustomerServiceRequests  = lazy(() => import('./pages/customer/CustomerServiceRequests'));
 const CustomerRaiseComplaint   = lazy(() => import('./pages/customer/CustomerRaiseComplaint'));
@@ -711,6 +889,184 @@ export default function App() {
         <Route path="/admin/installation-engineers"    element={<AdminRoute><AdminInstallationEngineers /></AdminRoute>} />
         <Route path="/admin/product-registrations"     element={<AdminRoute><AdminProductRegistrations /></AdminRoute>} />
         <Route path="/admin/installation/reports"      element={<AdminRoute><AdminInstallationReports /></AdminRoute>} />
+
+        {/* Sprint 12A: Manufacturing ERP Foundation — Admin */}
+        <Route path="/admin/manufacturing"               element={<AdminRoute><AdminManufacturingDashboard /></AdminRoute>} />
+        <Route path="/admin/manufacturing/factories"     element={<AdminRoute><AdminFactories /></AdminRoute>} />
+        <Route path="/admin/manufacturing/work-centers"  element={<AdminRoute><AdminWorkCenters /></AdminRoute>} />
+        <Route path="/admin/manufacturing/machines"      element={<AdminRoute><AdminMachines /></AdminRoute>} />
+        <Route path="/admin/manufacturing/shifts"        element={<AdminRoute><AdminShiftPlanner /></AdminRoute>} />
+        <Route path="/admin/manufacturing/bom"           element={<AdminRoute><AdminBOMList /></AdminRoute>} />
+        <Route path="/admin/manufacturing/bom/:id"       element={<AdminRoute><AdminBOMDetail /></AdminRoute>} />
+        <Route path="/admin/manufacturing/orders"        element={<AdminRoute><AdminProductionOrders /></AdminRoute>} />
+        <Route path="/admin/manufacturing/orders/:id"    element={<AdminRoute><AdminProductionOrderDetail /></AdminRoute>} />
+
+        {/* Sprint 12B: Enterprise Production Planning & Scheduling — Admin */}
+        <Route path="/admin/manufacturing/planning"                    element={<AdminRoute><AdminManufacturingPlanningDashboard /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/plans"              element={<AdminRoute><AdminProductionPlans /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/plans/:id"          element={<AdminRoute><AdminProductionPlanDetail /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/mps"                element={<AdminRoute><AdminMasterSchedule /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/capacity"           element={<AdminRoute><AdminCapacityPlanning /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/machine-cal"        element={<AdminRoute><AdminMachineCalendar /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/prod-cal"           element={<AdminRoute><AdminProductionCalendar /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/scenarios"          element={<AdminRoute><AdminPlanningScenarios /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/reports"            element={<AdminRoute><AdminPlanningReports /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/settings"           element={<AdminRoute><AdminPlanningSettings /></AdminRoute>} />
+        <Route path="/admin/manufacturing/planning/scheduling"         element={<AdminRoute><AdminSchedulingBoard /></AdminRoute>} />
+
+        {/* Sprint 12C: Enterprise MRP — Admin */}
+        <Route path="/admin/mrp"                          element={<AdminRoute><AdminMRPDashboard /></AdminRoute>} />
+        <Route path="/admin/mrp/runs"                     element={<AdminRoute><AdminMRPRuns /></AdminRoute>} />
+        <Route path="/admin/mrp/runs/:id"                 element={<AdminRoute><AdminMRPRunDetail /></AdminRoute>} />
+        <Route path="/admin/mrp/requirements"             element={<AdminRoute><AdminMaterialRequirements /></AdminRoute>} />
+        <Route path="/admin/mrp/reservations"             element={<AdminRoute><AdminMRPReservations /></AdminRoute>} />
+        <Route path="/admin/mrp/shortages"                element={<AdminRoute><AdminMRPShortages /></AdminRoute>} />
+        <Route path="/admin/mrp/projections"              element={<AdminRoute><AdminInventoryProjection /></AdminRoute>} />
+        <Route path="/admin/mrp/forecasts"                element={<AdminRoute><AdminDemandForecast /></AdminRoute>} />
+        <Route path="/admin/mrp/purchase-suggestions"     element={<AdminRoute><AdminPurchaseSuggestions /></AdminRoute>} />
+        <Route path="/admin/mrp/production-suggestions"   element={<AdminRoute><AdminProductionSuggestions /></AdminRoute>} />
+        <Route path="/admin/mrp/safety-stock"             element={<AdminRoute><AdminSafetyStock /></AdminRoute>} />
+        <Route path="/admin/mrp/reports"                  element={<AdminRoute><AdminMRPReports /></AdminRoute>} />
+
+        {/* Sprint 12D: Enterprise MES */}
+        <Route path="/admin/mes"                          element={<AdminRoute><AdminMESDashboard /></AdminRoute>} />
+        <Route path="/admin/mes/work-orders"              element={<AdminRoute><AdminWorkOrders /></AdminRoute>} />
+        <Route path="/admin/mes/work-orders/:id"          element={<AdminRoute><AdminWorkOrderDetail /></AdminRoute>} />
+        <Route path="/admin/mes/operations"               element={<AdminRoute><AdminOperations /></AdminRoute>} />
+        <Route path="/admin/mes/execution"                element={<AdminRoute><AdminProductionExecution /></AdminRoute>} />
+        <Route path="/admin/mes/quality"                  element={<AdminRoute><AdminQualityInspection /></AdminRoute>} />
+        <Route path="/admin/mes/quality-dashboard"        element={<AdminRoute><AdminQualityDashboard /></AdminRoute>} />
+        <Route path="/admin/mes/downtime"                 element={<AdminRoute><AdminDowntimeDashboard /></AdminRoute>} />
+        <Route path="/admin/mes/oee"                      element={<AdminRoute><AdminOEEDashboard /></AdminRoute>} />
+        <Route path="/admin/mes/operators"                element={<AdminRoute><AdminOperatorManagement /></AdminRoute>} />
+        <Route path="/admin/mes/attendance"               element={<AdminRoute><AdminOperatorAttendance /></AdminRoute>} />
+        <Route path="/admin/mes/tools"                    element={<AdminRoute><AdminToolManagement /></AdminRoute>} />
+        <Route path="/admin/mes/machine-runtime"          element={<AdminRoute><AdminMachineRuntime /></AdminRoute>} />
+        <Route path="/admin/mes/events"                   element={<AdminRoute><AdminProductionEvents /></AdminRoute>} />
+        <Route path="/admin/mes/scrap"                    element={<AdminRoute><AdminScrapManagement /></AdminRoute>} />
+        <Route path="/admin/mes/rework"                   element={<AdminRoute><AdminReworkManagement /></AdminRoute>} />
+        <Route path="/admin/mes/reports"                  element={<AdminRoute><AdminMESReports /></AdminRoute>} />
+
+        {/* Sprint 12E: Enterprise QMS */}
+        <Route path="/admin/qms"                          element={<AdminRoute><AdminQMSDashboard /></AdminRoute>} />
+        <Route path="/admin/qms/inspection-plans"         element={<AdminRoute><AdminInspectionPlans /></AdminRoute>} />
+        <Route path="/admin/qms/inspection-lots"          element={<AdminRoute><AdminInspectionLots /></AdminRoute>} />
+        <Route path="/admin/qms/inspection-lots/:id"      element={<AdminRoute><AdminInspectionDetail /></AdminRoute>} />
+        <Route path="/admin/qms/certificates"             element={<AdminRoute><AdminCertificates /></AdminRoute>} />
+        <Route path="/admin/qms/capas"                    element={<AdminRoute><AdminCAPA /></AdminRoute>} />
+        <Route path="/admin/qms/capas/:id"                element={<AdminRoute><AdminCAPADetail /></AdminRoute>} />
+        <Route path="/admin/qms/non-conformance"          element={<AdminRoute><AdminNonConformance /></AdminRoute>} />
+        <Route path="/admin/qms/audit-programs"           element={<AdminRoute><AdminAuditPrograms /></AdminRoute>} />
+        <Route path="/admin/qms/audits"                   element={<AdminRoute><AdminAudits /></AdminRoute>} />
+        <Route path="/admin/qms/calibration"              element={<AdminRoute><AdminCalibrationDashboard /></AdminRoute>} />
+        <Route path="/admin/qms/gauges"                   element={<AdminRoute><AdminGaugeManagement /></AdminRoute>} />
+        <Route path="/admin/qms/supplier-quality"         element={<AdminRoute><AdminSupplierQuality /></AdminRoute>} />
+        <Route path="/admin/qms/reports"                  element={<AdminRoute><AdminQualityReports /></AdminRoute>} />
+        <Route path="/admin/qms/documents"                element={<AdminRoute><AdminDocumentControl /></AdminRoute>} />
+
+        {/* Sprint 12F: Enterprise Asset Management (EAM / CMMS) */}
+        <Route path="/admin/eam"                          element={<AdminRoute><AdminEAMDashboard /></AdminRoute>} />
+        <Route path="/admin/eam/assets"                   element={<AdminRoute><AdminAssets /></AdminRoute>} />
+        <Route path="/admin/eam/assets/:id"               element={<AdminRoute><AdminAssetDetail /></AdminRoute>} />
+        <Route path="/admin/eam/hierarchy"                element={<AdminRoute><AdminAssetHierarchy /></AdminRoute>} />
+        <Route path="/admin/eam/maintenance-plans"        element={<AdminRoute><AdminMaintenancePlans /></AdminRoute>} />
+        <Route path="/admin/eam/calendar"                 element={<AdminRoute><AdminMaintenanceCalendar /></AdminRoute>} />
+        <Route path="/admin/eam/work-orders"              element={<AdminRoute><AdminMaintenanceWorkOrders /></AdminRoute>} />
+        <Route path="/admin/eam/requests"                 element={<AdminRoute><AdminMaintenanceRequests /></AdminRoute>} />
+        <Route path="/admin/eam/breakdowns"               element={<AdminRoute><AdminBreakdowns /></AdminRoute>} />
+        <Route path="/admin/eam/meters"                   element={<AdminRoute><AdminMeters /></AdminRoute>} />
+        <Route path="/admin/eam/condition-monitoring"     element={<AdminRoute><AdminConditionMonitoring /></AdminRoute>} />
+        <Route path="/admin/eam/reports"                  element={<AdminRoute><AdminMaintenanceReports /></AdminRoute>} />
+        <Route path="/admin/eam/analytics"                element={<AdminRoute><AdminMaintenanceAnalytics /></AdminRoute>} />
+        <Route path="/admin/eam/warranties"               element={<AdminRoute><AdminAssetWarranty /></AdminRoute>} />
+        <Route path="/admin/eam/inventory"                element={<AdminRoute><AdminMaintenanceInventory /></AdminRoute>} />
+        <Route path="/admin/eam/contracts"                element={<AdminRoute><AdminMaintenanceContracts /></AdminRoute>} />
+
+        {/* Sprint 13A: Enterprise Finance & General Ledger */}
+        <Route path="/admin/finance"                        element={<AdminRoute><AdminFinanceDashboard /></AdminRoute>} />
+        <Route path="/admin/finance/accounts"               element={<AdminRoute><AdminChartOfAccounts /></AdminRoute>} />
+        <Route path="/admin/finance/account-groups"         element={<AdminRoute><AdminAccountGroups /></AdminRoute>} />
+        <Route path="/admin/finance/journals"               element={<AdminRoute><AdminJournalEntries /></AdminRoute>} />
+        <Route path="/admin/finance/journals/:id"           element={<AdminRoute><AdminJournalDetail /></AdminRoute>} />
+        <Route path="/admin/finance/ledger"                 element={<AdminRoute><AdminGeneralLedger /></AdminRoute>} />
+        <Route path="/admin/finance/fiscal-years"           element={<AdminRoute><AdminFiscalYears /></AdminRoute>} />
+        <Route path="/admin/finance/periods"                element={<AdminRoute><AdminAccountingPeriods /></AdminRoute>} />
+        <Route path="/admin/finance/cost-centers"           element={<AdminRoute><AdminCostCenters /></AdminRoute>} />
+        <Route path="/admin/finance/profit-centers"         element={<AdminRoute><AdminProfitCenters /></AdminRoute>} />
+        <Route path="/admin/finance/posting-rules"          element={<AdminRoute><AdminPostingRules /></AdminRoute>} />
+        <Route path="/admin/finance/voucher-series"         element={<AdminRoute><AdminVoucherSeries /></AdminRoute>} />
+        <Route path="/admin/finance/trial-balance"          element={<AdminRoute><AdminTrialBalance /></AdminRoute>} />
+        <Route path="/admin/finance/balance-sheet"          element={<AdminRoute><AdminBalanceSheet /></AdminRoute>} />
+        <Route path="/admin/finance/profit-loss"            element={<AdminRoute><AdminProfitAndLoss /></AdminRoute>} />
+        <Route path="/admin/finance/cash-book"              element={<AdminRoute><AdminCashBook /></AdminRoute>} />
+        <Route path="/admin/finance/bank-book"              element={<AdminRoute><AdminBankBook /></AdminRoute>} />
+        <Route path="/admin/finance/settings"               element={<AdminRoute><AdminFinancialSettings /></AdminRoute>} />
+
+        {/* Sprint 13B: Enterprise Accounts Payable */}
+        <Route path="/admin/accounts-payable"                        element={<AdminRoute><AdminAccountsPayableDashboard /></AdminRoute>} />
+        <Route path="/admin/accounts-payable/bills"                  element={<AdminRoute><AdminVendorBills /></AdminRoute>} />
+        <Route path="/admin/accounts-payable/bills/:id"              element={<AdminRoute><AdminVendorBillDetail /></AdminRoute>} />
+        <Route path="/admin/accounts-payable/payments"               element={<AdminRoute><AdminVendorPayments /></AdminRoute>} />
+        <Route path="/admin/accounts-payable/payment-runs"           element={<AdminRoute><AdminPaymentRun /></AdminRoute>} />
+        <Route path="/admin/accounts-payable/ledger"                 element={<AdminRoute><AdminVendorLedger /></AdminRoute>} />
+        <Route path="/admin/accounts-payable/statements"             element={<AdminRoute><AdminVendorStatements /></AdminRoute>} />
+        <Route path="/admin/accounts-payable/aging"                  element={<AdminRoute><AdminVendorAging /></AdminRoute>} />
+        <Route path="/admin/accounts-payable/debit-notes"            element={<AdminRoute><AdminDebitNotes /></AdminRoute>} />
+        <Route path="/admin/accounts-payable/credit-notes"           element={<AdminRoute><AdminCreditNotes /></AdminRoute>} />
+        <Route path="/admin/accounts-payable/invoice-matching"       element={<AdminRoute><AdminInvoiceMatching /></AdminRoute>} />
+        <Route path="/admin/accounts-payable/payment-advice"         element={<AdminRoute><AdminPaymentAdvice /></AdminRoute>} />
+        <Route path="/admin/accounts-payable/reports"                element={<AdminRoute><AdminAccountsPayableReports /></AdminRoute>} />
+
+        {/* Sprint 13C: Enterprise Accounts Receivable */}
+        <Route path="/admin/accounts-receivable"                        element={<AdminRoute><AdminAccountsReceivableDashboard /></AdminRoute>} />
+        <Route path="/admin/accounts-receivable/invoices"               element={<AdminRoute><AdminCustomerInvoices /></AdminRoute>} />
+        <Route path="/admin/accounts-receivable/invoices/:id"           element={<AdminRoute><AdminCustomerInvoiceDetail /></AdminRoute>} />
+        <Route path="/admin/accounts-receivable/receipts"               element={<AdminRoute><AdminCustomerReceipts /></AdminRoute>} />
+        <Route path="/admin/accounts-receivable/allocations"            element={<AdminRoute><AdminReceiptAllocation /></AdminRoute>} />
+        <Route path="/admin/accounts-receivable/ledger"                 element={<AdminRoute><AdminCustomerLedger /></AdminRoute>} />
+        <Route path="/admin/accounts-receivable/statements"             element={<AdminRoute><AdminCustomerStatements /></AdminRoute>} />
+        <Route path="/admin/accounts-receivable/aging"                  element={<AdminRoute><AdminCustomerAging /></AdminRoute>} />
+        <Route path="/admin/accounts-receivable/collections"            element={<AdminRoute><AdminCollections /></AdminRoute>} />
+        <Route path="/admin/accounts-receivable/credit"                 element={<AdminRoute><AdminCreditManagement /></AdminRoute>} />
+        <Route path="/admin/accounts-receivable/promises"               element={<AdminRoute><AdminPromiseToPay /></AdminRoute>} />
+        <Route path="/admin/accounts-receivable/write-offs"             element={<AdminRoute><AdminWriteOffs /></AdminRoute>} />
+        <Route path="/admin/accounts-receivable/bad-debt"               element={<AdminRoute><AdminBadDebt /></AdminRoute>} />
+        <Route path="/admin/accounts-receivable/reports"                element={<AdminRoute><AdminAccountsReceivableReports /></AdminRoute>} />
+
+        {/* Sprint 13D: Enterprise Tax & Compliance Engine */}
+        <Route path="/admin/tax"                          element={<AdminRoute><AdminTaxDashboard /></AdminRoute>} />
+        <Route path="/admin/tax/codes"                    element={<AdminRoute><AdminTaxCodes /></AdminRoute>} />
+        <Route path="/admin/tax/rates"                    element={<AdminRoute><AdminTaxRates /></AdminRoute>} />
+        <Route path="/admin/tax/gst"                      element={<AdminRoute><AdminGSTDashboard /></AdminRoute>} />
+        <Route path="/admin/tax/gst/returns"              element={<AdminRoute><AdminGSTReturns /></AdminRoute>} />
+        <Route path="/admin/tax/gst/itc"                  element={<AdminRoute><AdminInputCredit /></AdminRoute>} />
+        <Route path="/admin/tax/gst/output"               element={<AdminRoute><AdminOutputTax /></AdminRoute>} />
+        <Route path="/admin/tax/tds"                      element={<AdminRoute><AdminTDSDashboard /></AdminRoute>} />
+        <Route path="/admin/tax/tds/certificates"         element={<AdminRoute><AdminTDSCertificates /></AdminRoute>} />
+        <Route path="/admin/tax/compliance"               element={<AdminRoute><AdminComplianceCalendar /></AdminRoute>} />
+        <Route path="/admin/tax/einvoice"                 element={<AdminRoute><AdminEInvoice /></AdminRoute>} />
+        <Route path="/admin/tax/ewaybill"                 element={<AdminRoute><AdminEWayBill /></AdminRoute>} />
+        <Route path="/admin/tax/reports"                  element={<AdminRoute><AdminTaxReports /></AdminRoute>} />
+
+        {/* Sprint 13E: Enterprise Banking & Treasury */}
+        <Route path="/admin/banking"                              element={<AdminRoute><AdminBankingDashboard /></AdminRoute>} />
+        <Route path="/admin/banking/banks"                        element={<AdminRoute><AdminBanks /></AdminRoute>} />
+        <Route path="/admin/banking/accounts"                     element={<AdminRoute><AdminBankAccounts /></AdminRoute>} />
+        <Route path="/admin/banking/statements"                   element={<AdminRoute><AdminBankStatements /></AdminRoute>} />
+        <Route path="/admin/banking/reconciliation"               element={<AdminRoute><AdminReconciliation /></AdminRoute>} />
+        <Route path="/admin/banking/cash-book"                    element={<AdminRoute><AdminBankCashBook /></AdminRoute>} />
+        <Route path="/admin/banking/petty-cash"                   element={<AdminRoute><AdminPettyCash /></AdminRoute>} />
+        <Route path="/admin/banking/cash-transfers"               element={<AdminRoute><AdminCashTransfers /></AdminRoute>} />
+        <Route path="/admin/banking/cheque-books"                 element={<AdminRoute><AdminChequeBooks /></AdminRoute>} />
+        <Route path="/admin/banking/treasury"                     element={<AdminRoute><AdminTreasury /></AdminRoute>} />
+        <Route path="/admin/banking/cash-forecast"                element={<AdminRoute><AdminCashForecast /></AdminRoute>} />
+        <Route path="/admin/banking/liquidity-forecast"           element={<AdminRoute><AdminLiquidityForecast /></AdminRoute>} />
+        <Route path="/admin/banking/investments"                  element={<AdminRoute><AdminInvestments /></AdminRoute>} />
+        <Route path="/admin/banking/fixed-deposits"               element={<AdminRoute><AdminFixedDeposits /></AdminRoute>} />
+        <Route path="/admin/banking/bank-guarantees"              element={<AdminRoute><AdminBankGuarantees /></AdminRoute>} />
+        <Route path="/admin/banking/letters-of-credit"            element={<AdminRoute><AdminLettersOfCredit /></AdminRoute>} />
+        <Route path="/admin/banking/fx"                           element={<AdminRoute><AdminFXManagement /></AdminRoute>} />
+        <Route path="/admin/banking/reports"                      element={<AdminRoute><AdminBankingReports /></AdminRoute>} />
 
         {/* Sprint 11C: Installation Engineer Portal (isolated auth — type:'engineer' JWT, green) */}
         <Route path="/engineer/login" element={<PageWrapper><EngineerLogin /></PageWrapper>} />
