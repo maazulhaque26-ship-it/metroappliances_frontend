@@ -2375,5 +2375,254 @@ router.post('/admin/accounts-payable/payment-approvals/:id/reject', protect, adm
   } catch(e) { return se13b(res, e); }
 });
 
+// ── Sprint 13C: Enterprise Accounts Receivable ────────────────────────────────
+const arDashCtrl     = require('../controllers/accountsReceivableDashboardController');
+const custInvCtrl    = require('../controllers/customerInvoiceController');
+const custRcptCtrl   = require('../controllers/customerReceiptController');
+const custLedCtrl    = require('../controllers/customerLedgerController');
+const custAgingCtrl  = require('../controllers/customerAgingController');
+const collCtrl       = require('../controllers/collectionController');
+const creditCtrl     = require('../controllers/creditController');
+
+const CustomerInvoice    = require('../models/CustomerInvoice');
+const CustomerReceipt    = require('../models/CustomerReceipt');
+const CustomerAdvance    = require('../models/CustomerAdvance');
+const ReceiptAllocation  = require('../models/ReceiptAllocation');
+const CustomerAging      = require('../models/CustomerAging');
+const CustomerLedger     = require('../models/CustomerLedger');
+const CustomerStatement  = require('../models/CustomerStatement');
+const CustomerCreditLimit   = require('../models/CustomerCreditLimit');
+const CustomerCreditReview  = require('../models/CustomerCreditReview');
+const CollectionActivity = require('../models/CollectionActivity');
+const CollectionReminder = require('../models/CollectionReminder');
+const PromiseToPay       = require('../models/PromiseToPay');
+const BadDebt            = require('../models/BadDebt');
+const WriteOff           = require('../models/WriteOff');
+const ReceiptBatch       = require('../models/ReceiptBatch');
+const ReceiptVoucher     = require('../models/ReceiptVoucher');
+const SalesRegister      = require('../models/SalesRegister');
+const ReceiptRegister    = require('../models/ReceiptRegister');
+const ARSetting          = require('../models/ARSetting');
+const CollectionRule     = require('../models/CollectionRule');
+
+const { paginated: pg13c, created: cr13c, ok: ok13c, notFound: nf13c, serverError: se13c, fail: fail13c, noContent: nc13c } = require('../utils/response');
+
+// AR Dashboard
+router.get('/admin/accounts-receivable/dashboard',                    protect, admin, arDashCtrl.getDashboard);
+router.get('/admin/accounts-receivable/dashboard/aging-summary',      protect, admin, arDashCtrl.getAgingSummary);
+router.get('/admin/accounts-receivable/dashboard/top-customers',      protect, admin, arDashCtrl.getTopCustomersByReceivable);
+router.get('/admin/accounts-receivable/dashboard/credit-exposure',    protect, admin, arDashCtrl.getCreditExposure);
+
+// Customer Invoices
+router.get(   '/admin/accounts-receivable/invoices',               protect, admin, custInvCtrl.getInvoices);
+router.post(  '/admin/accounts-receivable/invoices',               protect, admin, custInvCtrl.createInvoice);
+router.get(   '/admin/accounts-receivable/invoices/:id',           protect, admin, custInvCtrl.getInvoice);
+router.put(   '/admin/accounts-receivable/invoices/:id',           protect, admin, custInvCtrl.updateInvoice);
+router.delete('/admin/accounts-receivable/invoices/:id',           protect, admin, custInvCtrl.deleteInvoice);
+router.post(  '/admin/accounts-receivable/invoices/:id/submit',    protect, admin, custInvCtrl.submitInvoice);
+router.post(  '/admin/accounts-receivable/invoices/:id/approve',   protect, admin, custInvCtrl.approveInvoice);
+router.post(  '/admin/accounts-receivable/invoices/:id/reject',    protect, admin, custInvCtrl.rejectInvoice);
+router.post(  '/admin/accounts-receivable/invoices/:id/post-gl',   protect, admin, custInvCtrl.postInvoiceToGL);
+
+// Customer Receipts
+router.get(   '/admin/accounts-receivable/receipts',                    protect, admin, custRcptCtrl.getReceipts);
+router.post(  '/admin/accounts-receivable/receipts',                    protect, admin, custRcptCtrl.createReceipt);
+router.get(   '/admin/accounts-receivable/receipts/allocations',        protect, admin, custRcptCtrl.getAllocations);
+router.get(   '/admin/accounts-receivable/receipts/:id',                protect, admin, custRcptCtrl.getReceipt);
+router.put(   '/admin/accounts-receivable/receipts/:id',                protect, admin, custRcptCtrl.updateReceipt);
+router.delete('/admin/accounts-receivable/receipts/:id',                protect, admin, custRcptCtrl.deleteReceipt);
+router.post(  '/admin/accounts-receivable/receipts/:id/post',           protect, admin, custRcptCtrl.postReceipt);
+router.post(  '/admin/accounts-receivable/receipts/:id/reverse',        protect, admin, custRcptCtrl.reverseReceipt);
+router.post(  '/admin/accounts-receivable/receipts/:id/allocate',       protect, admin, custRcptCtrl.allocateReceipt);
+
+// Customer Advances
+router.get('/admin/accounts-receivable/advances', protect, admin, async (req, res) => {
+  try {
+    const { page = 1, limit = 20, customer, status } = req.query;
+    const q = { isDeleted: false };
+    if (customer) q.customer = customer;
+    if (status)   q.status   = status;
+    const [data, total] = await Promise.all([CustomerAdvance.find(q).sort({ advanceDate: -1 }).populate('customer','name').skip((page-1)*limit).limit(Number(limit)).lean(), CustomerAdvance.countDocuments(q)]);
+    return pg13c(res, data, total, page, limit);
+  } catch(e) { return se13c(res, e); }
+});
+router.post('/admin/accounts-receivable/advances', protect, admin, async (req, res) => {
+  try { const doc = await CustomerAdvance.create({...req.body, createdBy: req.admin._id}); return cr13c(res, doc, 'Advance created'); }
+  catch(e) { return se13c(res, e); }
+});
+router.get('/admin/accounts-receivable/advances/:id', protect, admin, async (req, res) => {
+  try { const doc = await CustomerAdvance.findOne({_id:req.params.id, isDeleted:false}).populate('customer','name email'); if(!doc) return nf13c(res,'Customer Advance'); return ok13c(res, doc); }
+  catch(e) { return se13c(res, e); }
+});
+
+// Customer Ledger
+router.get('/admin/accounts-receivable/ledger',              protect, admin, custLedCtrl.getLedger);
+router.get('/admin/accounts-receivable/ledger/statement',    protect, admin, custLedCtrl.getAccountStatement);
+router.get('/admin/accounts-receivable/ledger/:id',          protect, admin, custLedCtrl.getLedgerEntry);
+
+// Customer Statements
+router.get(   '/admin/accounts-receivable/statements',            protect, admin, custLedCtrl.getStatements);
+router.post(  '/admin/accounts-receivable/statements/generate',   protect, admin, custLedCtrl.generateStatement);
+router.get(   '/admin/accounts-receivable/statements/:id',        protect, admin, custLedCtrl.getStatement);
+router.delete('/admin/accounts-receivable/statements/:id',        protect, admin, custLedCtrl.deleteStatement);
+
+// Customer Aging
+router.get( '/admin/accounts-receivable/aging/report',            protect, admin, custAgingCtrl.getAgingReport);
+router.post('/admin/accounts-receivable/aging/snapshot',          protect, admin, custAgingCtrl.saveAgingSnapshot);
+router.get( '/admin/accounts-receivable/aging/snapshots',         protect, admin, custAgingCtrl.getAgingSnapshots);
+router.get( '/admin/accounts-receivable/aging/snapshots/:id',     protect, admin, custAgingCtrl.getAgingSnapshot);
+
+// Collection Activities
+router.get(   '/admin/accounts-receivable/collections/activities',          protect, admin, collCtrl.getActivities);
+router.post(  '/admin/accounts-receivable/collections/activities',          protect, admin, collCtrl.createActivity);
+router.get(   '/admin/accounts-receivable/collections/activities/:id',      protect, admin, collCtrl.getActivity);
+router.put(   '/admin/accounts-receivable/collections/activities/:id',      protect, admin, collCtrl.updateActivity);
+router.delete('/admin/accounts-receivable/collections/activities/:id',      protect, admin, collCtrl.deleteActivity);
+
+// Collection Reminders
+router.get(  '/admin/accounts-receivable/collections/reminders',            protect, admin, collCtrl.getReminders);
+router.post( '/admin/accounts-receivable/collections/reminders',            protect, admin, collCtrl.createReminder);
+router.post( '/admin/accounts-receivable/collections/reminders/:id/send',   protect, admin, collCtrl.sendReminder);
+router.delete('/admin/accounts-receivable/collections/reminders/:id',       protect, admin, collCtrl.deleteReminder);
+
+// Promise to Pay
+router.get(  '/admin/accounts-receivable/collections/promises',             protect, admin, collCtrl.getPromises);
+router.post( '/admin/accounts-receivable/collections/promises',             protect, admin, collCtrl.createPromise);
+router.put(  '/admin/accounts-receivable/collections/promises/:id',         protect, admin, collCtrl.updatePromise);
+
+// Write-Offs
+router.get(  '/admin/accounts-receivable/write-offs',                       protect, admin, collCtrl.getWriteOffs);
+router.post( '/admin/accounts-receivable/write-offs',                       protect, admin, collCtrl.createWriteOff);
+router.post( '/admin/accounts-receivable/write-offs/:id/approve',           protect, admin, collCtrl.approveWriteOff);
+router.post( '/admin/accounts-receivable/write-offs/:id/post-gl',           protect, admin, collCtrl.postWriteOff);
+
+// Bad Debt
+router.get(  '/admin/accounts-receivable/bad-debts',                        protect, admin, collCtrl.getBadDebts);
+router.post( '/admin/accounts-receivable/bad-debts',                        protect, admin, collCtrl.createBadDebt);
+router.post( '/admin/accounts-receivable/bad-debts/:id/approve',            protect, admin, collCtrl.approveBadDebt);
+router.post( '/admin/accounts-receivable/bad-debts/:id/post-gl',            protect, admin, collCtrl.postBadDebt);
+
+// Credit Limits
+router.get(   '/admin/accounts-receivable/credit/limits',                   protect, admin, creditCtrl.getCreditLimits);
+router.post(  '/admin/accounts-receivable/credit/limits',                   protect, admin, creditCtrl.createCreditLimit);
+router.get(   '/admin/accounts-receivable/credit/limits/customer/:customerId', protect, admin, creditCtrl.getCreditLimitByCustomer);
+router.get(   '/admin/accounts-receivable/credit/limits/:id',               protect, admin, creditCtrl.getCreditLimit);
+router.put(   '/admin/accounts-receivable/credit/limits/:id',               protect, admin, creditCtrl.updateCreditLimit);
+router.delete('/admin/accounts-receivable/credit/limits/:id',               protect, admin, creditCtrl.deleteCreditLimit);
+router.post(  '/admin/accounts-receivable/credit/limits/:id/block',         protect, admin, creditCtrl.blockCustomer);
+router.post(  '/admin/accounts-receivable/credit/limits/:id/unblock',       protect, admin, creditCtrl.unblockCustomer);
+
+// Credit Reviews
+router.get(  '/admin/accounts-receivable/credit/reviews',                   protect, admin, creditCtrl.getReviews);
+router.post( '/admin/accounts-receivable/credit/reviews',                   protect, admin, creditCtrl.createReview);
+router.post( '/admin/accounts-receivable/credit/reviews/:id/approve',       protect, admin, creditCtrl.approveReview);
+router.post( '/admin/accounts-receivable/credit/reviews/:id/reject',        protect, admin, creditCtrl.rejectReview);
+
+// Receipt Batches
+router.get('/admin/accounts-receivable/receipt-batches', protect, admin, async (req, res) => {
+  try {
+    const { page = 1, limit = 20, status } = req.query;
+    const q = { isDeleted: false };
+    if (status) q.status = status;
+    const [data, total] = await Promise.all([ReceiptBatch.find(q).sort({ batchDate: -1 }).skip((page-1)*limit).limit(Number(limit)).lean(), ReceiptBatch.countDocuments(q)]);
+    return pg13c(res, data, total, page, limit);
+  } catch(e) { return se13c(res, e); }
+});
+router.post('/admin/accounts-receivable/receipt-batches', protect, admin, async (req, res) => {
+  try { const doc = await ReceiptBatch.create({...req.body, processedBy: req.admin._id}); return cr13c(res, doc, 'Batch created'); }
+  catch(e) { return se13c(res, e); }
+});
+router.get('/admin/accounts-receivable/receipt-batches/:id', protect, admin, async (req, res) => {
+  try { const doc = await ReceiptBatch.findOne({_id:req.params.id, isDeleted:false}); if(!doc) return nf13c(res,'Receipt Batch'); return ok13c(res, doc); }
+  catch(e) { return se13c(res, e); }
+});
+router.put('/admin/accounts-receivable/receipt-batches/:id', protect, admin, async (req, res) => {
+  try {
+    const doc = await ReceiptBatch.findOne({_id:req.params.id, isDeleted:false});
+    if(!doc) return nf13c(res,'Receipt Batch');
+    Object.assign(doc, req.body); await doc.save(); return ok13c(res, doc, 'Batch updated');
+  } catch(e) { return se13c(res, e); }
+});
+
+// Receipt Vouchers
+router.get('/admin/accounts-receivable/receipt-vouchers', protect, admin, async (req, res) => {
+  try {
+    const { page = 1, limit = 20, customer, status } = req.query;
+    const q = { isDeleted: false };
+    if (customer) q.customer = customer;
+    if (status)   q.status   = status;
+    const [data, total] = await Promise.all([ReceiptVoucher.find(q).sort({ voucherDate: -1 }).populate('customer','name').skip((page-1)*limit).limit(Number(limit)).lean(), ReceiptVoucher.countDocuments(q)]);
+    return pg13c(res, data, total, page, limit);
+  } catch(e) { return se13c(res, e); }
+});
+router.post('/admin/accounts-receivable/receipt-vouchers', protect, admin, async (req, res) => {
+  try { const doc = await ReceiptVoucher.create({...req.body, createdBy: req.admin._id}); return cr13c(res, doc, 'Voucher created'); }
+  catch(e) { return se13c(res, e); }
+});
+router.get('/admin/accounts-receivable/receipt-vouchers/:id', protect, admin, async (req, res) => {
+  try { const doc = await ReceiptVoucher.findOne({_id:req.params.id, isDeleted:false}).populate('customer','name email'); if(!doc) return nf13c(res,'Receipt Voucher'); return ok13c(res, doc); }
+  catch(e) { return se13c(res, e); }
+});
+
+// Sales Register
+router.get('/admin/accounts-receivable/sales-register', protect, admin, async (req, res) => {
+  try {
+    const { page = 1, limit = 20, customer, startDate, endDate } = req.query;
+    const q = { isDeleted: false };
+    if (customer) q.customer = customer;
+    if (startDate || endDate) { q.invoiceDate = {}; if(startDate) q.invoiceDate.$gte = new Date(startDate); if(endDate) q.invoiceDate.$lte = new Date(endDate); }
+    const [data, total] = await Promise.all([SalesRegister.find(q).sort({ invoiceDate: -1 }).populate('customer','name').skip((page-1)*limit).limit(Number(limit)).lean(), SalesRegister.countDocuments(q)]);
+    return pg13c(res, data, total, page, limit);
+  } catch(e) { return se13c(res, e); }
+});
+
+// Receipt Register
+router.get('/admin/accounts-receivable/receipt-register', protect, admin, async (req, res) => {
+  try {
+    const { page = 1, limit = 20, customer, startDate, endDate } = req.query;
+    const q = { isDeleted: false };
+    if (customer) q.customer = customer;
+    if (startDate || endDate) { q.receiptDate = {}; if(startDate) q.receiptDate.$gte = new Date(startDate); if(endDate) q.receiptDate.$lte = new Date(endDate); }
+    const [data, total] = await Promise.all([ReceiptRegister.find(q).sort({ receiptDate: -1 }).populate('customer','name').skip((page-1)*limit).limit(Number(limit)).lean(), ReceiptRegister.countDocuments(q)]);
+    return pg13c(res, data, total, page, limit);
+  } catch(e) { return se13c(res, e); }
+});
+
+// AR Settings
+router.get('/admin/accounts-receivable/settings', protect, admin, async (req, res) => {
+  try { const data = await ARSetting.find({ isDeleted: false }).lean(); return ok13c(res, data); }
+  catch(e) { return se13c(res, e); }
+});
+router.put('/admin/accounts-receivable/settings/:key', protect, admin, async (req, res) => {
+  try {
+    const doc = await ARSetting.findOneAndUpdate({ key: req.params.key }, { $set: { value: req.body.value, description: req.body.description } }, { upsert: true, new: true });
+    return ok13c(res, doc, 'Setting updated');
+  } catch(e) { return se13c(res, e); }
+});
+
+// Collection Rules
+router.get('/admin/accounts-receivable/collection-rules', protect, admin, async (req, res) => {
+  try { const data = await CollectionRule.find({ isDeleted: false, isActive: true }).sort({ priority: 1 }).lean(); return ok13c(res, data); }
+  catch(e) { return se13c(res, e); }
+});
+router.post('/admin/accounts-receivable/collection-rules', protect, admin, async (req, res) => {
+  try { const doc = await CollectionRule.create(req.body); return cr13c(res, doc, 'Collection rule created'); }
+  catch(e) { return se13c(res, e); }
+});
+router.put('/admin/accounts-receivable/collection-rules/:id', protect, admin, async (req, res) => {
+  try {
+    const doc = await CollectionRule.findOne({_id:req.params.id, isDeleted:false});
+    if(!doc) return nf13c(res,'Collection Rule');
+    Object.assign(doc, req.body); await doc.save(); return ok13c(res, doc, 'Updated');
+  } catch(e) { return se13c(res, e); }
+});
+router.delete('/admin/accounts-receivable/collection-rules/:id', protect, admin, async (req, res) => {
+  try {
+    const doc = await CollectionRule.findOne({_id:req.params.id, isDeleted:false});
+    if(!doc) return nf13c(res,'Collection Rule');
+    doc.isDeleted = true; await doc.save(); return nc13c(res,'Deleted');
+  } catch(e) { return se13c(res, e); }
+});
+
 module.exports = router;
 
