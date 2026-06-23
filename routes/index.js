@@ -1574,4 +1574,159 @@ router.get(    '/admin/mes/labor/:id',                 protect, admin, laborCtrl
 router.put(    '/admin/mes/labor/:id',                 protect, admin, laborCtrl.updateLaborEntry);
 router.delete( '/admin/mes/labor/:id',                 protect, admin, laborCtrl.deleteLaborEntry);
 
+// ── Sprint 12E: Enterprise QMS ────────────────────────────────────────────────
+const inspCtrl   = require('../controllers/inspectionPlanController');
+const capaCtrl   = require('../controllers/capaController');
+const qmsAuditCtrl = require('../controllers/qmsAuditController');
+const gaugeCtrl  = require('../controllers/gaugeController');
+const sqCtrl     = require('../controllers/supplierQualityController');
+const certCtrl   = require('../controllers/certificateController');
+const qmsDashCtrl = require('../controllers/qmsDashboardController');
+const docCtrl    = require('../controllers/documentController');
+
+// QMS Dashboard
+router.get('/admin/qms/dashboard',               protect, admin, qmsDashCtrl.getDashboard);
+router.get('/admin/qms/dashboard/inspection-trend', protect, admin, qmsDashCtrl.getInspectionTrend);
+router.get('/admin/qms/dashboard/capa-trend',    protect, admin, qmsDashCtrl.getCAPATrend);
+router.get('/admin/qms/dashboard/ncr-analysis',  protect, admin, qmsDashCtrl.getNCRAnalysis);
+router.get('/admin/qms/dashboard/audit-summary', protect, admin, qmsDashCtrl.getAuditSummary);
+router.get('/admin/qms/dashboard/calibration-summary', protect, admin, qmsDashCtrl.getCalibrationSummary);
+router.get('/admin/qms/dashboard/supplier-quality-summary', protect, admin, qmsDashCtrl.getSupplierQualitySummary);
+
+// Inspection Plans
+router.get(    '/admin/qms/inspection-plans',              protect, admin, inspCtrl.getInspectionPlans);
+router.post(   '/admin/qms/inspection-plans',              protect, admin, inspCtrl.createInspectionPlan);
+router.get(    '/admin/qms/inspection-plans/:id',          protect, admin, inspCtrl.getInspectionPlan);
+router.put(    '/admin/qms/inspection-plans/:id',          protect, admin, inspCtrl.updateInspectionPlan);
+router.delete( '/admin/qms/inspection-plans/:id',          protect, admin, inspCtrl.deleteInspectionPlan);
+
+// Inspection Characteristics (nested under plans)
+router.get(    '/admin/qms/inspection-plans/:planId/characteristics', protect, admin, inspCtrl.getCharacteristics);
+router.post(   '/admin/qms/inspection-plans/:planId/characteristics', protect, admin, inspCtrl.createCharacteristic);
+router.put(    '/admin/qms/inspection-plans/:planId/characteristics/:charId', protect, admin, inspCtrl.updateCharacteristic);
+router.delete( '/admin/qms/inspection-plans/:planId/characteristics/:charId', protect, admin, inspCtrl.deleteCharacteristic);
+
+// Inspection Methods
+router.get(    '/admin/qms/inspection-methods',            protect, admin, inspCtrl.getInspectionMethods);
+router.post(   '/admin/qms/inspection-methods',            protect, admin, inspCtrl.createInspectionMethod);
+router.put(    '/admin/qms/inspection-methods/:id',        protect, admin, inspCtrl.updateInspectionMethod);
+router.delete( '/admin/qms/inspection-methods/:id',        protect, admin, inspCtrl.deleteInspectionMethod);
+
+// Inspection Lots
+router.get(    '/admin/qms/inspection-lots',               protect, admin, inspCtrl.getInspectionLots);
+router.post(   '/admin/qms/inspection-lots',               protect, admin, inspCtrl.createInspectionLot);
+router.get(    '/admin/qms/inspection-lots/:id',           protect, admin, inspCtrl.getInspectionLot);
+router.put(    '/admin/qms/inspection-lots/:id',           protect, admin, inspCtrl.updateInspectionLot);
+router.delete( '/admin/qms/inspection-lots/:id',           protect, admin, inspCtrl.deleteInspectionLot);
+
+// Inspection Results
+router.post(   '/admin/qms/inspection-results',            protect, admin, inspCtrl.createInspectionResult);
+router.put(    '/admin/qms/inspection-results/:id',        protect, admin, inspCtrl.updateInspectionResult);
+router.delete( '/admin/qms/inspection-results/:id',        protect, admin, inspCtrl.deleteInspectionResult);
+
+// Quality Certificates
+router.get(    '/admin/qms/certificates',                  protect, admin, certCtrl.getCertificates);
+router.post(   '/admin/qms/certificates',                  protect, admin, certCtrl.createCertificate);
+router.get(    '/admin/qms/certificates/:id',              protect, admin, certCtrl.getCertificate);
+router.put(    '/admin/qms/certificates/:id',              protect, admin, certCtrl.updateCertificate);
+router.delete( '/admin/qms/certificates/:id',              protect, admin, certCtrl.deleteCertificate);
+router.patch(  '/admin/qms/certificates/:id/issue',        protect, admin, certCtrl.issueCertificate);
+router.patch(  '/admin/qms/certificates/:id/revoke',       protect, admin, certCtrl.revokeCertificate);
+
+// CAPA
+router.get(    '/admin/qms/capas',                         protect, admin, capaCtrl.getCAPAs);
+router.post(   '/admin/qms/capas',                         protect, admin, capaCtrl.createCAPA);
+router.get(    '/admin/qms/capas/:id',                     protect, admin, capaCtrl.getCAPA);
+router.put(    '/admin/qms/capas/:id',                     protect, admin, capaCtrl.updateCAPA);
+router.delete( '/admin/qms/capas/:id',                     protect, admin, capaCtrl.deleteCAPA);
+
+// NC Reports
+router.get(    '/admin/qms/nc-reports',                    protect, admin, capaCtrl.getNCReports);
+router.post(   '/admin/qms/nc-reports',                    protect, admin, capaCtrl.createNCReport);
+router.get(    '/admin/qms/nc-reports/:id',                protect, admin, capaCtrl.getNCReport);
+router.put(    '/admin/qms/nc-reports/:id',                protect, admin, capaCtrl.updateNCReport);
+router.delete( '/admin/qms/nc-reports/:id',                protect, admin, capaCtrl.deleteNCReport);
+
+// Root Cause Analysis
+router.get(  '/admin/qms/rca',                             protect, admin, capaCtrl.getRCAs);
+router.post( '/admin/qms/rca',                             protect, admin, capaCtrl.createRCA);
+router.put(  '/admin/qms/rca/:id',                         protect, admin, capaCtrl.updateRCA);
+
+// Corrective Actions
+router.get(  '/admin/qms/corrective-actions',              protect, admin, capaCtrl.getCorrectiveActions);
+router.post( '/admin/qms/corrective-actions',              protect, admin, capaCtrl.createCorrectiveAction);
+router.put(  '/admin/qms/corrective-actions/:id',          protect, admin, capaCtrl.updateCorrectiveAction);
+
+// Preventive Actions
+router.get(  '/admin/qms/preventive-actions',              protect, admin, capaCtrl.getPreventiveActions);
+router.post( '/admin/qms/preventive-actions',              protect, admin, capaCtrl.createPreventiveAction);
+router.put(  '/admin/qms/preventive-actions/:id',          protect, admin, capaCtrl.updatePreventiveAction);
+
+// Audit Programs
+router.get(    '/admin/qms/audit-programs',                protect, admin, qmsAuditCtrl.getAuditPrograms);
+router.post(   '/admin/qms/audit-programs',                protect, admin, qmsAuditCtrl.createAuditProgram);
+router.get(    '/admin/qms/audit-programs/:id',            protect, admin, qmsAuditCtrl.getAuditProgram);
+router.put(    '/admin/qms/audit-programs/:id',            protect, admin, qmsAuditCtrl.updateAuditProgram);
+router.delete( '/admin/qms/audit-programs/:id',            protect, admin, qmsAuditCtrl.deleteAuditProgram);
+
+// Quality Audits
+router.get(    '/admin/qms/audits',                        protect, admin, qmsAuditCtrl.getQualityAudits);
+router.post(   '/admin/qms/audits',                        protect, admin, qmsAuditCtrl.createQualityAudit);
+router.get(    '/admin/qms/audits/:id',                    protect, admin, qmsAuditCtrl.getQualityAudit);
+router.put(    '/admin/qms/audits/:id',                    protect, admin, qmsAuditCtrl.updateQualityAudit);
+router.delete( '/admin/qms/audits/:id',                    protect, admin, qmsAuditCtrl.deleteQualityAudit);
+
+// Audit Findings
+router.get(    '/admin/qms/audit-findings',                protect, admin, qmsAuditCtrl.getAuditFindings);
+router.post(   '/admin/qms/audit-findings',                protect, admin, qmsAuditCtrl.createAuditFinding);
+router.put(    '/admin/qms/audit-findings/:id',            protect, admin, qmsAuditCtrl.updateAuditFinding);
+router.delete( '/admin/qms/audit-findings/:id',            protect, admin, qmsAuditCtrl.deleteAuditFinding);
+
+// Gauges
+router.get(    '/admin/qms/gauges',                        protect, admin, gaugeCtrl.getGauges);
+router.post(   '/admin/qms/gauges',                        protect, admin, gaugeCtrl.createGauge);
+router.get(    '/admin/qms/gauges/:id',                    protect, admin, gaugeCtrl.getGauge);
+router.put(    '/admin/qms/gauges/:id',                    protect, admin, gaugeCtrl.updateGauge);
+router.delete( '/admin/qms/gauges/:id',                    protect, admin, gaugeCtrl.deleteGauge);
+router.get(    '/admin/qms/gauges/:gaugeId/history',       protect, admin, gaugeCtrl.getGaugeHistory);
+
+// Calibration Records
+router.get(  '/admin/qms/calibration-records',             protect, admin, gaugeCtrl.getCalibrationRecords);
+router.post( '/admin/qms/calibration-records',             protect, admin, gaugeCtrl.createCalibrationRecord);
+router.get(  '/admin/qms/calibration-records/:id',         protect, admin, gaugeCtrl.getCalibrationRecord);
+
+// Calibration Schedules
+router.get(  '/admin/qms/calibration-schedules',           protect, admin, gaugeCtrl.getCalibrationSchedules);
+router.post( '/admin/qms/calibration-schedules',           protect, admin, gaugeCtrl.createCalibrationSchedule);
+router.put(  '/admin/qms/calibration-schedules/:id',       protect, admin, gaugeCtrl.updateCalibrationSchedule);
+
+// Supplier Quality
+router.get(    '/admin/qms/supplier-quality',              protect, admin, sqCtrl.getSupplierQualityRecords);
+router.post(   '/admin/qms/supplier-quality',              protect, admin, sqCtrl.createSupplierQualityRecord);
+router.get(    '/admin/qms/supplier-quality/:id',          protect, admin, sqCtrl.getSupplierQualityRecord);
+router.put(    '/admin/qms/supplier-quality/:id',          protect, admin, sqCtrl.updateSupplierQualityRecord);
+router.delete( '/admin/qms/supplier-quality/:id',          protect, admin, sqCtrl.deleteSupplierQualityRecord);
+router.get(    '/admin/qms/supplier-quality/scorecard/:vendorId', protect, admin, sqCtrl.getSupplierScorecard);
+
+// Quality Alerts
+router.get(  '/admin/qms/quality-alerts',                  protect, admin, sqCtrl.getQualityAlerts);
+router.post( '/admin/qms/quality-alerts',                  protect, admin, sqCtrl.createQualityAlert);
+router.put(  '/admin/qms/quality-alerts/:id',              protect, admin, sqCtrl.updateQualityAlert);
+router.patch('/admin/qms/quality-alerts/:id/acknowledge',  protect, admin, sqCtrl.acknowledgeAlert);
+router.patch('/admin/qms/quality-alerts/:id/resolve',      protect, admin, sqCtrl.resolveAlert);
+
+// Document Control
+router.get(    '/admin/qms/documents',                     protect, admin, docCtrl.getDocuments);
+router.post(   '/admin/qms/documents',                     protect, admin, docCtrl.createDocument);
+router.get(    '/admin/qms/documents/:id',                 protect, admin, docCtrl.getDocument);
+router.put(    '/admin/qms/documents/:id',                 protect, admin, docCtrl.updateDocument);
+router.delete( '/admin/qms/documents/:id',                 protect, admin, docCtrl.deleteDocument);
+router.patch(  '/admin/qms/documents/:id/approve',         protect, admin, docCtrl.approveDocument);
+router.patch(  '/admin/qms/documents/:id/activate',        protect, admin, docCtrl.activateDocument);
+router.patch(  '/admin/qms/documents/:id/obsolete',        protect, admin, docCtrl.obsoleteDocument);
+
+// Revisions
+router.get(  '/admin/qms/documents/:docId/revisions',      protect, admin, docCtrl.getRevisions);
+router.post( '/admin/qms/documents/:docId/revisions',      protect, admin, docCtrl.createRevision);
+
 module.exports = router;
