@@ -1729,4 +1729,190 @@ router.patch(  '/admin/qms/documents/:id/obsolete',        protect, admin, docCt
 router.get(  '/admin/qms/documents/:docId/revisions',      protect, admin, docCtrl.getRevisions);
 router.post( '/admin/qms/documents/:docId/revisions',      protect, admin, docCtrl.createRevision);
 
+// ── Sprint 12F: Enterprise Asset Management (EAM / CMMS) ─────────────────────
+const assetCtrl   = require('../controllers/assetController');
+const maintCtrl   = require('../controllers/maintenanceController');
+const woCtrl      = require('../controllers/maintenanceWorkOrderController');
+const schedCtrl   = require('../controllers/maintenanceScheduleController');
+const cmCtrl      = require('../controllers/conditionMonitoringController');
+const meterCtrl   = require('../controllers/meterController');
+const brkCtrl     = require('../controllers/breakdownController');
+const eamDashCtrl = require('../controllers/maintenanceDashboardController');
+
+// EAM Dashboard
+router.get('/admin/eam/dashboard',                         protect, admin, eamDashCtrl.getDashboard);
+router.get('/admin/eam/asset-reliability',                 protect, admin, eamDashCtrl.getAssetReliability);
+router.get('/admin/eam/maintenance-trend',                 protect, admin, eamDashCtrl.getMaintenanceTrend);
+router.get('/admin/eam/breakdown-analysis',                protect, admin, eamDashCtrl.getBreakdownAnalysis);
+router.get('/admin/eam/cost-analysis',                     protect, admin, eamDashCtrl.getCostAnalysis);
+
+// Assets
+router.get(    '/admin/eam/assets',                        protect, admin, assetCtrl.getAssets);
+router.post(   '/admin/eam/assets',                        protect, admin, assetCtrl.createAsset);
+router.get(    '/admin/eam/assets/:id',                    protect, admin, assetCtrl.getAsset);
+router.put(    '/admin/eam/assets/:id',                    protect, admin, assetCtrl.updateAsset);
+router.delete( '/admin/eam/assets/:id',                    protect, admin, assetCtrl.deleteAsset);
+
+// Asset hierarchy (before /:id to avoid route conflict)
+router.get(    '/admin/eam/assets/:assetId/hierarchy',     protect, admin, assetCtrl.getHierarchy);
+router.put(    '/admin/eam/assets/:assetId/hierarchy',     protect, admin, assetCtrl.upsertHierarchy);
+
+// Asset documents
+router.get(    '/admin/eam/assets/:assetId/documents',     protect, admin, assetCtrl.getDocuments);
+router.post(   '/admin/eam/assets/:assetId/documents',     protect, admin, assetCtrl.addDocument);
+router.delete( '/admin/eam/asset-documents/:id',           protect, admin, assetCtrl.deleteDocument);
+
+// Asset depreciation
+router.get(    '/admin/eam/assets/:assetId/depreciation',  protect, admin, assetCtrl.getDepreciation);
+router.post(   '/admin/eam/assets/:assetId/depreciation',  protect, admin, assetCtrl.createDepreciation);
+
+// Asset warranties
+router.get(    '/admin/eam/assets/:assetId/warranties',    protect, admin, assetCtrl.getWarranties);
+router.post(   '/admin/eam/assets/:assetId/warranties',    protect, admin, assetCtrl.createWarranty);
+router.put(    '/admin/eam/asset-warranties/:id',          protect, admin, assetCtrl.updateWarranty);
+
+// Asset lifecycle
+router.get(    '/admin/eam/assets/:assetId/lifecycle',     protect, admin, assetCtrl.getLifecycle);
+router.post(   '/admin/eam/assets/:assetId/lifecycle',     protect, admin, assetCtrl.addLifecycleEvent);
+
+// Asset Categories
+router.get(    '/admin/eam/asset-categories',              protect, admin, assetCtrl.getCategories);
+router.post(   '/admin/eam/asset-categories',              protect, admin, assetCtrl.createCategory);
+router.put(    '/admin/eam/asset-categories/:id',          protect, admin, assetCtrl.updateCategory);
+router.delete( '/admin/eam/asset-categories/:id',          protect, admin, assetCtrl.deleteCategory);
+
+// Asset Locations
+router.get(    '/admin/eam/asset-locations',               protect, admin, assetCtrl.getLocations);
+router.post(   '/admin/eam/asset-locations',               protect, admin, assetCtrl.createLocation);
+router.put(    '/admin/eam/asset-locations/:id',           protect, admin, assetCtrl.updateLocation);
+router.delete( '/admin/eam/asset-locations/:id',           protect, admin, assetCtrl.deleteLocation);
+
+// Maintenance Plans
+router.get(    '/admin/eam/maintenance-plans',             protect, admin, maintCtrl.getPlans);
+router.post(   '/admin/eam/maintenance-plans',             protect, admin, maintCtrl.createPlan);
+router.get(    '/admin/eam/maintenance-plans/:id',         protect, admin, maintCtrl.getPlan);
+router.put(    '/admin/eam/maintenance-plans/:id',         protect, admin, maintCtrl.updatePlan);
+router.delete( '/admin/eam/maintenance-plans/:id',         protect, admin, maintCtrl.deletePlan);
+
+// Maintenance Checklists
+router.get(    '/admin/eam/checklists',                    protect, admin, maintCtrl.getChecklists);
+router.post(   '/admin/eam/checklists',                    protect, admin, maintCtrl.createChecklist);
+router.put(    '/admin/eam/checklists/:id',                protect, admin, maintCtrl.updateChecklist);
+router.delete( '/admin/eam/checklists/:id',                protect, admin, maintCtrl.deleteChecklist);
+
+// Maintenance History
+router.get(    '/admin/eam/maintenance-history',           protect, admin, maintCtrl.getHistory);
+router.get(    '/admin/eam/assets/:assetId/history',       protect, admin, maintCtrl.getHistory);
+router.post(   '/admin/eam/maintenance-history',           protect, admin, maintCtrl.createHistoryEntry);
+
+// Preventive Maintenance
+router.get(    '/admin/eam/preventive',                    protect, admin, maintCtrl.getPreventive);
+router.post(   '/admin/eam/preventive',                    protect, admin, maintCtrl.createPreventive);
+router.put(    '/admin/eam/preventive/:id',                protect, admin, maintCtrl.updatePreventive);
+
+// Predictive Maintenance
+router.get(    '/admin/eam/predictive',                    protect, admin, maintCtrl.getPredictive);
+router.post(   '/admin/eam/predictive',                    protect, admin, maintCtrl.createPredictive);
+router.put(    '/admin/eam/predictive/:id',                protect, admin, maintCtrl.updatePredictive);
+
+// Maintenance Planner
+router.get(    '/admin/eam/planners',                      protect, admin, maintCtrl.getPlanners);
+router.post(   '/admin/eam/planners',                      protect, admin, maintCtrl.createPlanner);
+router.get(    '/admin/eam/planners/:id',                  protect, admin, maintCtrl.getPlanner);
+router.put(    '/admin/eam/planners/:id',                  protect, admin, maintCtrl.updatePlanner);
+router.delete( '/admin/eam/planners/:id',                  protect, admin, maintCtrl.deletePlanner);
+
+// Maintenance Log
+router.get(    '/admin/eam/maintenance-logs',              protect, admin, maintCtrl.getLogs);
+router.post(   '/admin/eam/maintenance-logs',              protect, admin, maintCtrl.createLog);
+router.put(    '/admin/eam/maintenance-logs/:id',          protect, admin, maintCtrl.updateLog);
+
+// Vendor Maintenance Services
+router.get(    '/admin/eam/vendor-services',               protect, admin, maintCtrl.getVendorServices);
+router.post(   '/admin/eam/vendor-services',               protect, admin, maintCtrl.createVendorService);
+router.put(    '/admin/eam/vendor-services/:id',           protect, admin, maintCtrl.updateVendorService);
+router.delete( '/admin/eam/vendor-services/:id',           protect, admin, maintCtrl.deleteVendorService);
+
+// Maintenance Work Orders
+router.get(    '/admin/eam/work-orders',                   protect, admin, woCtrl.getWorkOrders);
+router.post(   '/admin/eam/work-orders',                   protect, admin, woCtrl.createWorkOrder);
+router.get(    '/admin/eam/work-orders/:id',               protect, admin, woCtrl.getWorkOrder);
+router.put(    '/admin/eam/work-orders/:id',               protect, admin, woCtrl.updateWorkOrder);
+router.delete( '/admin/eam/work-orders/:id',               protect, admin, woCtrl.deleteWorkOrder);
+router.patch(  '/admin/eam/work-orders/:id/transition',    protect, admin, woCtrl.transitionWorkOrder);
+router.get(    '/admin/eam/work-orders/:id/parts',         protect, admin, woCtrl.getWorkOrderParts);
+router.post(   '/admin/eam/work-orders/:id/parts',         protect, admin, woCtrl.addWorkOrderPart);
+
+// Work Order Tasks
+router.get(    '/admin/eam/work-orders/:workOrderId/tasks',protect, admin, maintCtrl.getTasks);
+router.post(   '/admin/eam/work-orders/:workOrderId/tasks',protect, admin, maintCtrl.createTask);
+router.put(    '/admin/eam/tasks/:id',                     protect, admin, maintCtrl.updateTask);
+router.delete( '/admin/eam/tasks/:id',                     protect, admin, maintCtrl.deleteTask);
+
+// Maintenance Requests
+router.get(    '/admin/eam/requests',                      protect, admin, woCtrl.getRequests);
+router.post(   '/admin/eam/requests',                      protect, admin, woCtrl.createRequest);
+router.get(    '/admin/eam/requests/:id',                  protect, admin, woCtrl.getRequest);
+router.put(    '/admin/eam/requests/:id',                  protect, admin, woCtrl.updateRequest);
+router.patch(  '/admin/eam/requests/:id/convert',          protect, admin, woCtrl.convertRequestToWorkOrder);
+
+// Maintenance Schedules
+router.get(    '/admin/eam/schedules',                     protect, admin, schedCtrl.getSchedules);
+router.post(   '/admin/eam/schedules',                     protect, admin, schedCtrl.createSchedule);
+router.get(    '/admin/eam/schedules/:id',                 protect, admin, schedCtrl.getSchedule);
+router.put(    '/admin/eam/schedules/:id',                 protect, admin, schedCtrl.updateSchedule);
+router.delete( '/admin/eam/schedules/:id',                 protect, admin, schedCtrl.deleteSchedule);
+router.patch(  '/admin/eam/schedules/:id/complete',        protect, admin, schedCtrl.completeSchedule);
+router.post(   '/admin/eam/schedules/mark-overdue',        protect, admin, schedCtrl.markScheduleOverdue);
+
+// Maintenance Contracts
+router.get(    '/admin/eam/contracts',                     protect, admin, schedCtrl.getContracts);
+router.post(   '/admin/eam/contracts',                     protect, admin, schedCtrl.createContract);
+router.get(    '/admin/eam/contracts/:id',                 protect, admin, schedCtrl.getContract);
+router.put(    '/admin/eam/contracts/:id',                 protect, admin, schedCtrl.updateContract);
+router.delete( '/admin/eam/contracts/:id',                 protect, admin, schedCtrl.deleteContract);
+
+// Condition Monitoring
+router.get(    '/admin/eam/condition-monitors',            protect, admin, cmCtrl.getMonitors);
+router.post(   '/admin/eam/condition-monitors',            protect, admin, cmCtrl.createMonitor);
+router.get(    '/admin/eam/condition-monitors/:id',        protect, admin, cmCtrl.getMonitor);
+router.put(    '/admin/eam/condition-monitors/:id',        protect, admin, cmCtrl.updateMonitor);
+router.delete( '/admin/eam/condition-monitors/:id',        protect, admin, cmCtrl.deleteMonitor);
+router.post(   '/admin/eam/condition-monitors/:id/reading',protect, admin, cmCtrl.addReading);
+
+// Risk Assessments
+router.get(    '/admin/eam/risk-assessments',              protect, admin, cmCtrl.getRiskAssessments);
+router.post(   '/admin/eam/risk-assessments',              protect, admin, cmCtrl.createRiskAssessment);
+router.put(    '/admin/eam/risk-assessments/:id',          protect, admin, cmCtrl.updateRiskAssessment);
+router.delete( '/admin/eam/risk-assessments/:id',          protect, admin, cmCtrl.deleteRiskAssessment);
+
+// Asset Calibrations (EAM - distinct from QMS gauge calibrations)
+router.get(    '/admin/eam/asset-calibrations',            protect, admin, cmCtrl.getAssetCalibrations);
+router.post(   '/admin/eam/asset-calibrations',            protect, admin, cmCtrl.createAssetCalibration);
+router.put(    '/admin/eam/asset-calibrations/:id',        protect, admin, cmCtrl.updateAssetCalibration);
+router.delete( '/admin/eam/asset-calibrations/:id',        protect, admin, cmCtrl.deleteAssetCalibration);
+
+// Asset Meters
+router.get(    '/admin/eam/meters',                        protect, admin, meterCtrl.getMeters);
+router.post(   '/admin/eam/meters',                        protect, admin, meterCtrl.createMeter);
+router.get(    '/admin/eam/meters/:id',                    protect, admin, meterCtrl.getMeter);
+router.put(    '/admin/eam/meters/:id',                    protect, admin, meterCtrl.updateMeter);
+router.delete( '/admin/eam/meters/:id',                    protect, admin, meterCtrl.deleteMeter);
+router.get(    '/admin/eam/meters/:meterId/readings',      protect, admin, meterCtrl.getReadings);
+router.post(   '/admin/eam/meters/:meterId/readings',      protect, admin, meterCtrl.addReading);
+
+// Breakdowns
+router.get(    '/admin/eam/breakdowns',                    protect, admin, brkCtrl.getBreakdowns);
+router.post(   '/admin/eam/breakdowns',                    protect, admin, brkCtrl.createBreakdown);
+router.get(    '/admin/eam/breakdowns/:id',                protect, admin, brkCtrl.getBreakdown);
+router.put(    '/admin/eam/breakdowns/:id',                protect, admin, brkCtrl.updateBreakdown);
+router.delete( '/admin/eam/breakdowns/:id',                protect, admin, brkCtrl.deleteBreakdown);
+router.patch(  '/admin/eam/breakdowns/:id/resolve',        protect, admin, brkCtrl.resolveBreakdown);
+
+// Failure Analysis
+router.get(    '/admin/eam/failure-analyses',              protect, admin, brkCtrl.getFailureAnalyses);
+router.post(   '/admin/eam/failure-analyses',              protect, admin, brkCtrl.createFailureAnalysis);
+router.put(    '/admin/eam/failure-analyses/:id',          protect, admin, brkCtrl.updateFailureAnalysis);
+router.delete( '/admin/eam/failure-analyses/:id',          protect, admin, brkCtrl.deleteFailureAnalysis);
+
 module.exports = router;
