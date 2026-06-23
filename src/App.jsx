@@ -333,6 +333,26 @@ const AdminAssetWarranty        = lazy(() => import('./pages/admin/AdminAssetWar
 const AdminMaintenanceInventory = lazy(() => import('./pages/admin/AdminMaintenanceInventory'));
 const AdminMaintenanceContracts = lazy(() => import('./pages/admin/AdminMaintenanceContracts'));
 
+// ── Sprint 13A: Enterprise Finance & General Ledger ──────────────────────────
+const AdminFinanceDashboard     = lazy(() => import('./pages/admin/AdminFinanceDashboard'));
+const AdminChartOfAccounts      = lazy(() => import('./pages/admin/AdminChartOfAccounts'));
+const AdminAccountGroups        = lazy(() => import('./pages/admin/AdminAccountGroups'));
+const AdminJournalEntries       = lazy(() => import('./pages/admin/AdminJournalEntries'));
+const AdminJournalDetail        = lazy(() => import('./pages/admin/AdminJournalDetail'));
+const AdminGeneralLedger        = lazy(() => import('./pages/admin/AdminGeneralLedger'));
+const AdminFiscalYears          = lazy(() => import('./pages/admin/AdminFiscalYears'));
+const AdminAccountingPeriods    = lazy(() => import('./pages/admin/AdminAccountingPeriods'));
+const AdminCostCenters          = lazy(() => import('./pages/admin/AdminCostCenters'));
+const AdminProfitCenters        = lazy(() => import('./pages/admin/AdminProfitCenters'));
+const AdminPostingRules         = lazy(() => import('./pages/admin/AdminPostingRules'));
+const AdminVoucherSeries        = lazy(() => import('./pages/admin/AdminVoucherSeries'));
+const AdminTrialBalance         = lazy(() => import('./pages/admin/AdminTrialBalance'));
+const AdminBalanceSheet         = lazy(() => import('./pages/admin/AdminBalanceSheet'));
+const AdminProfitAndLoss        = lazy(() => import('./pages/admin/AdminProfitAndLoss'));
+const AdminCashBook             = lazy(() => import('./pages/admin/AdminCashBook'));
+const AdminBankBook             = lazy(() => import('./pages/admin/AdminBankBook'));
+const AdminFinancialSettings    = lazy(() => import('./pages/admin/AdminFinancialSettings'));
+
 // ── Sprint 12B: Enterprise Production Planning & Scheduling ─────────────────
 const AdminManufacturingPlanningDashboard = lazy(() => import('./pages/admin/AdminManufacturingPlanningDashboard'));
 const AdminProductionPlans                = lazy(() => import('./pages/admin/AdminProductionPlans'));
@@ -895,6 +915,26 @@ export default function App() {
         <Route path="/admin/eam/warranties"               element={<AdminRoute><AdminAssetWarranty /></AdminRoute>} />
         <Route path="/admin/eam/inventory"                element={<AdminRoute><AdminMaintenanceInventory /></AdminRoute>} />
         <Route path="/admin/eam/contracts"                element={<AdminRoute><AdminMaintenanceContracts /></AdminRoute>} />
+
+        {/* Sprint 13A: Enterprise Finance & General Ledger */}
+        <Route path="/admin/finance"                        element={<AdminRoute><AdminFinanceDashboard /></AdminRoute>} />
+        <Route path="/admin/finance/accounts"               element={<AdminRoute><AdminChartOfAccounts /></AdminRoute>} />
+        <Route path="/admin/finance/account-groups"         element={<AdminRoute><AdminAccountGroups /></AdminRoute>} />
+        <Route path="/admin/finance/journals"               element={<AdminRoute><AdminJournalEntries /></AdminRoute>} />
+        <Route path="/admin/finance/journals/:id"           element={<AdminRoute><AdminJournalDetail /></AdminRoute>} />
+        <Route path="/admin/finance/ledger"                 element={<AdminRoute><AdminGeneralLedger /></AdminRoute>} />
+        <Route path="/admin/finance/fiscal-years"           element={<AdminRoute><AdminFiscalYears /></AdminRoute>} />
+        <Route path="/admin/finance/periods"                element={<AdminRoute><AdminAccountingPeriods /></AdminRoute>} />
+        <Route path="/admin/finance/cost-centers"           element={<AdminRoute><AdminCostCenters /></AdminRoute>} />
+        <Route path="/admin/finance/profit-centers"         element={<AdminRoute><AdminProfitCenters /></AdminRoute>} />
+        <Route path="/admin/finance/posting-rules"          element={<AdminRoute><AdminPostingRules /></AdminRoute>} />
+        <Route path="/admin/finance/voucher-series"         element={<AdminRoute><AdminVoucherSeries /></AdminRoute>} />
+        <Route path="/admin/finance/trial-balance"          element={<AdminRoute><AdminTrialBalance /></AdminRoute>} />
+        <Route path="/admin/finance/balance-sheet"          element={<AdminRoute><AdminBalanceSheet /></AdminRoute>} />
+        <Route path="/admin/finance/profit-loss"            element={<AdminRoute><AdminProfitAndLoss /></AdminRoute>} />
+        <Route path="/admin/finance/cash-book"              element={<AdminRoute><AdminCashBook /></AdminRoute>} />
+        <Route path="/admin/finance/bank-book"              element={<AdminRoute><AdminBankBook /></AdminRoute>} />
+        <Route path="/admin/finance/settings"               element={<AdminRoute><AdminFinancialSettings /></AdminRoute>} />
 
         {/* Sprint 11C: Installation Engineer Portal (isolated auth — type:'engineer' JWT, green) */}
         <Route path="/engineer/login" element={<PageWrapper><EngineerLogin /></PageWrapper>} />

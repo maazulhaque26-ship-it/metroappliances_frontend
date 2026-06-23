@@ -306,6 +306,28 @@ const NAV_GROUPS = [
     ],
   },
   {
+    label: 'Finance',
+    items: [
+      { label: 'Finance Dashboard',     path: '/admin/finance',                    icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
+      { label: 'Chart of Accounts',     path: '/admin/finance/accounts',           icon: FiHash,         roles: ['admin', 'super_admin'] },
+      { label: 'Account Groups',        path: '/admin/finance/account-groups',     icon: FiLayers,       roles: ['admin', 'super_admin'] },
+      { label: 'Journal Entries',       path: '/admin/finance/journals',           icon: FiBook,         roles: ['admin', 'super_admin'] },
+      { label: 'General Ledger',        path: '/admin/finance/ledger',             icon: FiList,         roles: ['admin', 'super_admin'] },
+      { label: 'Fiscal Years',          path: '/admin/finance/fiscal-years',       icon: FiCalendar,     roles: ['admin', 'super_admin'] },
+      { label: 'Accounting Periods',    path: '/admin/finance/periods',            icon: FiClock,        roles: ['admin', 'super_admin'] },
+      { label: 'Cost Centers',          path: '/admin/finance/cost-centers',       icon: FiTarget,       roles: ['admin', 'super_admin'] },
+      { label: 'Profit Centers',        path: '/admin/finance/profit-centers',     icon: FiTrendingUp,   roles: ['admin', 'super_admin'] },
+      { label: 'Posting Rules',         path: '/admin/finance/posting-rules',      icon: FiZap,          roles: ['admin', 'super_admin'] },
+      { label: 'Voucher Series',        path: '/admin/finance/voucher-series',     icon: FiFileText,     roles: ['admin', 'super_admin'] },
+      { label: 'Trial Balance',         path: '/admin/finance/trial-balance',      icon: FiSliders,      roles: ['admin', 'super_admin'] },
+      { label: 'Balance Sheet',         path: '/admin/finance/balance-sheet',      icon: FiActivity,     roles: ['admin', 'super_admin'] },
+      { label: 'Profit & Loss',         path: '/admin/finance/profit-loss',        icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
+      { label: 'Cash Book',             path: '/admin/finance/cash-book',          icon: FiDatabase,     roles: ['admin', 'super_admin'] },
+      { label: 'Bank Book',             path: '/admin/finance/bank-book',          icon: FiDatabase,     roles: ['admin', 'super_admin'] },
+      { label: 'Finance Settings',      path: '/admin/finance/settings',           icon: FiSettings,     roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
     label: 'Enterprise',
     items: [
       { label: 'Audit Log', path: '/admin/audit-log', icon: FiShield, roles: ['admin', 'super_admin'] },
