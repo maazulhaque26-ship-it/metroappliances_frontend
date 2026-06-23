@@ -2624,5 +2624,305 @@ router.delete('/admin/accounts-receivable/collection-rules/:id', protect, admin,
   } catch(e) { return se13c(res, e); }
 });
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// SPRINT 13D — Enterprise Tax & Compliance Engine
+// ═══════════════════════════════════════════════════════════════════════════════
+const TaxCode             = require('../models/TaxCode');
+const TaxRate             = require('../models/TaxRate');
+const TaxGroup            = require('../models/TaxGroup');
+const TaxJurisdiction     = require('../models/TaxJurisdiction');
+const TaxRule             = require('../models/TaxRule');
+const TaxExemption        = require('../models/TaxExemption');
+const TaxConfiguration    = require('../models/TaxConfiguration');
+const taxDashCtrl         = require('../controllers/taxDashboardController');
+const gstCtrl             = require('../controllers/gstController');
+const tdsCtrl             = require('../controllers/tdsController');
+const complianceCtrl      = require('../controllers/complianceController');
+const einvoiceCtrl        = require('../controllers/einvoiceController');
+const ewayBillCtrl        = require('../controllers/ewayBillController');
+const taxReportCtrl       = require('../controllers/taxReportController');
+
+const { paginated: pgT, created: crT, ok: okT, notFound: nfT, serverError: seT, noContent: ncT } = require('../utils/response');
+
+// ── Tax Dashboard ─────────────────────────────────────────────────────────────
+router.get('/admin/tax/dashboard',            protect, admin, taxDashCtrl.getDashboard);
+router.get('/admin/tax/compliance-status',    protect, admin, taxDashCtrl.getComplianceStatus);
+
+// ── Tax Codes ─────────────────────────────────────────────────────────────────
+router.get('/admin/tax/codes', protect, admin, async (req, res) => {
+  try {
+    const q = { isDeleted: false };
+    if (req.query.taxType) q.taxType = req.query.taxType;
+    if (req.query.isActive !== undefined) q.isActive = req.query.isActive === 'true';
+    const data = await TaxCode.find(q).sort({ code: 1 });
+    return okT(res, data);
+  } catch(e) { return seT(res, e); }
+});
+router.post('/admin/tax/codes', protect, admin, async (req, res) => {
+  try { const doc = await TaxCode.create(req.body); return crT(res, doc, 'Tax code created'); }
+  catch(e) { return seT(res, e); }
+});
+router.put('/admin/tax/codes/:id', protect, admin, async (req, res) => {
+  try {
+    const doc = await TaxCode.findOneAndUpdate({ _id: req.params.id, isDeleted: false }, req.body, { new: true });
+    if (!doc) return nfT(res, 'Tax code');
+    return okT(res, doc);
+  } catch(e) { return seT(res, e); }
+});
+router.delete('/admin/tax/codes/:id', protect, admin, async (req, res) => {
+  try {
+    const doc = await TaxCode.findOneAndUpdate({ _id: req.params.id }, { isDeleted: true }, { new: true });
+    if (!doc) return nfT(res, 'Tax code');
+    return res.status(204).send();
+  } catch(e) { return seT(res, e); }
+});
+
+// ── Tax Rates ─────────────────────────────────────────────────────────────────
+router.get('/admin/tax/rates', protect, admin, async (req, res) => {
+  try {
+    const q = { isDeleted: false };
+    if (req.query.taxCode) q.taxCode = req.query.taxCode;
+    if (req.query.isActive !== undefined) q.isActive = req.query.isActive === 'true';
+    const data = await TaxRate.find(q).sort({ effectiveFrom: -1 }).populate('taxCode','code name taxType');
+    return okT(res, data);
+  } catch(e) { return seT(res, e); }
+});
+router.post('/admin/tax/rates', protect, admin, async (req, res) => {
+  try { const doc = await TaxRate.create(req.body); return crT(res, doc, 'Tax rate created'); }
+  catch(e) { return seT(res, e); }
+});
+router.put('/admin/tax/rates/:id', protect, admin, async (req, res) => {
+  try {
+    const doc = await TaxRate.findOneAndUpdate({ _id: req.params.id, isDeleted: false }, req.body, { new: true });
+    if (!doc) return nfT(res, 'Tax rate');
+    return okT(res, doc);
+  } catch(e) { return seT(res, e); }
+});
+
+// ── Tax Groups ────────────────────────────────────────────────────────────────
+router.get('/admin/tax/groups', protect, admin, async (req, res) => {
+  try {
+    const data = await TaxGroup.find({ isDeleted: false }).sort({ name: 1 }).populate('taxCodes','code name');
+    return okT(res, data);
+  } catch(e) { return seT(res, e); }
+});
+router.post('/admin/tax/groups', protect, admin, async (req, res) => {
+  try { const doc = await TaxGroup.create(req.body); return crT(res, doc, 'Tax group created'); }
+  catch(e) { return seT(res, e); }
+});
+router.put('/admin/tax/groups/:id', protect, admin, async (req, res) => {
+  try {
+    const doc = await TaxGroup.findOneAndUpdate({ _id: req.params.id, isDeleted: false }, req.body, { new: true });
+    if (!doc) return nfT(res, 'Tax group');
+    return okT(res, doc);
+  } catch(e) { return seT(res, e); }
+});
+
+// ── Tax Jurisdictions ─────────────────────────────────────────────────────────
+router.get('/admin/tax/jurisdictions', protect, admin, async (req, res) => {
+  try { const data = await TaxJurisdiction.find({ isDeleted: false }).sort({ stateCode: 1 }); return okT(res, data); }
+  catch(e) { return seT(res, e); }
+});
+router.post('/admin/tax/jurisdictions', protect, admin, async (req, res) => {
+  try { const doc = await TaxJurisdiction.create(req.body); return crT(res, doc, 'Jurisdiction created'); }
+  catch(e) { return seT(res, e); }
+});
+router.put('/admin/tax/jurisdictions/:id', protect, admin, async (req, res) => {
+  try {
+    const doc = await TaxJurisdiction.findOneAndUpdate({ _id: req.params.id, isDeleted: false }, req.body, { new: true });
+    if (!doc) return nfT(res, 'Tax jurisdiction');
+    return okT(res, doc);
+  } catch(e) { return seT(res, e); }
+});
+
+// ── Tax Rules ─────────────────────────────────────────────────────────────────
+router.get('/admin/tax/rules', protect, admin, async (req, res) => {
+  try {
+    const q = { isDeleted: false };
+    if (req.query.taxType)     q.taxType     = req.query.taxType;
+    if (req.query.isActive !== undefined) q.isActive = req.query.isActive === 'true';
+    const data = await TaxRule.find(q).sort({ priority: 1 });
+    return okT(res, data);
+  } catch(e) { return seT(res, e); }
+});
+router.post('/admin/tax/rules', protect, admin, async (req, res) => {
+  try { const doc = await TaxRule.create(req.body); return crT(res, doc, 'Tax rule created'); }
+  catch(e) { return seT(res, e); }
+});
+router.put('/admin/tax/rules/:id', protect, admin, async (req, res) => {
+  try {
+    const doc = await TaxRule.findOneAndUpdate({ _id: req.params.id, isDeleted: false }, req.body, { new: true });
+    if (!doc) return nfT(res, 'Tax rule');
+    return okT(res, doc);
+  } catch(e) { return seT(res, e); }
+});
+
+// ── Tax Exemptions ────────────────────────────────────────────────────────────
+router.get('/admin/tax/exemptions', protect, admin, async (req, res) => {
+  try {
+    const { page = 1, limit = 20, exemptionType, isActive } = req.query;
+    const q = { isDeleted: false };
+    if (exemptionType) q.exemptionType = exemptionType;
+    if (isActive !== undefined) q.isActive = isActive === 'true';
+    const [data, total] = await Promise.all([
+      TaxExemption.find(q).sort({ createdAt: -1 }).skip((page-1)*limit).limit(Number(limit)),
+      TaxExemption.countDocuments(q),
+    ]);
+    return pgT(res, data, total, page, limit);
+  } catch(e) { return seT(res, e); }
+});
+router.post('/admin/tax/exemptions', protect, admin, async (req, res) => {
+  try { const doc = await TaxExemption.create(req.body); return crT(res, doc, 'Tax exemption created'); }
+  catch(e) { return seT(res, e); }
+});
+router.put('/admin/tax/exemptions/:id', protect, admin, async (req, res) => {
+  try {
+    const doc = await TaxExemption.findOneAndUpdate({ _id: req.params.id, isDeleted: false }, req.body, { new: true });
+    if (!doc) return nfT(res, 'Tax exemption');
+    return okT(res, doc);
+  } catch(e) { return seT(res, e); }
+});
+router.delete('/admin/tax/exemptions/:id', protect, admin, async (req, res) => {
+  try {
+    const doc = await TaxExemption.findOneAndUpdate({ _id: req.params.id }, { isDeleted: true }, { new: true });
+    if (!doc) return nfT(res, 'Tax exemption');
+    return res.status(204).send();
+  } catch(e) { return seT(res, e); }
+});
+
+// ── Tax Configuration ─────────────────────────────────────────────────────────
+router.get('/admin/tax/configuration', protect, admin, async (req, res) => {
+  try {
+    const q = {};
+    if (req.query.category) q.category = req.query.category;
+    const data = await TaxConfiguration.find(q).sort({ category: 1, key: 1 });
+    return okT(res, data);
+  } catch(e) { return seT(res, e); }
+});
+router.put('/admin/tax/configuration/:key', protect, admin, async (req, res) => {
+  try {
+    const doc = await TaxConfiguration.findOneAndUpdate(
+      { key: req.params.key },
+      { $set: { value: req.body.value, description: req.body.description, category: req.body.category } },
+      { upsert: true, new: true },
+    );
+    return okT(res, doc, 'Configuration updated');
+  } catch(e) { return seT(res, e); }
+});
+
+// ── GST Registrations ─────────────────────────────────────────────────────────
+router.get('/admin/tax/gst/registrations',           protect, admin, gstCtrl.getRegistrations);
+router.post('/admin/tax/gst/registrations',          protect, admin, gstCtrl.createRegistration);
+router.put('/admin/tax/gst/registrations/:id',       protect, admin, gstCtrl.updateRegistration);
+router.delete('/admin/tax/gst/registrations/:id',    protect, admin, gstCtrl.deleteRegistration);
+
+// ── GST Returns ───────────────────────────────────────────────────────────────
+router.get('/admin/tax/gst/returns',                 protect, admin, gstCtrl.getReturns);
+router.post('/admin/tax/gst/returns',                protect, admin, gstCtrl.createReturn);
+router.get('/admin/tax/gst/returns/:id',             protect, admin, gstCtrl.getReturn);
+router.put('/admin/tax/gst/returns/:id',             protect, admin, gstCtrl.updateReturn);
+router.post('/admin/tax/gst/returns/:id/file',       protect, admin, gstCtrl.fileReturn);
+router.delete('/admin/tax/gst/returns/:id',          protect, admin, gstCtrl.deleteReturn);
+
+// ── GST Invoices ──────────────────────────────────────────────────────────────
+router.get('/admin/tax/gst/invoices',                protect, admin, gstCtrl.getGSTInvoices);
+router.post('/admin/tax/gst/invoices',               protect, admin, gstCtrl.createGSTInvoice);
+router.put('/admin/tax/gst/invoices/:id',            protect, admin, gstCtrl.updateGSTInvoice);
+
+// ── GST Adjustments ───────────────────────────────────────────────────────────
+router.get('/admin/tax/gst/adjustments',             protect, admin, gstCtrl.getAdjustments);
+router.post('/admin/tax/gst/adjustments',            protect, admin, gstCtrl.createAdjustment);
+router.post('/admin/tax/gst/adjustments/:id/approve',protect, admin, gstCtrl.approveAdjustment);
+
+// ── ITC Ledger ────────────────────────────────────────────────────────────────
+router.get('/admin/tax/gst/itc-ledger',              protect, admin, gstCtrl.getITCLedger);
+router.post('/admin/tax/gst/itc-ledger',             protect, admin, gstCtrl.createITCEntry);
+
+// ── Output Tax Ledger ─────────────────────────────────────────────────────────
+router.get('/admin/tax/gst/output-tax-ledger',       protect, admin, gstCtrl.getOutputTaxLedger);
+router.post('/admin/tax/gst/output-tax-ledger',      protect, admin, gstCtrl.createOutputTaxEntry);
+
+// ── GST Settlements ───────────────────────────────────────────────────────────
+router.get('/admin/tax/gst/settlements',             protect, admin, gstCtrl.getSettlements);
+router.post('/admin/tax/gst/settlements',            protect, admin, gstCtrl.createSettlement);
+router.get('/admin/tax/gst/settlements/:id',         protect, admin, gstCtrl.getSettlement);
+router.post('/admin/tax/gst/settlements/:id/settle', protect, admin, gstCtrl.settleGST);
+
+// ── ITC Register (AP module) ──────────────────────────────────────────────────
+router.get('/admin/tax/gst/itc-register',            protect, admin, gstCtrl.getInputCreditRegister);
+
+// ── TDS Sections ──────────────────────────────────────────────────────────────
+router.get('/admin/tax/tds/sections',                protect, admin, tdsCtrl.getSections);
+router.post('/admin/tax/tds/sections',               protect, admin, tdsCtrl.createSection);
+router.put('/admin/tax/tds/sections/:id',            protect, admin, tdsCtrl.updateSection);
+
+// ── TDS Rates ─────────────────────────────────────────────────────────────────
+router.get('/admin/tax/tds/rates',                   protect, admin, tdsCtrl.getRates);
+router.post('/admin/tax/tds/rates',                  protect, admin, tdsCtrl.createRate);
+
+// ── TDS Deductions ────────────────────────────────────────────────────────────
+router.get('/admin/tax/tds/deductions',              protect, admin, tdsCtrl.getDeductions);
+router.post('/admin/tax/tds/deductions',             protect, admin, tdsCtrl.createDeduction);
+router.get('/admin/tax/tds/deductions/:id',          protect, admin, tdsCtrl.getDeduction);
+router.put('/admin/tax/tds/deductions/:id',          protect, admin, tdsCtrl.updateDeduction);
+router.delete('/admin/tax/tds/deductions/:id',       protect, admin, tdsCtrl.deleteDeduction);
+
+// ── TDS Deposits ──────────────────────────────────────────────────────────────
+router.get('/admin/tax/tds/deposits',                protect, admin, tdsCtrl.getDeposits);
+router.post('/admin/tax/tds/deposits',               protect, admin, tdsCtrl.createDeposit);
+router.post('/admin/tax/tds/deposits/:id/acknowledge', protect, admin, tdsCtrl.acknowledgeDeposit);
+
+// ── TDS Certificates ──────────────────────────────────────────────────────────
+router.get('/admin/tax/tds/certificates',            protect, admin, tdsCtrl.getCertificates);
+router.post('/admin/tax/tds/certificates',           protect, admin, tdsCtrl.createCertificate);
+router.post('/admin/tax/tds/certificates/:id/issue', protect, admin, tdsCtrl.issueCertificate);
+router.delete('/admin/tax/tds/certificates/:id',     protect, admin, tdsCtrl.deleteCertificate);
+
+// ── Compliance Calendar ───────────────────────────────────────────────────────
+router.get('/admin/tax/compliance/calendars',        protect, admin, complianceCtrl.getCalendars);
+router.post('/admin/tax/compliance/calendars',       protect, admin, complianceCtrl.createCalendar);
+router.put('/admin/tax/compliance/calendars/:id',    protect, admin, complianceCtrl.updateCalendar);
+router.delete('/admin/tax/compliance/calendars/:id', protect, admin, complianceCtrl.deleteCalendar);
+
+// ── Compliance Tasks ──────────────────────────────────────────────────────────
+router.get('/admin/tax/compliance/tasks',                   protect, admin, complianceCtrl.getTasks);
+router.post('/admin/tax/compliance/tasks',                  protect, admin, complianceCtrl.createTask);
+router.get('/admin/tax/compliance/tasks/reminders',         protect, admin, complianceCtrl.getReminders);
+router.get('/admin/tax/compliance/tasks/:id',               protect, admin, complianceCtrl.getTask);
+router.put('/admin/tax/compliance/tasks/:id',               protect, admin, complianceCtrl.updateTask);
+router.post('/admin/tax/compliance/tasks/:id/complete',     protect, admin, complianceCtrl.completeTask);
+router.delete('/admin/tax/compliance/tasks/:id',            protect, admin, complianceCtrl.deleteTask);
+
+// ── Tax Audits ────────────────────────────────────────────────────────────────
+router.get('/admin/tax/compliance/audits',           protect, admin, complianceCtrl.getAudits);
+router.post('/admin/tax/compliance/audits',          protect, admin, complianceCtrl.createAudit);
+router.put('/admin/tax/compliance/audits/:id',       protect, admin, complianceCtrl.updateAudit);
+
+// ── E-Invoice ─────────────────────────────────────────────────────────────────
+router.get('/admin/tax/einvoice',                    protect, admin, einvoiceCtrl.getEInvoices);
+router.post('/admin/tax/einvoice',                   protect, admin, einvoiceCtrl.createEInvoice);
+router.get('/admin/tax/einvoice/:id',                protect, admin, einvoiceCtrl.getEInvoice);
+router.post('/admin/tax/einvoice/:id/generate-irn', protect, admin, einvoiceCtrl.generateIRN);
+router.post('/admin/tax/einvoice/:id/cancel',        protect, admin, einvoiceCtrl.cancelEInvoice);
+router.delete('/admin/tax/einvoice/:id',             protect, admin, einvoiceCtrl.deleteEInvoice);
+
+// ── E-Way Bill ────────────────────────────────────────────────────────────────
+router.get('/admin/tax/ewaybill',                    protect, admin, ewayBillCtrl.getEWayBills);
+router.post('/admin/tax/ewaybill',                   protect, admin, ewayBillCtrl.createEWayBill);
+router.get('/admin/tax/ewaybill/:id',                protect, admin, ewayBillCtrl.getEWayBill);
+router.post('/admin/tax/ewaybill/:id/generate',      protect, admin, ewayBillCtrl.generateEWB);
+router.put('/admin/tax/ewaybill/:id/transport',      protect, admin, ewayBillCtrl.updateTransport);
+router.post('/admin/tax/ewaybill/:id/cancel',        protect, admin, ewayBillCtrl.cancelEWayBill);
+router.delete('/admin/tax/ewaybill/:id',             protect, admin, ewayBillCtrl.deleteEWayBill);
+
+// ── Tax Reports ───────────────────────────────────────────────────────────────
+router.get('/admin/tax/reports/gstr1',               protect, admin, taxReportCtrl.getGSTR1Summary);
+router.get('/admin/tax/reports/gstr3b',              protect, admin, taxReportCtrl.getGSTR3BSummary);
+router.get('/admin/tax/reports/itc-register',        protect, admin, taxReportCtrl.getInputCreditReport);
+router.get('/admin/tax/reports/tds-register',        protect, admin, taxReportCtrl.getTDSRegister);
+router.get('/admin/tax/reports/gst-settlement',      protect, admin, taxReportCtrl.getSettlementReport);
+router.get('/admin/tax/reports/tax-audit',           protect, admin, taxReportCtrl.getTaxAuditReport);
+router.get('/admin/tax/reports/compliance-summary',  protect, admin, taxReportCtrl.getComplianceSummary);
+
 module.exports = router;
 
