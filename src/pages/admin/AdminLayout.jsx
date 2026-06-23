@@ -287,6 +287,25 @@ const NAV_GROUPS = [
     ],
   },
   {
+    label: 'EAM',
+    items: [
+      { label: 'EAM Dashboard',         path: '/admin/eam',                        icon: FiCpu,          roles: ['admin', 'super_admin'] },
+      { label: 'Asset Register',         path: '/admin/eam/assets',                 icon: FiBox,          roles: ['admin', 'super_admin'] },
+      { label: 'Asset Hierarchy',        path: '/admin/eam/hierarchy',              icon: FiLayers,       roles: ['admin', 'super_admin'] },
+      { label: 'Maintenance Plans',      path: '/admin/eam/maintenance-plans',      icon: FiClipboard,    roles: ['admin', 'super_admin'] },
+      { label: 'Maint. Calendar',        path: '/admin/eam/calendar',               icon: FiCalendar,     roles: ['admin', 'super_admin'] },
+      { label: 'Work Orders',            path: '/admin/eam/work-orders',            icon: FiTool,         roles: ['admin', 'super_admin'] },
+      { label: 'Maint. Requests',        path: '/admin/eam/requests',               icon: FiFileText,     roles: ['admin', 'super_admin'] },
+      { label: 'Breakdowns',             path: '/admin/eam/breakdowns',             icon: FiAlertTriangle,roles: ['admin', 'super_admin'] },
+      { label: 'Meters',                 path: '/admin/eam/meters',                 icon: FiActivity,     roles: ['admin', 'super_admin'] },
+      { label: 'Condition Monitoring',   path: '/admin/eam/condition-monitoring',   icon: FiThermometer,  roles: ['admin', 'super_admin'] },
+      { label: 'Contracts',              path: '/admin/eam/contracts',              icon: FiBriefcase,    roles: ['admin', 'super_admin'] },
+      { label: 'Warranties',             path: '/admin/eam/warranties',             icon: FiShield,       roles: ['admin', 'super_admin'] },
+      { label: 'Maint. Reports',         path: '/admin/eam/reports',                icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
+      { label: 'Maint. Analytics',       path: '/admin/eam/analytics',              icon: FiTrendingUp,   roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
     label: 'Enterprise',
     items: [
       { label: 'Audit Log', path: '/admin/audit-log', icon: FiShield, roles: ['admin', 'super_admin'] },

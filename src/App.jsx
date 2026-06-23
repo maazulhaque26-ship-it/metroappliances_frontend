@@ -315,6 +315,24 @@ const AdminSupplierQuality     = lazy(() => import('./pages/admin/AdminSupplierQ
 const AdminQualityReports      = lazy(() => import('./pages/admin/AdminQualityReports'));
 const AdminDocumentControl     = lazy(() => import('./pages/admin/AdminDocumentControl'));
 
+// ── Sprint 12F: Enterprise Asset Management (EAM / CMMS) ────────────────────
+const AdminEAMDashboard         = lazy(() => import('./pages/admin/AdminEAMDashboard'));
+const AdminAssets               = lazy(() => import('./pages/admin/AdminAssets'));
+const AdminAssetDetail          = lazy(() => import('./pages/admin/AdminAssetDetail'));
+const AdminAssetHierarchy       = lazy(() => import('./pages/admin/AdminAssetHierarchy'));
+const AdminMaintenancePlans     = lazy(() => import('./pages/admin/AdminMaintenancePlans'));
+const AdminMaintenanceCalendar  = lazy(() => import('./pages/admin/AdminMaintenanceCalendar'));
+const AdminMaintenanceWorkOrders = lazy(() => import('./pages/admin/AdminMaintenanceWorkOrders'));
+const AdminMaintenanceRequests  = lazy(() => import('./pages/admin/AdminMaintenanceRequests'));
+const AdminBreakdowns           = lazy(() => import('./pages/admin/AdminBreakdowns'));
+const AdminMeters               = lazy(() => import('./pages/admin/AdminMeters'));
+const AdminConditionMonitoring  = lazy(() => import('./pages/admin/AdminConditionMonitoring'));
+const AdminMaintenanceReports   = lazy(() => import('./pages/admin/AdminMaintenanceReports'));
+const AdminMaintenanceAnalytics = lazy(() => import('./pages/admin/AdminMaintenanceAnalytics'));
+const AdminAssetWarranty        = lazy(() => import('./pages/admin/AdminAssetWarranty'));
+const AdminMaintenanceInventory = lazy(() => import('./pages/admin/AdminMaintenanceInventory'));
+const AdminMaintenanceContracts = lazy(() => import('./pages/admin/AdminMaintenanceContracts'));
+
 // ── Sprint 12B: Enterprise Production Planning & Scheduling ─────────────────
 const AdminManufacturingPlanningDashboard = lazy(() => import('./pages/admin/AdminManufacturingPlanningDashboard'));
 const AdminProductionPlans                = lazy(() => import('./pages/admin/AdminProductionPlans'));
@@ -859,6 +877,24 @@ export default function App() {
         <Route path="/admin/qms/supplier-quality"         element={<AdminRoute><AdminSupplierQuality /></AdminRoute>} />
         <Route path="/admin/qms/reports"                  element={<AdminRoute><AdminQualityReports /></AdminRoute>} />
         <Route path="/admin/qms/documents"                element={<AdminRoute><AdminDocumentControl /></AdminRoute>} />
+
+        {/* Sprint 12F: Enterprise Asset Management (EAM / CMMS) */}
+        <Route path="/admin/eam"                          element={<AdminRoute><AdminEAMDashboard /></AdminRoute>} />
+        <Route path="/admin/eam/assets"                   element={<AdminRoute><AdminAssets /></AdminRoute>} />
+        <Route path="/admin/eam/assets/:id"               element={<AdminRoute><AdminAssetDetail /></AdminRoute>} />
+        <Route path="/admin/eam/hierarchy"                element={<AdminRoute><AdminAssetHierarchy /></AdminRoute>} />
+        <Route path="/admin/eam/maintenance-plans"        element={<AdminRoute><AdminMaintenancePlans /></AdminRoute>} />
+        <Route path="/admin/eam/calendar"                 element={<AdminRoute><AdminMaintenanceCalendar /></AdminRoute>} />
+        <Route path="/admin/eam/work-orders"              element={<AdminRoute><AdminMaintenanceWorkOrders /></AdminRoute>} />
+        <Route path="/admin/eam/requests"                 element={<AdminRoute><AdminMaintenanceRequests /></AdminRoute>} />
+        <Route path="/admin/eam/breakdowns"               element={<AdminRoute><AdminBreakdowns /></AdminRoute>} />
+        <Route path="/admin/eam/meters"                   element={<AdminRoute><AdminMeters /></AdminRoute>} />
+        <Route path="/admin/eam/condition-monitoring"     element={<AdminRoute><AdminConditionMonitoring /></AdminRoute>} />
+        <Route path="/admin/eam/reports"                  element={<AdminRoute><AdminMaintenanceReports /></AdminRoute>} />
+        <Route path="/admin/eam/analytics"                element={<AdminRoute><AdminMaintenanceAnalytics /></AdminRoute>} />
+        <Route path="/admin/eam/warranties"               element={<AdminRoute><AdminAssetWarranty /></AdminRoute>} />
+        <Route path="/admin/eam/inventory"                element={<AdminRoute><AdminMaintenanceInventory /></AdminRoute>} />
+        <Route path="/admin/eam/contracts"                element={<AdminRoute><AdminMaintenanceContracts /></AdminRoute>} />
 
         {/* Sprint 11C: Installation Engineer Portal (isolated auth — type:'engineer' JWT, green) */}
         <Route path="/engineer/login" element={<PageWrapper><EngineerLogin /></PageWrapper>} />
