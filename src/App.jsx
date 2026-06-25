@@ -434,6 +434,19 @@ const AdminVarianceAnalysis       = lazy(() => import('./pages/admin/AdminVarian
 const AdminFinancialAlerts        = lazy(() => import('./pages/admin/AdminFinancialAlerts'));
 const AdminExecutiveReports       = lazy(() => import('./pages/admin/AdminExecutiveReports'));
 
+// ── Sprint 14B: Enterprise Attendance & Leave Management ─────────────────────
+const AdminAttendanceDashboard = lazy(() => import('./pages/admin/AdminAttendanceDashboard'));
+const AdminAttendanceRegister  = lazy(() => import('./pages/admin/AdminAttendanceRegister'));
+const AdminAttendanceAdjustments = lazy(() => import('./pages/admin/AdminAttendanceAdjustments'));
+const AdminAttendancePolicies  = lazy(() => import('./pages/admin/AdminAttendancePolicies'));
+const AdminLeaveTypes          = lazy(() => import('./pages/admin/AdminLeaveTypes'));
+const AdminLeaveRequests       = lazy(() => import('./pages/admin/AdminLeaveRequests'));
+const AdminLeaveApprovals      = lazy(() => import('./pages/admin/AdminLeaveApprovals'));
+const AdminLeaveBalances       = lazy(() => import('./pages/admin/AdminLeaveBalances'));
+const AdminHolidays            = lazy(() => import('./pages/admin/AdminHolidays'));
+const AdminAttendanceReports   = lazy(() => import('./pages/admin/AdminAttendanceReports'));
+const AdminLeaveReports        = lazy(() => import('./pages/admin/AdminLeaveReports'));
+
 // ── Sprint 14A: Enterprise HRMS Foundation ────────────────────────────────────
 const AdminHRDashboard       = lazy(() => import('./pages/admin/AdminHRDashboard'));
 const AdminEmployees         = lazy(() => import('./pages/admin/AdminEmployees'));
@@ -1125,6 +1138,17 @@ export default function App() {
         <Route path="/admin/hr/probation"              element={<AdminRoute><AdminProbation /></AdminRoute>} />
         <Route path="/admin/hr/exits"                  element={<AdminRoute><AdminExits /></AdminRoute>} />
         <Route path="/admin/hr/reports"                element={<AdminRoute><AdminHRReports /></AdminRoute>} />
+        <Route path="/admin/hr/attendance"             element={<AdminRoute><AdminAttendanceDashboard /></AdminRoute>} />
+        <Route path="/admin/hr/attendance/register"    element={<AdminRoute><AdminAttendanceRegister /></AdminRoute>} />
+        <Route path="/admin/hr/attendance/adjustments" element={<AdminRoute><AdminAttendanceAdjustments /></AdminRoute>} />
+        <Route path="/admin/hr/attendance/policies"    element={<AdminRoute><AdminAttendancePolicies /></AdminRoute>} />
+        <Route path="/admin/hr/leave/types"            element={<AdminRoute><AdminLeaveTypes /></AdminRoute>} />
+        <Route path="/admin/hr/leave/requests"         element={<AdminRoute><AdminLeaveRequests /></AdminRoute>} />
+        <Route path="/admin/hr/leave/approvals"        element={<AdminRoute><AdminLeaveApprovals /></AdminRoute>} />
+        <Route path="/admin/hr/leave/balances"         element={<AdminRoute><AdminLeaveBalances /></AdminRoute>} />
+        <Route path="/admin/hr/leave/holidays"         element={<AdminRoute><AdminHolidays /></AdminRoute>} />
+        <Route path="/admin/hr/attendance/reports"     element={<AdminRoute><AdminAttendanceReports /></AdminRoute>} />
+        <Route path="/admin/hr/leave/reports"          element={<AdminRoute><AdminLeaveReports /></AdminRoute>} />
 
         {/* Sprint 11C: Installation Engineer Portal (isolated auth — type:'engineer' JWT, green) */}
         <Route path="/engineer/login" element={<PageWrapper><EngineerLogin /></PageWrapper>} />
