@@ -399,6 +399,55 @@ const AdminEInvoice          = lazy(() => import('./pages/admin/AdminEInvoice'))
 const AdminEWayBill          = lazy(() => import('./pages/admin/AdminEWayBill'));
 const AdminTaxReports        = lazy(() => import('./pages/admin/AdminTaxReports'));
 
+// ── Sprint 13E: Enterprise Banking & Treasury ────────────────────────────────
+const AdminBankingDashboard    = lazy(() => import('./pages/admin/AdminBankingDashboard'));
+const AdminBanks               = lazy(() => import('./pages/admin/AdminBanks'));
+const AdminBankAccounts        = lazy(() => import('./pages/admin/AdminBankAccounts'));
+const AdminBankStatements      = lazy(() => import('./pages/admin/AdminBankStatements'));
+const AdminReconciliation      = lazy(() => import('./pages/admin/AdminReconciliation'));
+const AdminBankCashBook        = lazy(() => import('./pages/admin/AdminBankCashBook'));
+const AdminPettyCash           = lazy(() => import('./pages/admin/AdminPettyCash'));
+const AdminCashTransfers       = lazy(() => import('./pages/admin/AdminCashTransfers'));
+const AdminChequeBooks         = lazy(() => import('./pages/admin/AdminChequeBooks'));
+const AdminTreasury            = lazy(() => import('./pages/admin/AdminTreasury'));
+const AdminCashForecast        = lazy(() => import('./pages/admin/AdminCashForecast'));
+const AdminLiquidityForecast   = lazy(() => import('./pages/admin/AdminLiquidityForecast'));
+const AdminInvestments         = lazy(() => import('./pages/admin/AdminInvestments'));
+const AdminFixedDeposits       = lazy(() => import('./pages/admin/AdminFixedDeposits'));
+const AdminBankGuarantees      = lazy(() => import('./pages/admin/AdminBankGuarantees'));
+const AdminLettersOfCredit     = lazy(() => import('./pages/admin/AdminLettersOfCredit'));
+const AdminFXManagement        = lazy(() => import('./pages/admin/AdminFXManagement'));
+const AdminBankingReports      = lazy(() => import('./pages/admin/AdminBankingReports'));
+
+// ── Sprint 13F: Enterprise CFO Dashboard & Financial Consolidation ───────────
+const AdminCFODashboard           = lazy(() => import('./pages/admin/AdminCFODashboard'));
+const AdminBudgets                = lazy(() => import('./pages/admin/AdminBudgets'));
+const AdminBudgetDetail           = lazy(() => import('./pages/admin/AdminBudgetDetail'));
+const AdminForecasts              = lazy(() => import('./pages/admin/AdminForecasts'));
+const AdminForecastDetail         = lazy(() => import('./pages/admin/AdminForecastDetail'));
+const AdminFinancialKPIs          = lazy(() => import('./pages/admin/AdminFinancialKPIs'));
+const AdminCashFlowDashboard      = lazy(() => import('./pages/admin/AdminCashFlowDashboard'));
+const AdminProfitabilityDashboard = lazy(() => import('./pages/admin/AdminProfitabilityDashboard'));
+const AdminConsolidationDashboard = lazy(() => import('./pages/admin/AdminConsolidationDashboard'));
+const AdminBoardReports           = lazy(() => import('./pages/admin/AdminBoardReports'));
+const AdminVarianceAnalysis       = lazy(() => import('./pages/admin/AdminVarianceAnalysis'));
+const AdminFinancialAlerts        = lazy(() => import('./pages/admin/AdminFinancialAlerts'));
+const AdminExecutiveReports       = lazy(() => import('./pages/admin/AdminExecutiveReports'));
+
+// ── Sprint 14A: Enterprise HRMS Foundation ────────────────────────────────────
+const AdminHRDashboard       = lazy(() => import('./pages/admin/AdminHRDashboard'));
+const AdminEmployees         = lazy(() => import('./pages/admin/AdminEmployees'));
+const AdminEmployeeDetail    = lazy(() => import('./pages/admin/AdminEmployeeDetail'));
+const AdminDepartments       = lazy(() => import('./pages/admin/AdminDepartments'));
+const AdminDesignations      = lazy(() => import('./pages/admin/AdminDesignations'));
+const AdminOrganizationChart = lazy(() => import('./pages/admin/AdminOrganizationChart'));
+const AdminEmployeeDocuments = lazy(() => import('./pages/admin/AdminEmployeeDocuments'));
+const AdminTransfers         = lazy(() => import('./pages/admin/AdminTransfers'));
+const AdminPromotions        = lazy(() => import('./pages/admin/AdminPromotions'));
+const AdminProbation         = lazy(() => import('./pages/admin/AdminProbation'));
+const AdminExits             = lazy(() => import('./pages/admin/AdminExits'));
+const AdminHRReports         = lazy(() => import('./pages/admin/AdminHRReports'));
+
 // ── Sprint 12B: Enterprise Production Planning & Scheduling ─────────────────
 const AdminManufacturingPlanningDashboard = lazy(() => import('./pages/admin/AdminManufacturingPlanningDashboard'));
 const AdminProductionPlans                = lazy(() => import('./pages/admin/AdminProductionPlans'));
@@ -1027,6 +1076,55 @@ export default function App() {
         <Route path="/admin/tax/einvoice"                 element={<AdminRoute><AdminEInvoice /></AdminRoute>} />
         <Route path="/admin/tax/ewaybill"                 element={<AdminRoute><AdminEWayBill /></AdminRoute>} />
         <Route path="/admin/tax/reports"                  element={<AdminRoute><AdminTaxReports /></AdminRoute>} />
+
+        {/* Sprint 13E: Enterprise Banking & Treasury */}
+        <Route path="/admin/banking"                              element={<AdminRoute><AdminBankingDashboard /></AdminRoute>} />
+        <Route path="/admin/banking/banks"                        element={<AdminRoute><AdminBanks /></AdminRoute>} />
+        <Route path="/admin/banking/accounts"                     element={<AdminRoute><AdminBankAccounts /></AdminRoute>} />
+        <Route path="/admin/banking/statements"                   element={<AdminRoute><AdminBankStatements /></AdminRoute>} />
+        <Route path="/admin/banking/reconciliation"               element={<AdminRoute><AdminReconciliation /></AdminRoute>} />
+        <Route path="/admin/banking/cash-book"                    element={<AdminRoute><AdminBankCashBook /></AdminRoute>} />
+        <Route path="/admin/banking/petty-cash"                   element={<AdminRoute><AdminPettyCash /></AdminRoute>} />
+        <Route path="/admin/banking/cash-transfers"               element={<AdminRoute><AdminCashTransfers /></AdminRoute>} />
+        <Route path="/admin/banking/cheque-books"                 element={<AdminRoute><AdminChequeBooks /></AdminRoute>} />
+        <Route path="/admin/banking/treasury"                     element={<AdminRoute><AdminTreasury /></AdminRoute>} />
+        <Route path="/admin/banking/cash-forecast"                element={<AdminRoute><AdminCashForecast /></AdminRoute>} />
+        <Route path="/admin/banking/liquidity-forecast"           element={<AdminRoute><AdminLiquidityForecast /></AdminRoute>} />
+        <Route path="/admin/banking/investments"                  element={<AdminRoute><AdminInvestments /></AdminRoute>} />
+        <Route path="/admin/banking/fixed-deposits"               element={<AdminRoute><AdminFixedDeposits /></AdminRoute>} />
+        <Route path="/admin/banking/bank-guarantees"              element={<AdminRoute><AdminBankGuarantees /></AdminRoute>} />
+        <Route path="/admin/banking/letters-of-credit"            element={<AdminRoute><AdminLettersOfCredit /></AdminRoute>} />
+        <Route path="/admin/banking/fx"                           element={<AdminRoute><AdminFXManagement /></AdminRoute>} />
+        <Route path="/admin/banking/reports"                      element={<AdminRoute><AdminBankingReports /></AdminRoute>} />
+
+        {/* Sprint 13F: CFO Dashboard & Financial Consolidation */}
+        <Route path="/admin/cfo"                                  element={<AdminRoute><AdminCFODashboard /></AdminRoute>} />
+        <Route path="/admin/cfo/budgets"                          element={<AdminRoute><AdminBudgets /></AdminRoute>} />
+        <Route path="/admin/cfo/budgets/:id"                      element={<AdminRoute><AdminBudgetDetail /></AdminRoute>} />
+        <Route path="/admin/cfo/forecasts"                        element={<AdminRoute><AdminForecasts /></AdminRoute>} />
+        <Route path="/admin/cfo/forecasts/:id"                    element={<AdminRoute><AdminForecastDetail /></AdminRoute>} />
+        <Route path="/admin/cfo/kpis"                             element={<AdminRoute><AdminFinancialKPIs /></AdminRoute>} />
+        <Route path="/admin/cfo/cash-flow"                        element={<AdminRoute><AdminCashFlowDashboard /></AdminRoute>} />
+        <Route path="/admin/cfo/profitability"                    element={<AdminRoute><AdminProfitabilityDashboard /></AdminRoute>} />
+        <Route path="/admin/cfo/consolidation"                    element={<AdminRoute><AdminConsolidationDashboard /></AdminRoute>} />
+        <Route path="/admin/cfo/board-reports"                    element={<AdminRoute><AdminBoardReports /></AdminRoute>} />
+        <Route path="/admin/cfo/variance"                         element={<AdminRoute><AdminVarianceAnalysis /></AdminRoute>} />
+        <Route path="/admin/cfo/alerts"                           element={<AdminRoute><AdminFinancialAlerts /></AdminRoute>} />
+        <Route path="/admin/cfo/reports"                          element={<AdminRoute><AdminExecutiveReports /></AdminRoute>} />
+
+        {/* Sprint 14A: Enterprise HRMS Foundation */}
+        <Route path="/admin/hr"                        element={<AdminRoute><AdminHRDashboard /></AdminRoute>} />
+        <Route path="/admin/hr/employees"              element={<AdminRoute><AdminEmployees /></AdminRoute>} />
+        <Route path="/admin/hr/employees/:id"          element={<AdminRoute><AdminEmployeeDetail /></AdminRoute>} />
+        <Route path="/admin/hr/departments"            element={<AdminRoute><AdminDepartments /></AdminRoute>} />
+        <Route path="/admin/hr/designations"           element={<AdminRoute><AdminDesignations /></AdminRoute>} />
+        <Route path="/admin/hr/org-chart"              element={<AdminRoute><AdminOrganizationChart /></AdminRoute>} />
+        <Route path="/admin/hr/documents"              element={<AdminRoute><AdminEmployeeDocuments /></AdminRoute>} />
+        <Route path="/admin/hr/transfers"              element={<AdminRoute><AdminTransfers /></AdminRoute>} />
+        <Route path="/admin/hr/promotions"             element={<AdminRoute><AdminPromotions /></AdminRoute>} />
+        <Route path="/admin/hr/probation"              element={<AdminRoute><AdminProbation /></AdminRoute>} />
+        <Route path="/admin/hr/exits"                  element={<AdminRoute><AdminExits /></AdminRoute>} />
+        <Route path="/admin/hr/reports"                element={<AdminRoute><AdminHRReports /></AdminRoute>} />
 
         {/* Sprint 11C: Installation Engineer Portal (isolated auth — type:'engineer' JWT, green) */}
         <Route path="/engineer/login" element={<PageWrapper><EngineerLogin /></PageWrapper>} />
