@@ -434,6 +434,21 @@ const AdminVarianceAnalysis       = lazy(() => import('./pages/admin/AdminVarian
 const AdminFinancialAlerts        = lazy(() => import('./pages/admin/AdminFinancialAlerts'));
 const AdminExecutiveReports       = lazy(() => import('./pages/admin/AdminExecutiveReports'));
 
+// ── Sprint 14D: Enterprise Recruitment & ATS ─────────────────────────────────
+const AdminRecruitmentDashboard  = lazy(() => import('./pages/admin/AdminRecruitmentDashboard'));
+const AdminJobOpenings           = lazy(() => import('./pages/admin/AdminJobOpenings'));
+const AdminJobDetail             = lazy(() => import('./pages/admin/AdminJobDetail'));
+const AdminCandidates            = lazy(() => import('./pages/admin/AdminCandidates'));
+const AdminCandidateDetail       = lazy(() => import('./pages/admin/AdminCandidateDetail'));
+const AdminApplications          = lazy(() => import('./pages/admin/AdminApplications'));
+const AdminInterviewCalendar     = lazy(() => import('./pages/admin/AdminInterviewCalendar'));
+const AdminInterviewFeedback     = lazy(() => import('./pages/admin/AdminInterviewFeedback'));
+const AdminOfferLetters          = lazy(() => import('./pages/admin/AdminOfferLetters'));
+const AdminBackgroundVerification = lazy(() => import('./pages/admin/AdminBackgroundVerification'));
+const AdminTalentPool            = lazy(() => import('./pages/admin/AdminTalentPool'));
+const AdminRecruitmentReports    = lazy(() => import('./pages/admin/AdminRecruitmentReports'));
+const AdminRecruitmentSettings   = lazy(() => import('./pages/admin/AdminRecruitmentSettings'));
+
 // ── Sprint 14C: Enterprise Payroll Management ─────────────────────────────────
 const AdminPayrollDashboard  = lazy(() => import('./pages/admin/AdminPayrollDashboard'));
 const AdminPayrollRuns       = lazy(() => import('./pages/admin/AdminPayrollRuns'));
@@ -1177,6 +1192,21 @@ export default function App() {
         <Route path="/admin/hr/payroll/bonuses"               element={<AdminRoute><AdminBonuses /></AdminRoute>} />
         <Route path="/admin/hr/payroll/reports"               element={<AdminRoute><AdminPayrollReports /></AdminRoute>} />
         <Route path="/admin/hr/payroll/settings"              element={<AdminRoute><AdminPayrollSettings /></AdminRoute>} />
+
+        {/* Sprint 14D: Enterprise Recruitment & ATS */}
+        <Route path="/admin/hr/recruitment"                              element={<AdminRoute><AdminRecruitmentDashboard /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/jobs"                         element={<AdminRoute><AdminJobOpenings /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/jobs/:id"                     element={<AdminRoute><AdminJobDetail /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/candidates"                   element={<AdminRoute><AdminCandidates /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/candidates/:id"               element={<AdminRoute><AdminCandidateDetail /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/applications"                 element={<AdminRoute><AdminApplications /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/interviews"                   element={<AdminRoute><AdminInterviewCalendar /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/feedback"                     element={<AdminRoute><AdminInterviewFeedback /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/offers"                       element={<AdminRoute><AdminOfferLetters /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/bgv"                          element={<AdminRoute><AdminBackgroundVerification /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/talent-pool"                  element={<AdminRoute><AdminTalentPool /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/reports"                      element={<AdminRoute><AdminRecruitmentReports /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/settings"                     element={<AdminRoute><AdminRecruitmentSettings /></AdminRoute>} />
 
         {/* Sprint 11C: Installation Engineer Portal (isolated auth — type:'engineer' JWT, green) */}
         <Route path="/engineer/login" element={<PageWrapper><EngineerLogin /></PageWrapper>} />

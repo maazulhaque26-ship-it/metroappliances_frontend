@@ -458,6 +458,18 @@ const NAV_GROUPS = [
       { label: 'Bonuses',          path: '/admin/hr/payroll/bonuses',           icon: FiAward,        roles: ['admin', 'super_admin'] },
       { label: 'Payroll Reports',  path: '/admin/hr/payroll/reports',           icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
       { label: 'Payroll Settings', path: '/admin/hr/payroll/settings',          icon: FiSettings,     roles: ['admin', 'super_admin'] },
+      // ── Sprint 14D: Recruitment & ATS ────────────────────────────────────
+      { label: 'Recruitment',      path: '/admin/hr/recruitment',               icon: FiBriefcase,    roles: ['admin', 'super_admin'] },
+      { label: 'Job Openings',     path: '/admin/hr/recruitment/jobs',          icon: FiHash,         roles: ['admin', 'super_admin'] },
+      { label: 'Candidates',       path: '/admin/hr/recruitment/candidates',    icon: FiUsers,        roles: ['admin', 'super_admin'] },
+      { label: 'Applications',     path: '/admin/hr/recruitment/applications',  icon: FiFileText,     roles: ['admin', 'super_admin'] },
+      { label: 'Interviews',       path: '/admin/hr/recruitment/interviews',    icon: FiCalendar,     roles: ['admin', 'super_admin'] },
+      { label: 'Feedback',         path: '/admin/hr/recruitment/feedback',      icon: FiStar,         roles: ['admin', 'super_admin'] },
+      { label: 'Offer Letters',    path: '/admin/hr/recruitment/offers',        icon: FiMail,         roles: ['admin', 'super_admin'] },
+      { label: 'BGV & Onboarding', path: '/admin/hr/recruitment/bgv',           icon: FiCheckSquare,  roles: ['admin', 'super_admin'] },
+      { label: 'Talent Pool',      path: '/admin/hr/recruitment/talent-pool',   icon: FiAward,        roles: ['admin', 'super_admin'] },
+      { label: 'Recruit. Reports', path: '/admin/hr/recruitment/reports',       icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
+      { label: 'Recruit. Settings',path: '/admin/hr/recruitment/settings',      icon: FiSliders,      roles: ['admin', 'super_admin'] },
     ],
   },
   {
