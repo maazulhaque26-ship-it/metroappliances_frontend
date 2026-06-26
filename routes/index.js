@@ -3565,5 +3565,121 @@ router.patch( '/admin/hr/leave/encashments/:id/reject',         protect, admin, 
 router.get('/admin/hr/reports/leave/utilization',               protect, admin, attReportCtrl.getLeaveUtilizationReport);
 router.get('/admin/hr/reports/leave/balances',                  protect, admin, attReportCtrl.getLeaveBalanceReport);
 
+// =============================================================================
+// SPRINT 14C — ENTERPRISE PAYROLL MANAGEMENT
+// =============================================================================
+const payrollDashCtrl  = require('../controllers/payrollDashboardController');
+const payrollRunCtrl   = require('../controllers/payrollRunController');
+const salStructCtrl    = require('../controllers/salaryStructureController');
+const empSalCtrl       = require('../controllers/employeeSalaryController');
+const payrollLoanCtrl  = require('../controllers/payrollLoanController');
+const payrollBonusCtrl = require('../controllers/payrollBonusController');
+const payrollRptCtrl   = require('../controllers/payrollReportController');
+const payrollSetCtrl   = require('../controllers/payrollSettingController');
+
+// ── Payroll Dashboard ──────────────────────────────────────────────────────────
+router.get('/admin/hr/payroll/dashboard',                           protect, admin, payrollDashCtrl.getDashboard);
+
+// ── Payroll Periods ───────────────────────────────────────────────────────────
+router.get(   '/admin/hr/payroll/periods',                          protect, admin, payrollRunCtrl.getPeriods);
+router.post(  '/admin/hr/payroll/periods',                          protect, admin, payrollRunCtrl.createPeriod);
+router.get(   '/admin/hr/payroll/periods/:id',                      protect, admin, payrollRunCtrl.getPeriod);
+router.put(   '/admin/hr/payroll/periods/:id',                      protect, admin, payrollRunCtrl.updatePeriod);
+router.delete('/admin/hr/payroll/periods/:id',                      protect, admin, payrollRunCtrl.deletePeriod);
+router.patch( '/admin/hr/payroll/periods/:id/close',                protect, admin, payrollRunCtrl.closePeriod);
+
+// ── Payroll Runs ──────────────────────────────────────────────────────────────
+router.get(   '/admin/hr/payroll/runs',                             protect, admin, payrollRunCtrl.getRuns);
+router.post(  '/admin/hr/payroll/runs',                             protect, admin, payrollRunCtrl.createRun);
+router.get(   '/admin/hr/payroll/runs/:id',                         protect, admin, payrollRunCtrl.getRun);
+router.patch( '/admin/hr/payroll/runs/:id/calculate',               protect, admin, payrollRunCtrl.calculateRun);
+router.patch( '/admin/hr/payroll/runs/:id/approve',                 protect, admin, payrollRunCtrl.approveRun);
+router.patch( '/admin/hr/payroll/runs/:id/post',                    protect, admin, payrollRunCtrl.postRun);
+router.patch( '/admin/hr/payroll/runs/:id/pay',                     protect, admin, payrollRunCtrl.payRun);
+router.get(   '/admin/hr/payroll/runs/:id/employees',               protect, admin, payrollRunCtrl.getRunEmployees);
+
+// ── Payroll Employees (individual entries) ────────────────────────────────────
+router.get(  '/admin/hr/payroll/payroll-employees/:id',             protect, admin, payrollRunCtrl.getPayrollEmployee);
+router.post( '/admin/hr/payroll/payroll-employees/:id/adjustments', protect, admin, payrollRunCtrl.addAdjustment);
+
+// ── Salary Components ─────────────────────────────────────────────────────────
+router.get(   '/admin/hr/payroll/components',                       protect, admin, salStructCtrl.getComponents);
+router.post(  '/admin/hr/payroll/components',                       protect, admin, salStructCtrl.createComponent);
+router.get(   '/admin/hr/payroll/components/:id',                   protect, admin, salStructCtrl.getComponent);
+router.put(   '/admin/hr/payroll/components/:id',                   protect, admin, salStructCtrl.updateComponent);
+router.delete('/admin/hr/payroll/components/:id',                   protect, admin, salStructCtrl.deleteComponent);
+
+// ── Salary Structures ─────────────────────────────────────────────────────────
+router.get(   '/admin/hr/payroll/structures',                       protect, admin, salStructCtrl.getStructures);
+router.post(  '/admin/hr/payroll/structures',                       protect, admin, salStructCtrl.createStructure);
+router.get(   '/admin/hr/payroll/structures/:id',                   protect, admin, salStructCtrl.getStructure);
+router.put(   '/admin/hr/payroll/structures/:id',                   protect, admin, salStructCtrl.updateStructure);
+router.delete('/admin/hr/payroll/structures/:id',                   protect, admin, salStructCtrl.deleteStructure);
+
+// ── Employee Salary Assignments ───────────────────────────────────────────────
+router.get(   '/admin/hr/payroll/employee-salary',                  protect, admin, empSalCtrl.getEmployeeSalaries);
+router.post(  '/admin/hr/payroll/employee-salary',                  protect, admin, empSalCtrl.assignSalary);
+router.get(   '/admin/hr/payroll/employee-salary/:id',              protect, admin, empSalCtrl.getEmployeeSalary);
+router.put(   '/admin/hr/payroll/employee-salary/:id',              protect, admin, empSalCtrl.updateEmployeeSalary);
+router.delete('/admin/hr/payroll/employee-salary/:id',              protect, admin, empSalCtrl.deleteEmployeeSalary);
+
+// ── Payslips ──────────────────────────────────────────────────────────────────
+router.get(  '/admin/hr/payroll/payslips',                          protect, admin, empSalCtrl.getPayslips);
+router.get(  '/admin/hr/payroll/payslips/:id',                      protect, admin, empSalCtrl.getPayslip);
+router.patch('/admin/hr/payroll/payslips/:id/publish',              protect, admin, empSalCtrl.publishPayslip);
+
+// ── Bonuses ───────────────────────────────────────────────────────────────────
+router.get(   '/admin/hr/payroll/bonuses',                          protect, admin, payrollBonusCtrl.getBonuses);
+router.post(  '/admin/hr/payroll/bonuses',                          protect, admin, payrollBonusCtrl.createBonus);
+router.get(   '/admin/hr/payroll/bonuses/:id',                      protect, admin, payrollBonusCtrl.getBonus);
+router.put(   '/admin/hr/payroll/bonuses/:id',                      protect, admin, payrollBonusCtrl.updateBonus);
+router.delete('/admin/hr/payroll/bonuses/:id',                      protect, admin, payrollBonusCtrl.deleteBonus);
+router.patch( '/admin/hr/payroll/bonuses/:id/approve',              protect, admin, payrollBonusCtrl.approveBonus);
+
+// ── Incentives ────────────────────────────────────────────────────────────────
+router.get(  '/admin/hr/payroll/incentives',                        protect, admin, payrollBonusCtrl.getIncentives);
+router.post( '/admin/hr/payroll/incentives',                        protect, admin, payrollBonusCtrl.createIncentive);
+router.get(  '/admin/hr/payroll/incentives/:id',                    protect, admin, payrollBonusCtrl.getIncentive);
+router.put(  '/admin/hr/payroll/incentives/:id',                    protect, admin, payrollBonusCtrl.updateIncentive);
+router.patch('/admin/hr/payroll/incentives/:id/approve',            protect, admin, payrollBonusCtrl.approveIncentive);
+
+// ── Overtime ──────────────────────────────────────────────────────────────────
+router.get(  '/admin/hr/payroll/overtime',                          protect, admin, payrollBonusCtrl.getOvertime);
+router.post( '/admin/hr/payroll/overtime',                          protect, admin, payrollBonusCtrl.createOvertime);
+router.get(  '/admin/hr/payroll/overtime/:id',                      protect, admin, payrollBonusCtrl.getOvertimeRecord);
+router.put(  '/admin/hr/payroll/overtime/:id',                      protect, admin, payrollBonusCtrl.updateOvertime);
+router.patch('/admin/hr/payroll/overtime/:id/approve',              protect, admin, payrollBonusCtrl.approveOvertime);
+
+// ── Loans ─────────────────────────────────────────────────────────────────────
+router.get(   '/admin/hr/payroll/loans',                            protect, admin, payrollLoanCtrl.getLoans);
+router.post(  '/admin/hr/payroll/loans',                            protect, admin, payrollLoanCtrl.createLoan);
+router.get(   '/admin/hr/payroll/loans/:id',                        protect, admin, payrollLoanCtrl.getLoan);
+router.put(   '/admin/hr/payroll/loans/:id',                        protect, admin, payrollLoanCtrl.updateLoan);
+router.patch( '/admin/hr/payroll/loans/:id/approve',                protect, admin, payrollLoanCtrl.approveLoan);
+router.patch( '/admin/hr/payroll/loans/:id/close',                  protect, admin, payrollLoanCtrl.closeLoan);
+router.get(   '/admin/hr/payroll/loans/:id/repayments',             protect, admin, payrollLoanCtrl.getRepayments);
+router.post(  '/admin/hr/payroll/loans/:id/repayments',             protect, admin, payrollLoanCtrl.createRepayment);
+
+// ── Advances ──────────────────────────────────────────────────────────────────
+router.get(  '/admin/hr/payroll/advances',                          protect, admin, payrollLoanCtrl.getAdvances);
+router.post( '/admin/hr/payroll/advances',                          protect, admin, payrollLoanCtrl.createAdvance);
+router.get(  '/admin/hr/payroll/advances/:id',                      protect, admin, payrollLoanCtrl.getAdvance);
+router.patch('/admin/hr/payroll/advances/:id/approve',              protect, admin, payrollLoanCtrl.approveAdvance);
+router.patch('/admin/hr/payroll/advances/:id/recover',              protect, admin, payrollLoanCtrl.recoverAdvance);
+
+// ── Payroll Reports ───────────────────────────────────────────────────────────
+router.get('/admin/hr/payroll/reports/summary',                     protect, admin, payrollRptCtrl.getPayrollSummary);
+router.get('/admin/hr/payroll/reports/register',                    protect, admin, payrollRptCtrl.getSalaryRegister);
+router.get('/admin/hr/payroll/reports/bank-transfer',               protect, admin, payrollRptCtrl.getBankTransferSheet);
+router.get('/admin/hr/payroll/reports/variance',                    protect, admin, payrollRptCtrl.getPayrollVariance);
+router.get('/admin/hr/payroll/reports/department-cost',             protect, admin, payrollRptCtrl.getDepartmentCost);
+router.get('/admin/hr/payroll/reports/cost-center',                 protect, admin, payrollRptCtrl.getCostCenterPayroll);
+router.get('/admin/hr/payroll/reports/monthly',                     protect, admin, payrollRptCtrl.getMonthlyPayroll);
+router.get('/admin/hr/payroll/reports/annual',                      protect, admin, payrollRptCtrl.getAnnualPayroll);
+
+// ── Payroll Settings ──────────────────────────────────────────────────────────
+router.get('/admin/hr/payroll/settings',                            protect, admin, payrollSetCtrl.getSettings);
+router.put('/admin/hr/payroll/settings',                            protect, admin, payrollSetCtrl.updateSettings);
+
 module.exports = router;
 
