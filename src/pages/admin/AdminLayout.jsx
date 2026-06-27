@@ -565,6 +565,21 @@ const NAV_GROUPS = [
     ],
   },
   {
+    label: 'BI Executive Analytics',
+    items: [
+      { label: 'Executive Dashboard', path: '/admin/bi-exec/dashboard',  icon: FiGrid,       roles: ['admin', 'super_admin'] },
+      { label: 'Executive View',      path: '/admin/bi-exec/executive',  icon: FiBarChart2,  roles: ['admin', 'super_admin'] },
+      { label: 'Board Reports',       path: '/admin/bi-exec/board',      icon: FiFileText,   roles: ['admin', 'super_admin'] },
+      { label: 'Department KPIs',     path: '/admin/bi-exec/department', icon: FiLayers,     roles: ['admin', 'super_admin'] },
+      { label: 'KPI Explorer',        path: '/admin/bi-exec/kpis',       icon: FiTrendingUp, roles: ['admin', 'super_admin'] },
+      { label: 'Trend Analytics',     path: '/admin/bi-exec/trends',     icon: FiActivity,   roles: ['admin', 'super_admin'] },
+      { label: 'Benchmarks',          path: '/admin/bi-exec/benchmark',  icon: FiTarget,     roles: ['admin', 'super_admin'] },
+      { label: 'Enterprise Health',   path: '/admin/bi-exec/health',     icon: FiGlobe,      roles: ['admin', 'super_admin'] },
+      { label: 'Report Builder',      path: '/admin/bi-exec/reports',    icon: FiClipboard,  roles: ['admin', 'super_admin'] },
+      { label: 'BI Settings',         path: '/admin/bi-exec/settings',   icon: FiSettings,   roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
     label: 'Enterprise',
     items: [
       { label: 'Audit Log', path: '/admin/audit-log', icon: FiShield, roles: ['admin', 'super_admin'] },

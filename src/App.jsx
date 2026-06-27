@@ -527,6 +527,17 @@ const AdminDocumentRetention     = lazy(() => import('./pages/admin/AdminDocumen
 const AdminDocumentArchive       = lazy(() => import('./pages/admin/AdminDocumentArchive'));
 const AdminDocumentReports       = lazy(() => import('./pages/admin/AdminDocumentReports'));
 const AdminDocumentSettings      = lazy(() => import('./pages/admin/AdminDocumentSettings'));
+// ── Sprint 16A: Enterprise Business Intelligence & Executive Analytics ────────
+const AdminBIExecutiveDashboard  = lazy(() => import('./pages/admin/AdminBIExecutiveDashboard'));
+const AdminBIExecutive           = lazy(() => import('./pages/admin/AdminBIExecutive'));
+const AdminBIBoardReports        = lazy(() => import('./pages/admin/AdminBIBoardReports'));
+const AdminBIDepartmentAnalytics = lazy(() => import('./pages/admin/AdminBIDepartmentAnalytics'));
+const AdminBIKPIExplorer         = lazy(() => import('./pages/admin/AdminBIKPIExplorer'));
+const AdminBITrendAnalytics      = lazy(() => import('./pages/admin/AdminBITrendAnalytics'));
+const AdminBIBenchmark           = lazy(() => import('./pages/admin/AdminBIBenchmark'));
+const AdminBIEnterpriseHealth    = lazy(() => import('./pages/admin/AdminBIEnterpriseHealth'));
+const AdminBIReportBuilder       = lazy(() => import('./pages/admin/AdminBIReportBuilder'));
+const AdminBIDashboardSettings   = lazy(() => import('./pages/admin/AdminBIDashboardSettings'));
 // ESS Portal
 const EmployeeLogin              = lazy(() => import('./pages/employee/EmployeeLogin'));
 const EmployeeLayout             = lazy(() => import('./pages/employee/EmployeeLayout'));
@@ -1384,6 +1395,17 @@ export default function App() {
         <Route path="/admin/dms/archive"       element={<AdminRoute><AdminDocumentArchive /></AdminRoute>} />
         <Route path="/admin/dms/reports"       element={<AdminRoute><AdminDocumentReports /></AdminRoute>} />
         <Route path="/admin/dms/settings"      element={<AdminRoute><AdminDocumentSettings /></AdminRoute>} />
+        {/* Sprint 16A: Enterprise BI & Executive Analytics */}
+        <Route path="/admin/bi-exec/dashboard"   element={<AdminRoute><AdminBIExecutiveDashboard /></AdminRoute>} />
+        <Route path="/admin/bi-exec/executive"   element={<AdminRoute><AdminBIExecutive /></AdminRoute>} />
+        <Route path="/admin/bi-exec/board"       element={<AdminRoute><AdminBIBoardReports /></AdminRoute>} />
+        <Route path="/admin/bi-exec/department"  element={<AdminRoute><AdminBIDepartmentAnalytics /></AdminRoute>} />
+        <Route path="/admin/bi-exec/kpis"        element={<AdminRoute><AdminBIKPIExplorer /></AdminRoute>} />
+        <Route path="/admin/bi-exec/trends"      element={<AdminRoute><AdminBITrendAnalytics /></AdminRoute>} />
+        <Route path="/admin/bi-exec/benchmark"   element={<AdminRoute><AdminBIBenchmark /></AdminRoute>} />
+        <Route path="/admin/bi-exec/health"      element={<AdminRoute><AdminBIEnterpriseHealth /></AdminRoute>} />
+        <Route path="/admin/bi-exec/reports"     element={<AdminRoute><AdminBIReportBuilder /></AdminRoute>} />
+        <Route path="/admin/bi-exec/settings"    element={<AdminRoute><AdminBIDashboardSettings /></AdminRoute>} />
         {/* ESS Portal */}
         <Route path="/employee/login" element={<PageWrapper><EmployeeLogin /></PageWrapper>} />
         <Route path="/employee" element={<EmployeeRoute><EmployeeLayout /></EmployeeRoute>}>
