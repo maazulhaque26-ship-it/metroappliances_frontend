@@ -14,7 +14,7 @@ import {
   FiCamera, FiCpu, FiThermometer, FiWifi, FiTool, FiClock, FiCalendar,
   FiPercent, FiGlobe, FiTruck, FiCheckSquare,
   FiHome, FiCreditCard, FiDollarSign, FiArrowRight,
-  FiFolder, FiFlag,
+  FiFolder, FiFlag, FiArchive,
 } from 'react-icons/fi';
 import Logo from '../../components/ui/Logo';
 
@@ -547,6 +547,21 @@ const NAV_GROUPS = [
       { label: 'Rules Engine',     path: '/admin/bpm/rules',          icon: FiTarget,        roles: ['admin', 'super_admin'] },
       { label: 'Triggers',         path: '/admin/bpm/triggers',       icon: FiRadio,         roles: ['admin', 'super_admin'] },
       { label: 'BPM Reports',      path: '/admin/bpm/reports',        icon: FiBarChart2,     roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
+    label: 'Document Management',
+    items: [
+      { label: 'DMS Dashboard',    path: '/admin/dms/dashboard',  icon: FiGrid,       roles: ['admin', 'super_admin'] },
+      { label: 'Document Library', path: '/admin/dms/library',    icon: FiFileText,   roles: ['admin', 'super_admin'] },
+      { label: 'Folders',          path: '/admin/dms/folders',    icon: FiFolder,     roles: ['admin', 'super_admin'] },
+      { label: 'Templates',        path: '/admin/dms/templates',  icon: FiLayers,     roles: ['admin', 'super_admin'] },
+      { label: 'Review Queue',     path: '/admin/dms/reviews',    icon: FiCheckSquare,roles: ['admin', 'super_admin'] },
+      { label: 'Retention',        path: '/admin/dms/retention',  icon: FiClock,      roles: ['admin', 'super_admin'] },
+      { label: 'Archive',          path: '/admin/dms/archive',    icon: FiArchive,    roles: ['admin', 'super_admin'] },
+      { label: 'Knowledge Base',   path: '/admin/dms/knowledge',  icon: FiBook,       roles: ['admin', 'super_admin'] },
+      { label: 'DMS Reports',      path: '/admin/dms/reports',    icon: FiBarChart2,  roles: ['admin', 'super_admin'] },
+      { label: 'DMS Settings',     path: '/admin/dms/settings',   icon: FiSettings,   roles: ['admin', 'super_admin'] },
     ],
   },
   {

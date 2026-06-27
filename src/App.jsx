@@ -514,6 +514,19 @@ const AdminWorkflowAnalytics     = lazy(() => import('./pages/admin/AdminWorkflo
 const AdminWorkflowRules         = lazy(() => import('./pages/admin/AdminWorkflowRules'));
 const AdminWorkflowTriggers      = lazy(() => import('./pages/admin/AdminWorkflowTriggers'));
 const AdminWorkflowReports       = lazy(() => import('./pages/admin/AdminWorkflowReports'));
+// ── Sprint 15E: Enterprise Document Management System (DMS) ─────────────────
+const AdminDMSDashboard          = lazy(() => import('./pages/admin/AdminDMSDashboard'));
+const AdminDocumentFolders       = lazy(() => import('./pages/admin/AdminDocumentFolders'));
+const AdminDocumentLibrary       = lazy(() => import('./pages/admin/AdminDocumentLibrary'));
+const AdminDocumentDetail        = lazy(() => import('./pages/admin/AdminDocumentDetail'));
+const AdminKnowledgeBase         = lazy(() => import('./pages/admin/AdminKnowledgeBase'));
+const AdminKnowledgeDetail       = lazy(() => import('./pages/admin/AdminKnowledgeDetail'));
+const AdminDocumentTemplates     = lazy(() => import('./pages/admin/AdminDocumentTemplates'));
+const AdminDocumentReviewQueue   = lazy(() => import('./pages/admin/AdminDocumentReviewQueue'));
+const AdminDocumentRetention     = lazy(() => import('./pages/admin/AdminDocumentRetention'));
+const AdminDocumentArchive       = lazy(() => import('./pages/admin/AdminDocumentArchive'));
+const AdminDocumentReports       = lazy(() => import('./pages/admin/AdminDocumentReports'));
+const AdminDocumentSettings      = lazy(() => import('./pages/admin/AdminDocumentSettings'));
 // ESS Portal
 const EmployeeLogin              = lazy(() => import('./pages/employee/EmployeeLogin'));
 const EmployeeLayout             = lazy(() => import('./pages/employee/EmployeeLayout'));
@@ -1358,6 +1371,19 @@ export default function App() {
         <Route path="/admin/bpm/rules"             element={<AdminRoute><AdminWorkflowRules /></AdminRoute>} />
         <Route path="/admin/bpm/triggers"          element={<AdminRoute><AdminWorkflowTriggers /></AdminRoute>} />
         <Route path="/admin/bpm/reports"           element={<AdminRoute><AdminWorkflowReports /></AdminRoute>} />
+        {/* Sprint 15E: Enterprise Document Management System */}
+        <Route path="/admin/dms/dashboard"     element={<AdminRoute><AdminDMSDashboard /></AdminRoute>} />
+        <Route path="/admin/dms/folders"       element={<AdminRoute><AdminDocumentFolders /></AdminRoute>} />
+        <Route path="/admin/dms/library"       element={<AdminRoute><AdminDocumentLibrary /></AdminRoute>} />
+        <Route path="/admin/dms/library/:id"   element={<AdminRoute><AdminDocumentDetail /></AdminRoute>} />
+        <Route path="/admin/dms/knowledge"     element={<AdminRoute><AdminKnowledgeBase /></AdminRoute>} />
+        <Route path="/admin/dms/knowledge/:id" element={<AdminRoute><AdminKnowledgeDetail /></AdminRoute>} />
+        <Route path="/admin/dms/templates"     element={<AdminRoute><AdminDocumentTemplates /></AdminRoute>} />
+        <Route path="/admin/dms/reviews"       element={<AdminRoute><AdminDocumentReviewQueue /></AdminRoute>} />
+        <Route path="/admin/dms/retention"     element={<AdminRoute><AdminDocumentRetention /></AdminRoute>} />
+        <Route path="/admin/dms/archive"       element={<AdminRoute><AdminDocumentArchive /></AdminRoute>} />
+        <Route path="/admin/dms/reports"       element={<AdminRoute><AdminDocumentReports /></AdminRoute>} />
+        <Route path="/admin/dms/settings"      element={<AdminRoute><AdminDocumentSettings /></AdminRoute>} />
         {/* ESS Portal */}
         <Route path="/employee/login" element={<PageWrapper><EmployeeLogin /></PageWrapper>} />
         <Route path="/employee" element={<EmployeeRoute><EmployeeLayout /></EmployeeRoute>}>
