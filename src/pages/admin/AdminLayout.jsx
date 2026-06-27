@@ -533,6 +533,23 @@ const NAV_GROUPS = [
     ],
   },
   {
+    label: 'BPM & Workflow',
+    items: [
+      { label: 'BPM Dashboard',    path: '/admin/bpm/dashboard',      icon: FiActivity,      roles: ['admin', 'super_admin'] },
+      { label: 'Workflow Designer',path: '/admin/bpm/designer',       icon: FiSliders,       roles: ['admin', 'super_admin'] },
+      { label: 'WF Templates',     path: '/admin/bpm/templates',      icon: FiLayers,        roles: ['admin', 'super_admin'] },
+      { label: 'Instances',        path: '/admin/bpm/instances',      icon: FiCpu,           roles: ['admin', 'super_admin'] },
+      { label: 'Approvals',        path: '/admin/bpm/approvals',      icon: FiCheckSquare,   roles: ['admin', 'super_admin'] },
+      { label: 'Escalations',      path: '/admin/bpm/escalations',    icon: FiZap,           roles: ['admin', 'super_admin'] },
+      { label: 'SLA Management',   path: '/admin/bpm/sla',            icon: FiClock,         roles: ['admin', 'super_admin'] },
+      { label: 'Audit History',    path: '/admin/bpm/history',        icon: FiBook,          roles: ['admin', 'super_admin'] },
+      { label: 'BPM Analytics',    path: '/admin/bpm/analytics',      icon: FiTrendingUp,    roles: ['admin', 'super_admin'] },
+      { label: 'Rules Engine',     path: '/admin/bpm/rules',          icon: FiTarget,        roles: ['admin', 'super_admin'] },
+      { label: 'Triggers',         path: '/admin/bpm/triggers',       icon: FiRadio,         roles: ['admin', 'super_admin'] },
+      { label: 'BPM Reports',      path: '/admin/bpm/reports',        icon: FiBarChart2,     roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
     label: 'Enterprise',
     items: [
       { label: 'Audit Log', path: '/admin/audit-log', icon: FiShield, roles: ['admin', 'super_admin'] },

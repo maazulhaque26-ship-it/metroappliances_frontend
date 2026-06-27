@@ -501,6 +501,19 @@ const AdminPMODocuments          = lazy(() => import('./pages/admin/AdminPMODocu
 const AdminPMOAudit              = lazy(() => import('./pages/admin/AdminPMOAudit'));
 const AdminPMOScorecard          = lazy(() => import('./pages/admin/AdminPMOScorecard'));
 const AdminPMOAnalytics          = lazy(() => import('./pages/admin/AdminPMOAnalytics'));
+// ── Sprint 15D: Workflow Automation & BPM ────────────────────────────────────
+const AdminBPMDashboard          = lazy(() => import('./pages/admin/AdminBPMDashboard'));
+const AdminWorkflowDesigner      = lazy(() => import('./pages/admin/AdminWorkflowDesigner'));
+const AdminWorkflowTemplates     = lazy(() => import('./pages/admin/AdminWorkflowTemplates'));
+const AdminWorkflowInstances     = lazy(() => import('./pages/admin/AdminWorkflowInstances'));
+const AdminWorkflowApprovals     = lazy(() => import('./pages/admin/AdminWorkflowApprovals'));
+const AdminWorkflowEscalations   = lazy(() => import('./pages/admin/AdminWorkflowEscalations'));
+const AdminWorkflowSLA           = lazy(() => import('./pages/admin/AdminWorkflowSLA'));
+const AdminWorkflowHistory       = lazy(() => import('./pages/admin/AdminWorkflowHistory'));
+const AdminWorkflowAnalytics     = lazy(() => import('./pages/admin/AdminWorkflowAnalytics'));
+const AdminWorkflowRules         = lazy(() => import('./pages/admin/AdminWorkflowRules'));
+const AdminWorkflowTriggers      = lazy(() => import('./pages/admin/AdminWorkflowTriggers'));
+const AdminWorkflowReports       = lazy(() => import('./pages/admin/AdminWorkflowReports'));
 // ESS Portal
 const EmployeeLogin              = lazy(() => import('./pages/employee/EmployeeLogin'));
 const EmployeeLayout             = lazy(() => import('./pages/employee/EmployeeLayout'));
@@ -1332,6 +1345,19 @@ export default function App() {
         <Route path="/admin/pmo/documents"        element={<AdminRoute><AdminPMODocuments /></AdminRoute>} />
         <Route path="/admin/pmo/audits"           element={<AdminRoute><AdminPMOAudit /></AdminRoute>} />
         <Route path="/admin/pmo/scorecards"       element={<AdminRoute><AdminPMOScorecard /></AdminRoute>} />
+        {/* Sprint 15D: Workflow Automation & BPM */}
+        <Route path="/admin/bpm/dashboard"         element={<AdminRoute><AdminBPMDashboard /></AdminRoute>} />
+        <Route path="/admin/bpm/designer"          element={<AdminRoute><AdminWorkflowDesigner /></AdminRoute>} />
+        <Route path="/admin/bpm/templates"         element={<AdminRoute><AdminWorkflowTemplates /></AdminRoute>} />
+        <Route path="/admin/bpm/instances"         element={<AdminRoute><AdminWorkflowInstances /></AdminRoute>} />
+        <Route path="/admin/bpm/approvals"         element={<AdminRoute><AdminWorkflowApprovals /></AdminRoute>} />
+        <Route path="/admin/bpm/escalations"       element={<AdminRoute><AdminWorkflowEscalations /></AdminRoute>} />
+        <Route path="/admin/bpm/sla"               element={<AdminRoute><AdminWorkflowSLA /></AdminRoute>} />
+        <Route path="/admin/bpm/history"           element={<AdminRoute><AdminWorkflowHistory /></AdminRoute>} />
+        <Route path="/admin/bpm/analytics"         element={<AdminRoute><AdminWorkflowAnalytics /></AdminRoute>} />
+        <Route path="/admin/bpm/rules"             element={<AdminRoute><AdminWorkflowRules /></AdminRoute>} />
+        <Route path="/admin/bpm/triggers"          element={<AdminRoute><AdminWorkflowTriggers /></AdminRoute>} />
+        <Route path="/admin/bpm/reports"           element={<AdminRoute><AdminWorkflowReports /></AdminRoute>} />
         {/* ESS Portal */}
         <Route path="/employee/login" element={<PageWrapper><EmployeeLogin /></PageWrapper>} />
         <Route path="/employee" element={<EmployeeRoute><EmployeeLayout /></EmployeeRoute>}>
