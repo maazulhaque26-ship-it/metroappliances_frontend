@@ -4313,5 +4313,126 @@ router.get('/admin/pmo/scorecards/:id',           protect, admin, pmoAuditCtrl.g
 router.put('/admin/pmo/scorecards/:id',           protect, admin, pmoAuditCtrl.updateScorecard);
 router.delete('/admin/pmo/scorecards/:id',        protect, admin, pmoAuditCtrl.deleteScorecard);
 
+// ══════════════════════════════════════════════════════════════════════════════
+// Sprint 15D — Workflow Automation & BPM
+// ══════════════════════════════════════════════════════════════════════════════
+const wfDefCtrl      = require('../controllers/workflowDefinitionController');
+const wfInstCtrl     = require('../controllers/workflowInstanceController');
+const wfApprCtrl     = require('../controllers/workflowApprovalController');
+const wfAutoCtrl     = require('../controllers/workflowAutomationController');
+const wfAnalCtrl     = require('../controllers/workflowAnalyticsController');
+
+// ── Analytics & Dashboard (static — must come before /:id) ───────────────────
+router.get('/admin/workflows/dashboard',                protect, admin, wfAnalCtrl.getBPMDashboard);
+router.get('/admin/workflows/analytics/performance',   protect, admin, wfAnalCtrl.getWorkflowPerformance);
+router.get('/admin/workflows/analytics/approvals',     protect, admin, wfAnalCtrl.getApprovalAnalytics);
+router.get('/admin/workflows/analytics/sla-compliance',protect, admin, wfAnalCtrl.getSLACompliance);
+router.get('/admin/workflows/analytics/escalations',   protect, admin, wfAnalCtrl.getEscalationReport);
+router.get('/admin/workflows/analytics/automation',    protect, admin, wfAnalCtrl.getAutomationReport);
+router.get('/admin/workflows/analytics/audit-trail',   protect, admin, wfAnalCtrl.getAuditTrail);
+router.get('/admin/workflows/analytics/department',    protect, admin, wfAnalCtrl.getDepartmentAnalytics);
+
+// ── Templates (static — before /:id) ─────────────────────────────────────────
+router.get('/admin/workflows/templates',               protect, admin, wfDefCtrl.listTemplates);
+router.post('/admin/workflows/templates',              protect, admin, wfDefCtrl.createTemplate);
+router.get('/admin/workflows/templates/:id',           protect, admin, wfDefCtrl.getTemplate);
+router.put('/admin/workflows/templates/:id',           protect, admin, wfDefCtrl.updateTemplate);
+router.delete('/admin/workflows/templates/:id',        protect, admin, wfDefCtrl.deleteTemplate);
+
+// ── Rules ─────────────────────────────────────────────────────────────────────
+router.get('/admin/workflows/rules',                   protect, admin, wfDefCtrl.listRules);
+router.post('/admin/workflows/rules',                  protect, admin, wfDefCtrl.createRule);
+router.get('/admin/workflows/rules/:id',               protect, admin, wfDefCtrl.getRule);
+router.put('/admin/workflows/rules/:id',               protect, admin, wfDefCtrl.updateRule);
+router.delete('/admin/workflows/rules/:id',            protect, admin, wfDefCtrl.deleteRule);
+
+// ── Conditions ────────────────────────────────────────────────────────────────
+router.get('/admin/workflows/conditions',              protect, admin, wfDefCtrl.listConditions);
+router.post('/admin/workflows/conditions',             protect, admin, wfDefCtrl.createCondition);
+router.get('/admin/workflows/conditions/:id',          protect, admin, wfDefCtrl.getCondition);
+router.put('/admin/workflows/conditions/:id',          protect, admin, wfDefCtrl.updateCondition);
+router.delete('/admin/workflows/conditions/:id',       protect, admin, wfDefCtrl.deleteCondition);
+
+// ── Steps (standalone) ───────────────────────────────────────────────────────
+router.get('/admin/workflows/steps/:id',               protect, admin, wfDefCtrl.getStep);
+router.put('/admin/workflows/steps/:id',               protect, admin, wfDefCtrl.updateStep);
+router.delete('/admin/workflows/steps/:id',            protect, admin, wfDefCtrl.deleteStep);
+
+// ── Transitions (standalone) ─────────────────────────────────────────────────
+router.put('/admin/workflows/transitions/:id',         protect, admin, wfDefCtrl.updateTransition);
+router.delete('/admin/workflows/transitions/:id',      protect, admin, wfDefCtrl.deleteTransition);
+
+// ── Triggers ──────────────────────────────────────────────────────────────────
+router.get('/admin/workflows/triggers',                protect, admin, wfDefCtrl.listTriggers);
+router.post('/admin/workflows/triggers',               protect, admin, wfDefCtrl.createTrigger);
+router.get('/admin/workflows/triggers/:id',            protect, admin, wfDefCtrl.getTrigger);
+router.put('/admin/workflows/triggers/:id',            protect, admin, wfDefCtrl.updateTrigger);
+router.delete('/admin/workflows/triggers/:id',         protect, admin, wfDefCtrl.deleteTrigger);
+router.post('/admin/workflows/triggers/:id/fire',      protect, admin, wfDefCtrl.fireTrigger);
+
+// ── Instances ─────────────────────────────────────────────────────────────────
+router.get('/admin/workflows/instances',               protect, admin, wfInstCtrl.listInstances);
+router.post('/admin/workflows/instances',              protect, admin, wfInstCtrl.createInstance);
+router.get('/admin/workflows/instances/my-pending',    protect, admin, wfInstCtrl.getMyPendingInstances);
+router.get('/admin/workflows/instances/my-initiated',  protect, admin, wfInstCtrl.getMyInitiatedInstances);
+router.get('/admin/workflows/instances/:id',           protect, admin, wfInstCtrl.getInstance);
+router.put('/admin/workflows/instances/:id',           protect, admin, wfInstCtrl.updateInstance);
+router.patch('/admin/workflows/instances/:id/start',   protect, admin, wfInstCtrl.startInstance);
+router.patch('/admin/workflows/instances/:id/cancel',  protect, admin, wfInstCtrl.cancelInstance);
+router.get('/admin/workflows/instances/:id/history',   protect, admin, wfInstCtrl.getInstanceHistory);
+router.post('/admin/workflows/instances/:id/comments', protect, admin, wfInstCtrl.addComment);
+router.get('/admin/workflows/instances/:id/comments',  protect, admin, wfInstCtrl.getComments);
+router.post('/admin/workflows/instances/:id/attachments', protect, admin, wfInstCtrl.addAttachment);
+router.get('/admin/workflows/instances/:id/attachments',  protect, admin, wfInstCtrl.getAttachments);
+
+// ── Approvals ─────────────────────────────────────────────────────────────────
+router.get('/admin/workflows/approvals',                    protect, admin, wfApprCtrl.listApprovals);
+router.get('/admin/workflows/approvals/pending',            protect, admin, wfApprCtrl.getPendingApprovals);
+router.post('/admin/workflows/approvals/bulk-approve',      protect, admin, wfApprCtrl.bulkApprove);
+router.get('/admin/workflows/approvals/history/:instanceId',protect, admin, wfApprCtrl.getApprovalHistory);
+router.get('/admin/workflows/approvals/:id',                protect, admin, wfApprCtrl.getApproval);
+router.patch('/admin/workflows/approvals/:id/approve',      protect, admin, wfApprCtrl.approveStep);
+router.patch('/admin/workflows/approvals/:id/reject',       protect, admin, wfApprCtrl.rejectStep);
+router.patch('/admin/workflows/approvals/:id/delegate',     protect, admin, wfApprCtrl.delegateApproval);
+router.patch('/admin/workflows/approvals/:id/recall',       protect, admin, wfApprCtrl.recallApproval);
+router.patch('/admin/workflows/approvals/:id/override',     protect, admin, wfApprCtrl.overrideApproval);
+
+// ── Escalations ───────────────────────────────────────────────────────────────
+router.get('/admin/workflows/escalations',                      protect, admin, wfAutoCtrl.listEscalations);
+router.post('/admin/workflows/escalations',                     protect, admin, wfAutoCtrl.createEscalation);
+router.get('/admin/workflows/escalations/:id',                  protect, admin, wfAutoCtrl.getEscalation);
+router.patch('/admin/workflows/escalations/:id/acknowledge',    protect, admin, wfAutoCtrl.acknowledgeEscalation);
+router.patch('/admin/workflows/escalations/:id/resolve',        protect, admin, wfAutoCtrl.resolveEscalation);
+
+// ── SLAs ──────────────────────────────────────────────────────────────────────
+router.get('/admin/workflows/slas/breaches',           protect, admin, wfAutoCtrl.getSLABreaches);
+router.get('/admin/workflows/slas',                    protect, admin, wfAutoCtrl.listSLAs);
+router.post('/admin/workflows/slas',                   protect, admin, wfAutoCtrl.createSLA);
+router.get('/admin/workflows/slas/:id',                protect, admin, wfAutoCtrl.getSLA);
+router.put('/admin/workflows/slas/:id',                protect, admin, wfAutoCtrl.updateSLA);
+router.delete('/admin/workflows/slas/:id',             protect, admin, wfAutoCtrl.deleteSLA);
+
+// ── Notifications ─────────────────────────────────────────────────────────────
+router.get('/admin/workflows/notifications',                protect, admin, wfAutoCtrl.listNotifications);
+router.post('/admin/workflows/notifications/mark-all-read', protect, admin, wfAutoCtrl.markAllNotificationsRead);
+router.patch('/admin/workflows/notifications/:id/read',     protect, admin, wfAutoCtrl.markNotificationRead);
+
+// ── Workflow Definitions (/:id last to avoid shadowing static routes) ─────────
+router.get('/admin/workflows',                         protect, admin, wfDefCtrl.listWorkflows);
+router.post('/admin/workflows',                        protect, admin, wfDefCtrl.createWorkflow);
+router.get('/admin/workflows/:id',                     protect, admin, wfDefCtrl.getWorkflow);
+router.put('/admin/workflows/:id',                     protect, admin, wfDefCtrl.updateWorkflow);
+router.delete('/admin/workflows/:id',                  protect, admin, wfDefCtrl.deleteWorkflow);
+router.patch('/admin/workflows/:id/activate',          protect, admin, wfDefCtrl.activateWorkflow);
+router.patch('/admin/workflows/:id/deactivate',        protect, admin, wfDefCtrl.deactivateWorkflow);
+
+// ── Steps (nested under workflow) ────────────────────────────────────────────
+router.get('/admin/workflows/:workflowId/steps',       protect, admin, wfDefCtrl.listSteps);
+router.post('/admin/workflows/:workflowId/steps',      protect, admin, wfDefCtrl.createStep);
+
+// ── Transitions (nested under workflow) ──────────────────────────────────────
+router.get('/admin/workflows/:workflowId/transitions', protect, admin, wfDefCtrl.listTransitions);
+router.post('/admin/workflows/:workflowId/transitions',protect, admin, wfDefCtrl.createTransition);
+
 module.exports = router;
 
