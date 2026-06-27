@@ -434,6 +434,90 @@ const AdminVarianceAnalysis       = lazy(() => import('./pages/admin/AdminVarian
 const AdminFinancialAlerts        = lazy(() => import('./pages/admin/AdminFinancialAlerts'));
 const AdminExecutiveReports       = lazy(() => import('./pages/admin/AdminExecutiveReports'));
 
+// ── Sprint 14D: Enterprise Recruitment & ATS ─────────────────────────────────
+const AdminRecruitmentDashboard  = lazy(() => import('./pages/admin/AdminRecruitmentDashboard'));
+const AdminJobOpenings           = lazy(() => import('./pages/admin/AdminJobOpenings'));
+const AdminJobDetail             = lazy(() => import('./pages/admin/AdminJobDetail'));
+const AdminCandidates            = lazy(() => import('./pages/admin/AdminCandidates'));
+const AdminCandidateDetail       = lazy(() => import('./pages/admin/AdminCandidateDetail'));
+const AdminApplications          = lazy(() => import('./pages/admin/AdminApplications'));
+const AdminInterviewCalendar     = lazy(() => import('./pages/admin/AdminInterviewCalendar'));
+const AdminInterviewFeedback     = lazy(() => import('./pages/admin/AdminInterviewFeedback'));
+const AdminOfferLetters          = lazy(() => import('./pages/admin/AdminOfferLetters'));
+const AdminBackgroundVerification = lazy(() => import('./pages/admin/AdminBackgroundVerification'));
+const AdminTalentPool            = lazy(() => import('./pages/admin/AdminTalentPool'));
+const AdminRecruitmentReports    = lazy(() => import('./pages/admin/AdminRecruitmentReports'));
+const AdminRecruitmentSettings   = lazy(() => import('./pages/admin/AdminRecruitmentSettings'));
+
+// ── Sprint 14E: Performance Management, Learning & ESS ───────────────────────
+const AdminPerformanceDashboard  = lazy(() => import('./pages/admin/AdminPerformanceDashboard'));
+const AdminGoals                 = lazy(() => import('./pages/admin/AdminGoals'));
+const AdminGoalDetail            = lazy(() => import('./pages/admin/AdminGoalDetail'));
+const AdminPerformanceReviews    = lazy(() => import('./pages/admin/AdminPerformanceReviews'));
+const AdminKPIs                  = lazy(() => import('./pages/admin/AdminKPIs'));
+const AdminAppraisals            = lazy(() => import('./pages/admin/AdminAppraisals'));
+const AdminTrainingCourses       = lazy(() => import('./pages/admin/AdminTrainingCourses'));
+const AdminLearningPaths         = lazy(() => import('./pages/admin/AdminLearningPaths'));
+const AdminCertifications        = lazy(() => import('./pages/admin/AdminCertifications'));
+const AdminCareerDevelopment     = lazy(() => import('./pages/admin/AdminCareerDevelopment'));
+const AdminSuccessionPlanning        = lazy(() => import('./pages/admin/AdminSuccessionPlanning'));
+const AdminPerformanceReports        = lazy(() => import('./pages/admin/AdminPerformanceReports'));
+const AdminPerformanceAnnouncements  = lazy(() => import('./pages/admin/AdminPerformanceAnnouncements'));
+const AdminRecognition               = lazy(() => import('./pages/admin/AdminRecognition'));
+// Sprint 15A: Enterprise Project Management
+const AdminProjectDashboard  = lazy(() => import('./pages/admin/AdminProjectDashboard'));
+const AdminProjects          = lazy(() => import('./pages/admin/AdminProjects'));
+const AdminProjectDetail     = lazy(() => import('./pages/admin/AdminProjectDetail'));
+const AdminKanbanBoard       = lazy(() => import('./pages/admin/AdminKanbanBoard'));
+const AdminGanttTimeline     = lazy(() => import('./pages/admin/AdminGanttTimeline'));
+const AdminMilestones        = lazy(() => import('./pages/admin/AdminMilestones'));
+const AdminProjectTasks      = lazy(() => import('./pages/admin/AdminProjectTasks'));
+const AdminTimesheets        = lazy(() => import('./pages/admin/AdminTimesheets'));
+const AdminProjectResources  = lazy(() => import('./pages/admin/AdminProjectResources'));
+const AdminProjectRisks      = lazy(() => import('./pages/admin/AdminProjectRisks'));
+const AdminProjectIssues     = lazy(() => import('./pages/admin/AdminProjectIssues'));
+const AdminProjectReports    = lazy(() => import('./pages/admin/AdminProjectReports'));
+const AdminProjectSettings   = lazy(() => import('./pages/admin/AdminProjectSettings'));
+// ESS Portal
+const EmployeeLogin              = lazy(() => import('./pages/employee/EmployeeLogin'));
+const EmployeeLayout             = lazy(() => import('./pages/employee/EmployeeLayout'));
+const ESSDashboard               = lazy(() => import('./pages/employee/ESSDashboard'));
+const ESSMyAttendance            = lazy(() => import('./pages/employee/ESSMyAttendance'));
+const ESSMyLeave                 = lazy(() => import('./pages/employee/ESSMyLeave'));
+const ESSMyPayroll               = lazy(() => import('./pages/employee/ESSMyPayroll'));
+const ESSMyPerformance           = lazy(() => import('./pages/employee/ESSMyPerformance'));
+const ESSMyTraining              = lazy(() => import('./pages/employee/ESSMyTraining'));
+const ESSAnnouncements           = lazy(() => import('./pages/employee/ESSAnnouncements'));
+const ESSRecognition             = lazy(() => import('./pages/employee/ESSRecognition'));
+const ESSFeedback                = lazy(() => import('./pages/employee/ESSFeedback'));
+
+// ── Sprint 14C: Enterprise Payroll Management ─────────────────────────────────
+const AdminPayrollDashboard  = lazy(() => import('./pages/admin/AdminPayrollDashboard'));
+const AdminPayrollRuns       = lazy(() => import('./pages/admin/AdminPayrollRuns'));
+const AdminSalaryStructures  = lazy(() => import('./pages/admin/AdminSalaryStructures'));
+const AdminSalaryComponents  = lazy(() => import('./pages/admin/AdminSalaryComponents'));
+const AdminEmployeeSalary    = lazy(() => import('./pages/admin/AdminEmployeeSalary'));
+const AdminPayrollProcessing = lazy(() => import('./pages/admin/AdminPayrollProcessing'));
+const AdminPayslips          = lazy(() => import('./pages/admin/AdminPayslips'));
+const AdminLoans             = lazy(() => import('./pages/admin/AdminLoans'));
+const AdminAdvances          = lazy(() => import('./pages/admin/AdminAdvances'));
+const AdminBonuses           = lazy(() => import('./pages/admin/AdminBonuses'));
+const AdminPayrollReports    = lazy(() => import('./pages/admin/AdminPayrollReports'));
+const AdminPayrollSettings   = lazy(() => import('./pages/admin/AdminPayrollSettings'));
+
+// ── Sprint 14B: Enterprise Attendance & Leave Management ─────────────────────
+const AdminAttendanceDashboard = lazy(() => import('./pages/admin/AdminAttendanceDashboard'));
+const AdminAttendanceRegister  = lazy(() => import('./pages/admin/AdminAttendanceRegister'));
+const AdminAttendanceAdjustments = lazy(() => import('./pages/admin/AdminAttendanceAdjustments'));
+const AdminAttendancePolicies  = lazy(() => import('./pages/admin/AdminAttendancePolicies'));
+const AdminLeaveTypes          = lazy(() => import('./pages/admin/AdminLeaveTypes'));
+const AdminLeaveRequests       = lazy(() => import('./pages/admin/AdminLeaveRequests'));
+const AdminLeaveApprovals      = lazy(() => import('./pages/admin/AdminLeaveApprovals'));
+const AdminLeaveBalances       = lazy(() => import('./pages/admin/AdminLeaveBalances'));
+const AdminHolidays            = lazy(() => import('./pages/admin/AdminHolidays'));
+const AdminAttendanceReports   = lazy(() => import('./pages/admin/AdminAttendanceReports'));
+const AdminLeaveReports        = lazy(() => import('./pages/admin/AdminLeaveReports'));
+
 // ── Sprint 14A: Enterprise HRMS Foundation ────────────────────────────────────
 const AdminHRDashboard       = lazy(() => import('./pages/admin/AdminHRDashboard'));
 const AdminEmployees         = lazy(() => import('./pages/admin/AdminEmployees'));
@@ -544,6 +628,13 @@ function EngineerRoute({ children }) {
   const { token, engineer } = useSelector(s => s.engineerAuth);
   if (!token) return <Navigate to="/engineer/login" replace />;
   if (engineer?.status !== 'active') return <Navigate to="/engineer/login" replace />;
+  return children;
+}
+
+// Employee route guard — reads employeeAuth slice (type:'employee' JWT, ESS portal)
+function EmployeeRoute({ children }) {
+  const { token } = useSelector(s => s.employeeAuth);
+  if (!token) return <Navigate to="/employee/login" replace />;
   return children;
 }
 
@@ -1125,6 +1216,89 @@ export default function App() {
         <Route path="/admin/hr/probation"              element={<AdminRoute><AdminProbation /></AdminRoute>} />
         <Route path="/admin/hr/exits"                  element={<AdminRoute><AdminExits /></AdminRoute>} />
         <Route path="/admin/hr/reports"                element={<AdminRoute><AdminHRReports /></AdminRoute>} />
+        <Route path="/admin/hr/attendance"             element={<AdminRoute><AdminAttendanceDashboard /></AdminRoute>} />
+        <Route path="/admin/hr/attendance/register"    element={<AdminRoute><AdminAttendanceRegister /></AdminRoute>} />
+        <Route path="/admin/hr/attendance/adjustments" element={<AdminRoute><AdminAttendanceAdjustments /></AdminRoute>} />
+        <Route path="/admin/hr/attendance/policies"    element={<AdminRoute><AdminAttendancePolicies /></AdminRoute>} />
+        <Route path="/admin/hr/leave/types"            element={<AdminRoute><AdminLeaveTypes /></AdminRoute>} />
+        <Route path="/admin/hr/leave/requests"         element={<AdminRoute><AdminLeaveRequests /></AdminRoute>} />
+        <Route path="/admin/hr/leave/approvals"        element={<AdminRoute><AdminLeaveApprovals /></AdminRoute>} />
+        <Route path="/admin/hr/leave/balances"         element={<AdminRoute><AdminLeaveBalances /></AdminRoute>} />
+        <Route path="/admin/hr/leave/holidays"         element={<AdminRoute><AdminHolidays /></AdminRoute>} />
+        <Route path="/admin/hr/attendance/reports"     element={<AdminRoute><AdminAttendanceReports /></AdminRoute>} />
+        <Route path="/admin/hr/leave/reports"          element={<AdminRoute><AdminLeaveReports /></AdminRoute>} />
+
+        {/* Sprint 14C: Enterprise Payroll Management */}
+        <Route path="/admin/hr/payroll"                       element={<AdminRoute><AdminPayrollDashboard /></AdminRoute>} />
+        <Route path="/admin/hr/payroll/runs"                  element={<AdminRoute><AdminPayrollRuns /></AdminRoute>} />
+        <Route path="/admin/hr/payroll/structures"            element={<AdminRoute><AdminSalaryStructures /></AdminRoute>} />
+        <Route path="/admin/hr/payroll/components"            element={<AdminRoute><AdminSalaryComponents /></AdminRoute>} />
+        <Route path="/admin/hr/payroll/employee-salary"       element={<AdminRoute><AdminEmployeeSalary /></AdminRoute>} />
+        <Route path="/admin/hr/payroll/runs/:id/process"      element={<AdminRoute><AdminPayrollProcessing /></AdminRoute>} />
+        <Route path="/admin/hr/payroll/payslips"              element={<AdminRoute><AdminPayslips /></AdminRoute>} />
+        <Route path="/admin/hr/payroll/loans"                 element={<AdminRoute><AdminLoans /></AdminRoute>} />
+        <Route path="/admin/hr/payroll/advances"              element={<AdminRoute><AdminAdvances /></AdminRoute>} />
+        <Route path="/admin/hr/payroll/bonuses"               element={<AdminRoute><AdminBonuses /></AdminRoute>} />
+        <Route path="/admin/hr/payroll/reports"               element={<AdminRoute><AdminPayrollReports /></AdminRoute>} />
+        <Route path="/admin/hr/payroll/settings"              element={<AdminRoute><AdminPayrollSettings /></AdminRoute>} />
+
+        {/* Sprint 14D: Enterprise Recruitment & ATS */}
+        <Route path="/admin/hr/recruitment"                              element={<AdminRoute><AdminRecruitmentDashboard /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/jobs"                         element={<AdminRoute><AdminJobOpenings /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/jobs/:id"                     element={<AdminRoute><AdminJobDetail /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/candidates"                   element={<AdminRoute><AdminCandidates /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/candidates/:id"               element={<AdminRoute><AdminCandidateDetail /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/applications"                 element={<AdminRoute><AdminApplications /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/interviews"                   element={<AdminRoute><AdminInterviewCalendar /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/feedback"                     element={<AdminRoute><AdminInterviewFeedback /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/offers"                       element={<AdminRoute><AdminOfferLetters /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/bgv"                          element={<AdminRoute><AdminBackgroundVerification /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/talent-pool"                  element={<AdminRoute><AdminTalentPool /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/reports"                      element={<AdminRoute><AdminRecruitmentReports /></AdminRoute>} />
+        <Route path="/admin/hr/recruitment/settings"                     element={<AdminRoute><AdminRecruitmentSettings /></AdminRoute>} />
+
+        {/* Sprint 14E: Performance Management, Learning & ESS */}
+        <Route path="/admin/hr/performance"                              element={<AdminRoute><AdminPerformanceDashboard /></AdminRoute>} />
+        <Route path="/admin/hr/performance/goals"                        element={<AdminRoute><AdminGoals /></AdminRoute>} />
+        <Route path="/admin/hr/performance/goals/:id"                    element={<AdminRoute><AdminGoalDetail /></AdminRoute>} />
+        <Route path="/admin/hr/performance/reviews"                      element={<AdminRoute><AdminPerformanceReviews /></AdminRoute>} />
+        <Route path="/admin/hr/performance/kpis"                         element={<AdminRoute><AdminKPIs /></AdminRoute>} />
+        <Route path="/admin/hr/performance/appraisals"                   element={<AdminRoute><AdminAppraisals /></AdminRoute>} />
+        <Route path="/admin/hr/performance/training"                     element={<AdminRoute><AdminTrainingCourses /></AdminRoute>} />
+        <Route path="/admin/hr/performance/learning-paths"               element={<AdminRoute><AdminLearningPaths /></AdminRoute>} />
+        <Route path="/admin/hr/performance/certifications"               element={<AdminRoute><AdminCertifications /></AdminRoute>} />
+        <Route path="/admin/hr/performance/career"                       element={<AdminRoute><AdminCareerDevelopment /></AdminRoute>} />
+        <Route path="/admin/hr/performance/succession"                   element={<AdminRoute><AdminSuccessionPlanning /></AdminRoute>} />
+        <Route path="/admin/hr/performance/reports"                      element={<AdminRoute><AdminPerformanceReports /></AdminRoute>} />
+        <Route path="/admin/hr/performance/announcements"                element={<AdminRoute><AdminPerformanceAnnouncements /></AdminRoute>} />
+        <Route path="/admin/hr/performance/recognition"                  element={<AdminRoute><AdminRecognition /></AdminRoute>} />
+        {/* Sprint 15A: Enterprise Project Management */}
+        <Route path="/admin/projects"                element={<AdminRoute><AdminProjects /></AdminRoute>} />
+        <Route path="/admin/projects/dashboard"      element={<AdminRoute><AdminProjectDashboard /></AdminRoute>} />
+        <Route path="/admin/projects/:id"            element={<AdminRoute><AdminProjectDetail /></AdminRoute>} />
+        <Route path="/admin/projects/:id/kanban"     element={<AdminRoute><AdminKanbanBoard /></AdminRoute>} />
+        <Route path="/admin/projects/:id/gantt"      element={<AdminRoute><AdminGanttTimeline /></AdminRoute>} />
+        <Route path="/admin/projects/milestones/all" element={<AdminRoute><AdminMilestones /></AdminRoute>} />
+        <Route path="/admin/projects/tasks/all"      element={<AdminRoute><AdminProjectTasks /></AdminRoute>} />
+        <Route path="/admin/projects/timesheets/all" element={<AdminRoute><AdminTimesheets /></AdminRoute>} />
+        <Route path="/admin/projects/resources/all"  element={<AdminRoute><AdminProjectResources /></AdminRoute>} />
+        <Route path="/admin/projects/risks/all"      element={<AdminRoute><AdminProjectRisks /></AdminRoute>} />
+        <Route path="/admin/projects/issues/all"     element={<AdminRoute><AdminProjectIssues /></AdminRoute>} />
+        <Route path="/admin/projects/reports"        element={<AdminRoute><AdminProjectReports /></AdminRoute>} />
+        <Route path="/admin/projects/settings"       element={<AdminRoute><AdminProjectSettings /></AdminRoute>} />
+        {/* ESS Portal */}
+        <Route path="/employee/login" element={<PageWrapper><EmployeeLogin /></PageWrapper>} />
+        <Route path="/employee" element={<EmployeeRoute><EmployeeLayout /></EmployeeRoute>}>
+          <Route path="dashboard"     element={<ESSDashboard />} />
+          <Route path="attendance"    element={<ESSMyAttendance />} />
+          <Route path="leave"         element={<ESSMyLeave />} />
+          <Route path="payslips"      element={<ESSMyPayroll />} />
+          <Route path="performance"   element={<ESSMyPerformance />} />
+          <Route path="training"      element={<ESSMyTraining />} />
+          <Route path="announcements" element={<ESSAnnouncements />} />
+          <Route path="recognition"   element={<ESSRecognition />} />
+          <Route path="feedback"      element={<ESSFeedback />} />
+        </Route>
 
         {/* Sprint 11C: Installation Engineer Portal (isolated auth — type:'engineer' JWT, green) */}
         <Route path="/engineer/login" element={<PageWrapper><EngineerLogin /></PageWrapper>} />
