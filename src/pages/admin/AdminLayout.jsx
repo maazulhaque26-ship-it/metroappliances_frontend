@@ -14,6 +14,7 @@ import {
   FiCamera, FiCpu, FiThermometer, FiWifi, FiTool, FiClock, FiCalendar,
   FiPercent, FiGlobe, FiTruck, FiCheckSquare,
   FiHome, FiCreditCard, FiDollarSign, FiArrowRight,
+  FiFolder, FiFlag,
 } from 'react-icons/fi';
 import Logo from '../../components/ui/Logo';
 
@@ -484,6 +485,51 @@ const NAV_GROUPS = [
       { label: 'Perf. Reports',    path: '/admin/hr/performance/reports',        icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
       { label: 'Announcements',    path: '/admin/hr/performance/announcements',  icon: FiRadio,        roles: ['admin', 'super_admin'] },
       { label: 'Recognition',      path: '/admin/hr/performance/recognition',    icon: FiAward,        roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
+    label: 'Projects',
+    items: [
+      { label: 'PM Dashboard',  path: '/admin/projects/dashboard',      icon: FiGrid,          roles: ['admin', 'super_admin'] },
+      { label: 'Projects',      path: '/admin/projects',                 icon: FiFolder,        roles: ['admin', 'super_admin'] },
+      { label: 'Milestones',    path: '/admin/projects/milestones/all',  icon: FiFlag,          roles: ['admin', 'super_admin'] },
+      { label: 'Tasks',         path: '/admin/projects/tasks/all',       icon: FiList,          roles: ['admin', 'super_admin'] },
+      { label: 'Timesheets',    path: '/admin/projects/timesheets/all',  icon: FiClock,         roles: ['admin', 'super_admin'] },
+      { label: 'Resources',     path: '/admin/projects/resources/all',   icon: FiUsers,         roles: ['admin', 'super_admin'] },
+      { label: 'Risks',         path: '/admin/projects/risks/all',       icon: FiAlertTriangle, roles: ['admin', 'super_admin'] },
+      { label: 'Issues',        path: '/admin/projects/issues/all',      icon: FiBriefcase,     roles: ['admin', 'super_admin'] },
+      { label: 'PM Reports',    path: '/admin/projects/reports',         icon: FiBarChart2,     roles: ['admin', 'super_admin'] },
+      { label: 'PM Settings',   path: '/admin/projects/settings',        icon: FiSettings,      roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
+    label: 'Portfolio (PPM)',
+    items: [
+      { label: 'PPM Dashboard',   path: '/admin/portfolio/dashboard',   icon: FiGrid,          roles: ['admin', 'super_admin'] },
+      { label: 'Executive View',  path: '/admin/portfolio/executive',   icon: FiActivity,      roles: ['admin', 'super_admin'] },
+      { label: 'Portfolios',      path: '/admin/portfolio',             icon: FiBriefcase,     roles: ['admin', 'super_admin'] },
+      { label: 'Programs',        path: '/admin/portfolio/programs',    icon: FiLayers,        roles: ['admin', 'super_admin'] },
+      { label: 'Initiatives',     path: '/admin/portfolio/initiatives', icon: FiTarget,        roles: ['admin', 'super_admin'] },
+      { label: 'Resource Capacity', path: '/admin/portfolio/resources', icon: FiUsers,         roles: ['admin', 'super_admin'] },
+      { label: 'Portfolio Finance', path: '/admin/portfolio/finance',   icon: FiDollarSign,    roles: ['admin', 'super_admin'] },
+      { label: 'PPM Reports',     path: '/admin/portfolio/reports',     icon: FiBarChart2,     roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
+    label: 'PMO Governance',
+    items: [
+      { label: 'PMO Dashboard',     path: '/admin/pmo/dashboard',       icon: FiGrid,          roles: ['admin', 'super_admin'] },
+      { label: 'PMO Analytics',     path: '/admin/pmo/analytics',       icon: FiTrendingUp,    roles: ['admin', 'super_admin'] },
+      { label: 'Governance Boards', path: '/admin/pmo/governance',      icon: FiShield,        roles: ['admin', 'super_admin'] },
+      { label: 'Compliance',        path: '/admin/pmo/compliance',      icon: FiCheckSquare,   roles: ['admin', 'super_admin'] },
+      { label: 'Business Cases',    path: '/admin/pmo/business-cases',  icon: FiBriefcase,     roles: ['admin', 'super_admin'] },
+      { label: 'Investments',       path: '/admin/pmo/investments',     icon: FiDollarSign,    roles: ['admin', 'super_admin'] },
+      { label: 'Charters',          path: '/admin/pmo/charters',        icon: FiFileText,      roles: ['admin', 'super_admin'] },
+      { label: 'Lessons Learned',   path: '/admin/pmo/lessons',         icon: FiBook,          roles: ['admin', 'super_admin'] },
+      { label: 'Templates',         path: '/admin/pmo/templates',       icon: FiClipboard,     roles: ['admin', 'super_admin'] },
+      { label: 'Documents',         path: '/admin/pmo/documents',       icon: FiFolder,        roles: ['admin', 'super_admin'] },
+      { label: 'Project Audits',    path: '/admin/pmo/audits',          icon: FiAlertTriangle, roles: ['admin', 'super_admin'] },
+      { label: 'Scorecards',        path: '/admin/pmo/scorecards',      icon: FiBarChart2,     roles: ['admin', 'super_admin'] },
     ],
   },
   {

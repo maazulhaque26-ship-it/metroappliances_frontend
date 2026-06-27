@@ -464,6 +464,43 @@ const AdminSuccessionPlanning        = lazy(() => import('./pages/admin/AdminSuc
 const AdminPerformanceReports        = lazy(() => import('./pages/admin/AdminPerformanceReports'));
 const AdminPerformanceAnnouncements  = lazy(() => import('./pages/admin/AdminPerformanceAnnouncements'));
 const AdminRecognition               = lazy(() => import('./pages/admin/AdminRecognition'));
+// Sprint 15A: Enterprise Project Management
+const AdminProjectDashboard  = lazy(() => import('./pages/admin/AdminProjectDashboard'));
+const AdminProjects          = lazy(() => import('./pages/admin/AdminProjects'));
+const AdminProjectDetail     = lazy(() => import('./pages/admin/AdminProjectDetail'));
+const AdminKanbanBoard       = lazy(() => import('./pages/admin/AdminKanbanBoard'));
+const AdminGanttTimeline     = lazy(() => import('./pages/admin/AdminGanttTimeline'));
+const AdminMilestones        = lazy(() => import('./pages/admin/AdminMilestones'));
+const AdminProjectTasks      = lazy(() => import('./pages/admin/AdminProjectTasks'));
+const AdminTimesheets        = lazy(() => import('./pages/admin/AdminTimesheets'));
+const AdminProjectResources  = lazy(() => import('./pages/admin/AdminProjectResources'));
+const AdminProjectRisks      = lazy(() => import('./pages/admin/AdminProjectRisks'));
+const AdminProjectIssues     = lazy(() => import('./pages/admin/AdminProjectIssues'));
+const AdminProjectReports    = lazy(() => import('./pages/admin/AdminProjectReports'));
+const AdminProjectSettings   = lazy(() => import('./pages/admin/AdminProjectSettings'));
+// ── Sprint 15B: Enterprise Project Portfolio Management (PPM) ────────────────
+const AdminPortfolioDashboard  = lazy(() => import('./pages/admin/AdminPortfolioDashboard'));
+const AdminPortfolios          = lazy(() => import('./pages/admin/AdminPortfolios'));
+const AdminPortfolioDetail     = lazy(() => import('./pages/admin/AdminPortfolioDetail'));
+const AdminPrograms            = lazy(() => import('./pages/admin/AdminPrograms'));
+const AdminInitiatives         = lazy(() => import('./pages/admin/AdminInitiatives'));
+const AdminResourceCapacity    = lazy(() => import('./pages/admin/AdminResourceCapacity'));
+const AdminPortfolioExecutive  = lazy(() => import('./pages/admin/AdminPortfolioExecutive'));
+const AdminPortfolioReports    = lazy(() => import('./pages/admin/AdminPortfolioReports'));
+const AdminPortfolioFinance    = lazy(() => import('./pages/admin/AdminPortfolioFinance'));
+// Sprint 15C: PMO Governance & Analytics
+const AdminPMODashboard          = lazy(() => import('./pages/admin/AdminPMODashboard'));
+const AdminPMOGovernance         = lazy(() => import('./pages/admin/AdminPMOGovernance'));
+const AdminPMOCompliance         = lazy(() => import('./pages/admin/AdminPMOCompliance'));
+const AdminPMOBusinessCase       = lazy(() => import('./pages/admin/AdminPMOBusinessCase'));
+const AdminPMOInvestmentRequests = lazy(() => import('./pages/admin/AdminPMOInvestmentRequests'));
+const AdminPMOCharters           = lazy(() => import('./pages/admin/AdminPMOCharters'));
+const AdminPMOLessonsLearned     = lazy(() => import('./pages/admin/AdminPMOLessonsLearned'));
+const AdminPMOTemplates          = lazy(() => import('./pages/admin/AdminPMOTemplates'));
+const AdminPMODocuments          = lazy(() => import('./pages/admin/AdminPMODocuments'));
+const AdminPMOAudit              = lazy(() => import('./pages/admin/AdminPMOAudit'));
+const AdminPMOScorecard          = lazy(() => import('./pages/admin/AdminPMOScorecard'));
+const AdminPMOAnalytics          = lazy(() => import('./pages/admin/AdminPMOAnalytics'));
 // ESS Portal
 const EmployeeLogin              = lazy(() => import('./pages/employee/EmployeeLogin'));
 const EmployeeLayout             = lazy(() => import('./pages/employee/EmployeeLayout'));
@@ -1258,6 +1295,43 @@ export default function App() {
         <Route path="/admin/hr/performance/reports"                      element={<AdminRoute><AdminPerformanceReports /></AdminRoute>} />
         <Route path="/admin/hr/performance/announcements"                element={<AdminRoute><AdminPerformanceAnnouncements /></AdminRoute>} />
         <Route path="/admin/hr/performance/recognition"                  element={<AdminRoute><AdminRecognition /></AdminRoute>} />
+        {/* Sprint 15A: Enterprise Project Management */}
+        <Route path="/admin/projects"                element={<AdminRoute><AdminProjects /></AdminRoute>} />
+        <Route path="/admin/projects/dashboard"      element={<AdminRoute><AdminProjectDashboard /></AdminRoute>} />
+        <Route path="/admin/projects/:id"            element={<AdminRoute><AdminProjectDetail /></AdminRoute>} />
+        <Route path="/admin/projects/:id/kanban"     element={<AdminRoute><AdminKanbanBoard /></AdminRoute>} />
+        <Route path="/admin/projects/:id/gantt"      element={<AdminRoute><AdminGanttTimeline /></AdminRoute>} />
+        <Route path="/admin/projects/milestones/all" element={<AdminRoute><AdminMilestones /></AdminRoute>} />
+        <Route path="/admin/projects/tasks/all"      element={<AdminRoute><AdminProjectTasks /></AdminRoute>} />
+        <Route path="/admin/projects/timesheets/all" element={<AdminRoute><AdminTimesheets /></AdminRoute>} />
+        <Route path="/admin/projects/resources/all"  element={<AdminRoute><AdminProjectResources /></AdminRoute>} />
+        <Route path="/admin/projects/risks/all"      element={<AdminRoute><AdminProjectRisks /></AdminRoute>} />
+        <Route path="/admin/projects/issues/all"     element={<AdminRoute><AdminProjectIssues /></AdminRoute>} />
+        <Route path="/admin/projects/reports"        element={<AdminRoute><AdminProjectReports /></AdminRoute>} />
+        <Route path="/admin/projects/settings"       element={<AdminRoute><AdminProjectSettings /></AdminRoute>} />
+        {/* Sprint 15B: Enterprise Project Portfolio Management */}
+        <Route path="/admin/portfolio"                       element={<AdminRoute><AdminPortfolios /></AdminRoute>} />
+        <Route path="/admin/portfolio/dashboard"             element={<AdminRoute><AdminPortfolioDashboard /></AdminRoute>} />
+        <Route path="/admin/portfolio/executive"             element={<AdminRoute><AdminPortfolioExecutive /></AdminRoute>} />
+        <Route path="/admin/portfolio/programs"              element={<AdminRoute><AdminPrograms /></AdminRoute>} />
+        <Route path="/admin/portfolio/initiatives"           element={<AdminRoute><AdminInitiatives /></AdminRoute>} />
+        <Route path="/admin/portfolio/resources"             element={<AdminRoute><AdminResourceCapacity /></AdminRoute>} />
+        <Route path="/admin/portfolio/finance"               element={<AdminRoute><AdminPortfolioFinance /></AdminRoute>} />
+        <Route path="/admin/portfolio/reports"               element={<AdminRoute><AdminPortfolioReports /></AdminRoute>} />
+        <Route path="/admin/portfolio/:id"                   element={<AdminRoute><AdminPortfolioDetail /></AdminRoute>} />
+        {/* Sprint 15C: PMO Governance & Analytics */}
+        <Route path="/admin/pmo/dashboard"        element={<AdminRoute><AdminPMODashboard /></AdminRoute>} />
+        <Route path="/admin/pmo/analytics"        element={<AdminRoute><AdminPMOAnalytics /></AdminRoute>} />
+        <Route path="/admin/pmo/governance"       element={<AdminRoute><AdminPMOGovernance /></AdminRoute>} />
+        <Route path="/admin/pmo/compliance"       element={<AdminRoute><AdminPMOCompliance /></AdminRoute>} />
+        <Route path="/admin/pmo/business-cases"   element={<AdminRoute><AdminPMOBusinessCase /></AdminRoute>} />
+        <Route path="/admin/pmo/investments"      element={<AdminRoute><AdminPMOInvestmentRequests /></AdminRoute>} />
+        <Route path="/admin/pmo/charters"         element={<AdminRoute><AdminPMOCharters /></AdminRoute>} />
+        <Route path="/admin/pmo/lessons"          element={<AdminRoute><AdminPMOLessonsLearned /></AdminRoute>} />
+        <Route path="/admin/pmo/templates"        element={<AdminRoute><AdminPMOTemplates /></AdminRoute>} />
+        <Route path="/admin/pmo/documents"        element={<AdminRoute><AdminPMODocuments /></AdminRoute>} />
+        <Route path="/admin/pmo/audits"           element={<AdminRoute><AdminPMOAudit /></AdminRoute>} />
+        <Route path="/admin/pmo/scorecards"       element={<AdminRoute><AdminPMOScorecard /></AdminRoute>} />
         {/* ESS Portal */}
         <Route path="/employee/login" element={<PageWrapper><EmployeeLogin /></PageWrapper>} />
         <Route path="/employee" element={<EmployeeRoute><EmployeeLayout /></EmployeeRoute>}>
