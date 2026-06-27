@@ -4434,5 +4434,150 @@ router.post('/admin/workflows/:workflowId/steps',      protect, admin, wfDefCtrl
 router.get('/admin/workflows/:workflowId/transitions', protect, admin, wfDefCtrl.listTransitions);
 router.post('/admin/workflows/:workflowId/transitions',protect, admin, wfDefCtrl.createTransition);
 
+// ═══════════════════════════════════════════════════════════════════════════
+// Sprint 15E — Document Management System (DMS) & Knowledge Base
+// ═══════════════════════════════════════════════════════════════════════════
+const docLib  = require('../controllers/documentLibraryController');
+const docWf   = require('../controllers/documentWorkflowController');
+const docAna  = require('../controllers/documentAnalyticsController');
+const kbCtrl  = require('../controllers/knowledgeBaseController');
+
+// ── DMS Dashboard & Analytics ──────────────────────────────────────────────
+router.get('/admin/documents/dashboard',              protect, admin, docAna.getDMSDashboard);
+router.get('/admin/documents/analytics/activity',     protect, admin, docAna.getDocumentActivity);
+router.get('/admin/documents/analytics/expiry',       protect, admin, docAna.getExpiryReport);
+router.get('/admin/documents/analytics/retention',    protect, admin, docAna.getRetentionReport);
+router.get('/admin/documents/analytics/reviews',      protect, admin, docAna.getReviewReport);
+router.get('/admin/documents/analytics/audit',        protect, admin, docAna.getDocumentAuditTrail);
+router.get('/admin/documents/analytics/knowledge',    protect, admin, docAna.getKnowledgeUsageReport);
+
+// ── Document Search ────────────────────────────────────────────────────────
+router.get('/admin/documents/search',                 protect, admin, docLib.searchDocuments);
+router.get('/admin/documents/my',                     protect, admin, docLib.getMyDocuments);
+router.get('/admin/documents/favorites',              protect, admin, docLib.getMyFavorites);
+router.get('/admin/documents/recent',                 protect, admin, docLib.getRecentDocuments);
+
+// ── Expiring & Review-Due ──────────────────────────────────────────────────
+router.get('/admin/documents/expiring',               protect, admin, docWf.getExpiringDocuments);
+router.get('/admin/documents/reviews/overdue',        protect, admin, docWf.getOverdueReviews);
+router.get('/admin/documents/approvals/pending',      protect, admin, docWf.getPendingApprovals);
+
+// ── Folders ────────────────────────────────────────────────────────────────
+router.get('/admin/documents/folders',                protect, admin, docLib.listFolders);
+router.post('/admin/documents/folders',               protect, admin, docLib.createFolder);
+router.put('/admin/documents/folders/:id',            protect, admin, docLib.updateFolder);
+router.delete('/admin/documents/folders/:id',         protect, admin, docLib.deleteFolder);
+
+// ── Categories ─────────────────────────────────────────────────────────────
+router.get('/admin/documents/categories',             protect, admin, docLib.listCategories);
+router.post('/admin/documents/categories',            protect, admin, docLib.createCategory);
+router.put('/admin/documents/categories/:id',         protect, admin, docLib.updateCategory);
+router.delete('/admin/documents/categories/:id',      protect, admin, docLib.deleteCategory);
+
+// ── Tags ───────────────────────────────────────────────────────────────────
+router.get('/admin/documents/tags',                   protect, admin, docLib.listTags);
+router.post('/admin/documents/tags',                  protect, admin, docLib.createTag);
+router.delete('/admin/documents/tags/:id',            protect, admin, docLib.deleteTag);
+
+// ── Templates ──────────────────────────────────────────────────────────────
+router.get('/admin/documents/templates',              protect, admin, docLib.listTemplates);
+router.post('/admin/documents/templates',             protect, admin, docLib.createTemplate);
+router.post('/admin/documents/templates/:id/file',    protect, admin, serviceUpload.single('file'), docLib.uploadTemplateFile);
+router.post('/admin/documents/templates/:id/use',     protect, admin, docLib.createFromTemplate);
+router.put('/admin/documents/templates/:id',          protect, admin, docLib.updateTemplate);
+router.delete('/admin/documents/templates/:id',       protect, admin, docLib.deleteTemplate);
+
+// ── Retention Policies ─────────────────────────────────────────────────────
+router.get('/admin/documents/retention',              protect, admin, docWf.listRetentionPolicies);
+router.post('/admin/documents/retention',             protect, admin, docWf.createRetentionPolicy);
+router.post('/admin/documents/retention/:id/apply',   protect, admin, docWf.applyRetentionPolicy);
+router.put('/admin/documents/retention/:id',          protect, admin, docWf.updateRetentionPolicy);
+router.delete('/admin/documents/retention/:id',       protect, admin, docWf.deleteRetentionPolicy);
+
+// ── Archive ────────────────────────────────────────────────────────────────
+router.get('/admin/documents/archive',                protect, admin, docWf.listArchives);
+router.post('/admin/documents/archive/:id/restore',   protect, admin, docWf.restoreDocument);
+
+// ── Reviews ────────────────────────────────────────────────────────────────
+router.get('/admin/documents/reviews',                protect, admin, docWf.listReviews);
+router.post('/admin/documents/reviews',               protect, admin, docWf.createReview);
+router.patch('/admin/documents/reviews/:id/complete', protect, admin, docWf.completeReview);
+
+// ── Approvals ──────────────────────────────────────────────────────────────
+router.get('/admin/documents/approvals',              protect, admin, docWf.listApprovals);
+router.post('/admin/documents/approvals',             protect, admin, docWf.createApproval);
+router.patch('/admin/documents/approvals/:id/approve',protect, admin, docWf.approveDocument);
+router.patch('/admin/documents/approvals/:id/reject', protect, admin, docWf.rejectDocument);
+
+// ── Documents CRUD (/:id last to avoid shadowing) ─────────────────────────
+router.get('/admin/documents',                        protect, admin, docLib.listDocuments);
+router.post('/admin/documents',                       protect, admin, docLib.createDocument);
+router.get('/admin/documents/:id',                    protect, admin, docLib.getDocument);
+router.put('/admin/documents/:id',                    protect, admin, docLib.updateDocument);
+router.delete('/admin/documents/:id',                 protect, admin, docLib.deleteDocument);
+
+// ── Document File & Actions ────────────────────────────────────────────────
+router.post('/admin/documents/:id/upload',            protect, admin, serviceUpload.single('file'), docLib.uploadDocumentFile);
+router.post('/admin/documents/:id/checkout',          protect, admin, docLib.checkOutDocument);
+router.post('/admin/documents/:id/checkin',           protect, admin, docLib.checkInDocument);
+router.post('/admin/documents/:id/favorite',          protect, admin, docLib.toggleFavorite);
+router.get('/admin/documents/:id/download',           protect, admin, docLib.downloadDocument);
+router.post('/admin/documents/:id/publish',           protect, admin, docWf.publishDocument);
+router.post('/admin/documents/:id/archive',           protect, admin, docWf.archiveDocument);
+
+// ── Document Versions ──────────────────────────────────────────────────────
+router.get('/admin/documents/:id/versions',           protect, admin, docLib.listVersions);
+router.post('/admin/documents/:id/versions/:verId/restore', protect, admin, docLib.restoreVersion);
+
+// ── Document Comments ──────────────────────────────────────────────────────
+router.get('/admin/documents/:id/comments',           protect, admin, docLib.listComments);
+router.post('/admin/documents/:id/comments',          protect, admin, docLib.addComment);
+router.delete('/admin/documents/:id/comments/:cmtId', protect, admin, docLib.deleteComment);
+
+// ── Document Permissions ───────────────────────────────────────────────────
+router.get('/admin/documents/:id/permissions',        protect, admin, docLib.listPermissions);
+router.post('/admin/documents/:id/permissions',       protect, admin, docLib.grantPermission);
+router.delete('/admin/documents/:id/permissions/:permId', protect, admin, docLib.revokePermission);
+
+// ── Document Sharing ───────────────────────────────────────────────────────
+router.get('/admin/documents/:id/shares',             protect, admin, docLib.listShares);
+router.post('/admin/documents/:id/share',             protect, admin, docLib.shareDocument);
+router.delete('/admin/documents/:id/shares/:shareId', protect, admin, docLib.revokeShare);
+
+// ── Document Signatures ────────────────────────────────────────────────────
+router.get('/admin/documents/:id/signatures',         protect, admin, docWf.listSignatures);
+router.post('/admin/documents/:id/signatures',        protect, admin, docWf.requestSignature);
+router.patch('/admin/documents/:id/signatures/:sigId/sign',    protect, admin, docWf.signDocument);
+router.patch('/admin/documents/:id/signatures/:sigId/decline', protect, admin, docWf.declineSignature);
+
+// ── Knowledge Base Categories ──────────────────────────────────────────────
+router.get('/admin/knowledge/categories',             protect, admin, kbCtrl.listCategories);
+router.post('/admin/knowledge/categories',            protect, admin, kbCtrl.createCategory);
+router.put('/admin/knowledge/categories/:id',         protect, admin, kbCtrl.updateCategory);
+router.delete('/admin/knowledge/categories/:id',      protect, admin, kbCtrl.deleteCategory);
+
+// ── Knowledge Base Articles — static sub-paths FIRST ─────────────────────
+router.get('/admin/knowledge/search',                 protect, admin, kbCtrl.searchArticles);
+router.get('/admin/knowledge/popular',                protect, admin, kbCtrl.getPopularArticles);
+router.get('/admin/knowledge/bookmarks',              protect, admin, kbCtrl.getMyBookmarks);
+
+// ── Knowledge Base Articles CRUD ──────────────────────────────────────────
+router.get('/admin/knowledge',                        protect, admin, kbCtrl.listArticles);
+router.post('/admin/knowledge',                       protect, admin, kbCtrl.createArticle);
+router.get('/admin/knowledge/:id',                    protect, admin, kbCtrl.getArticle);
+router.put('/admin/knowledge/:id',                    protect, admin, kbCtrl.updateArticle);
+router.delete('/admin/knowledge/:id',                 protect, admin, kbCtrl.deleteArticle);
+
+// ── Knowledge Base Article Actions ────────────────────────────────────────
+router.post('/admin/knowledge/:id/publish',           protect, admin, kbCtrl.publishArticle);
+router.post('/admin/knowledge/:id/archive',           protect, admin, kbCtrl.archiveArticle);
+router.post('/admin/knowledge/:id/bookmark',          protect, admin, kbCtrl.toggleBookmark);
+router.delete('/admin/knowledge/:id/bookmarks/:bmId', protect, admin, kbCtrl.deleteBookmark);
+router.get('/admin/knowledge/:id/related',            protect, admin, kbCtrl.getRelatedArticles);
+router.get('/admin/knowledge/:id/feedback',           protect, admin, kbCtrl.listFeedback);
+router.post('/admin/knowledge/:id/feedback',          protect, admin, kbCtrl.addFeedback);
+router.get('/admin/knowledge/:id/revisions',          protect, admin, kbCtrl.listRevisions);
+router.get('/admin/knowledge/:id/revisions/:revId',   protect, admin, kbCtrl.getRevision);
+
 module.exports = router;
 
