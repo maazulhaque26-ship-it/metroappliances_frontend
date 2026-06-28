@@ -547,6 +547,15 @@ const AdminAIAnomalyCenter       = lazy(() => import('./pages/admin/AdminAIAnoma
 const AdminAIScenarioComparison  = lazy(() => import('./pages/admin/AdminAIScenarioComparison'));
 const AdminAIForecastReports     = lazy(() => import('./pages/admin/AdminAIForecastReports'));
 const AdminAIPredictionSettings  = lazy(() => import('./pages/admin/AdminAIPredictionSettings'));
+// Sprint 16C — AI Copilot & Intelligent Automation
+const AdminAICopilot             = lazy(() => import('./pages/admin/AdminAICopilot'));
+const AdminAIChat                = lazy(() => import('./pages/admin/AdminAIChat'));
+const AdminAutomationCenter      = lazy(() => import('./pages/admin/AdminAutomationCenter'));
+const AdminCopilotRules          = lazy(() => import('./pages/admin/AdminCopilotRules'));
+const AdminExecutiveBriefing     = lazy(() => import('./pages/admin/AdminExecutiveBriefing'));
+const AdminAIInsights            = lazy(() => import('./pages/admin/AdminAIInsights'));
+const AdminRecommendationCenter  = lazy(() => import('./pages/admin/AdminRecommendationCenter'));
+const AdminKnowledgeAssistant    = lazy(() => import('./pages/admin/AdminKnowledgeAssistant'));
 // ESS Portal
 const EmployeeLogin              = lazy(() => import('./pages/employee/EmployeeLogin'));
 const EmployeeLayout             = lazy(() => import('./pages/employee/EmployeeLayout'));
@@ -1424,6 +1433,15 @@ export default function App() {
         <Route path="/admin/ai/scenarios"    element={<AdminRoute><AdminAIScenarioComparison /></AdminRoute>} />
         <Route path="/admin/ai/reports"      element={<AdminRoute><AdminAIForecastReports /></AdminRoute>} />
         <Route path="/admin/ai/settings"     element={<AdminRoute><AdminAIPredictionSettings /></AdminRoute>} />
+        {/* Sprint 16C — AI Copilot */}
+        <Route path="/admin/ai-copilot/dashboard"       element={<AdminRoute><AdminAICopilot /></AdminRoute>} />
+        <Route path="/admin/ai-copilot/chat"            element={<AdminRoute><AdminAIChat /></AdminRoute>} />
+        <Route path="/admin/ai-copilot/automation"      element={<AdminRoute><AdminAutomationCenter /></AdminRoute>} />
+        <Route path="/admin/ai-copilot/rules"           element={<AdminRoute><AdminCopilotRules /></AdminRoute>} />
+        <Route path="/admin/ai-copilot/briefing"        element={<AdminRoute><AdminExecutiveBriefing /></AdminRoute>} />
+        <Route path="/admin/ai-copilot/insights"        element={<AdminRoute><AdminAIInsights /></AdminRoute>} />
+        <Route path="/admin/ai-copilot/recommendations" element={<AdminRoute><AdminRecommendationCenter /></AdminRoute>} />
+        <Route path="/admin/ai-copilot/knowledge"       element={<AdminRoute><AdminKnowledgeAssistant /></AdminRoute>} />
         {/* ESS Portal */}
         <Route path="/employee/login" element={<PageWrapper><EmployeeLogin /></PageWrapper>} />
         <Route path="/employee" element={<EmployeeRoute><EmployeeLayout /></EmployeeRoute>}>

@@ -593,6 +593,19 @@ const NAV_GROUPS = [
     ],
   },
   {
+    label: 'AI Copilot',
+    items: [
+      { label: 'Copilot Dashboard', path: '/admin/ai-copilot/dashboard',       icon: FiCpu,           roles: ['admin', 'super_admin'] },
+      { label: 'AI Chat',           path: '/admin/ai-copilot/chat',            icon: FiMessageSquare, roles: ['admin', 'super_admin'] },
+      { label: 'Exec Briefing',     path: '/admin/ai-copilot/briefing',        icon: FiClipboard,     roles: ['admin', 'super_admin'] },
+      { label: 'AI Insights',       path: '/admin/ai-copilot/insights',        icon: FiZap,           roles: ['admin', 'super_admin'] },
+      { label: 'Recommendations',   path: '/admin/ai-copilot/recommendations', icon: FiTarget,        roles: ['admin', 'super_admin'] },
+      { label: 'Automation Center', path: '/admin/ai-copilot/automation',      icon: FiLayers,        roles: ['admin', 'super_admin'] },
+      { label: 'Automation Rules',  path: '/admin/ai-copilot/rules',           icon: FiSliders,       roles: ['admin', 'super_admin'] },
+      { label: 'Knowledge Base',    path: '/admin/ai-copilot/knowledge',       icon: FiBook,          roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
     label: 'Enterprise',
     items: [
       { label: 'Audit Log', path: '/admin/audit-log', icon: FiShield, roles: ['admin', 'super_admin'] },
