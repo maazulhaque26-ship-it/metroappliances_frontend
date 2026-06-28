@@ -538,6 +538,15 @@ const AdminBIBenchmark           = lazy(() => import('./pages/admin/AdminBIBench
 const AdminBIEnterpriseHealth    = lazy(() => import('./pages/admin/AdminBIEnterpriseHealth'));
 const AdminBIReportBuilder       = lazy(() => import('./pages/admin/AdminBIReportBuilder'));
 const AdminBIDashboardSettings   = lazy(() => import('./pages/admin/AdminBIDashboardSettings'));
+// ── Sprint 16B: Enterprise AI Forecasting & Predictive Intelligence ───────────
+const AdminAIDashboard           = lazy(() => import('./pages/admin/AdminAIDashboard'));
+const AdminAIForecastCenter      = lazy(() => import('./pages/admin/AdminAIForecastCenter'));
+const AdminAIPredictions         = lazy(() => import('./pages/admin/AdminAIPredictions'));
+const AdminAIRecommendations     = lazy(() => import('./pages/admin/AdminAIRecommendations'));
+const AdminAIAnomalyCenter       = lazy(() => import('./pages/admin/AdminAIAnomalyCenter'));
+const AdminAIScenarioComparison  = lazy(() => import('./pages/admin/AdminAIScenarioComparison'));
+const AdminAIForecastReports     = lazy(() => import('./pages/admin/AdminAIForecastReports'));
+const AdminAIPredictionSettings  = lazy(() => import('./pages/admin/AdminAIPredictionSettings'));
 // ESS Portal
 const EmployeeLogin              = lazy(() => import('./pages/employee/EmployeeLogin'));
 const EmployeeLayout             = lazy(() => import('./pages/employee/EmployeeLayout'));
@@ -1406,6 +1415,15 @@ export default function App() {
         <Route path="/admin/bi-exec/health"      element={<AdminRoute><AdminBIEnterpriseHealth /></AdminRoute>} />
         <Route path="/admin/bi-exec/reports"     element={<AdminRoute><AdminBIReportBuilder /></AdminRoute>} />
         <Route path="/admin/bi-exec/settings"    element={<AdminRoute><AdminBIDashboardSettings /></AdminRoute>} />
+        {/* Sprint 16B: Enterprise AI Forecasting & Predictive Intelligence */}
+        <Route path="/admin/ai/dashboard"    element={<AdminRoute><AdminAIDashboard /></AdminRoute>} />
+        <Route path="/admin/ai/forecasts"    element={<AdminRoute><AdminAIForecastCenter /></AdminRoute>} />
+        <Route path="/admin/ai/predictions"  element={<AdminRoute><AdminAIPredictions /></AdminRoute>} />
+        <Route path="/admin/ai/recommendations" element={<AdminRoute><AdminAIRecommendations /></AdminRoute>} />
+        <Route path="/admin/ai/anomalies"    element={<AdminRoute><AdminAIAnomalyCenter /></AdminRoute>} />
+        <Route path="/admin/ai/scenarios"    element={<AdminRoute><AdminAIScenarioComparison /></AdminRoute>} />
+        <Route path="/admin/ai/reports"      element={<AdminRoute><AdminAIForecastReports /></AdminRoute>} />
+        <Route path="/admin/ai/settings"     element={<AdminRoute><AdminAIPredictionSettings /></AdminRoute>} />
         {/* ESS Portal */}
         <Route path="/employee/login" element={<PageWrapper><EmployeeLogin /></PageWrapper>} />
         <Route path="/employee" element={<EmployeeRoute><EmployeeLayout /></EmployeeRoute>}>

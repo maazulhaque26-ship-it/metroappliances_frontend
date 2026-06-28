@@ -580,6 +580,19 @@ const NAV_GROUPS = [
     ],
   },
   {
+    label: 'AI & Forecasting',
+    items: [
+      { label: 'AI Dashboard',      path: '/admin/ai/dashboard',       icon: FiCpu,           roles: ['admin', 'super_admin'] },
+      { label: 'Forecast Center',   path: '/admin/ai/forecasts',       icon: FiTrendingUp,    roles: ['admin', 'super_admin'] },
+      { label: 'Predictions',       path: '/admin/ai/predictions',     icon: FiBarChart2,     roles: ['admin', 'super_admin'] },
+      { label: 'Recommendations',   path: '/admin/ai/recommendations', icon: FiZap,           roles: ['admin', 'super_admin'] },
+      { label: 'Anomaly Center',    path: '/admin/ai/anomalies',       icon: FiAlertTriangle, roles: ['admin', 'super_admin'] },
+      { label: 'Scenarios',         path: '/admin/ai/scenarios',       icon: FiLayers,        roles: ['admin', 'super_admin'] },
+      { label: 'Forecast Reports',  path: '/admin/ai/reports',         icon: FiClipboard,     roles: ['admin', 'super_admin'] },
+      { label: 'AI Settings',       path: '/admin/ai/settings',        icon: FiSliders,       roles: ['admin', 'super_admin'] },
+    ],
+  },
+  {
     label: 'Enterprise',
     items: [
       { label: 'Audit Log', path: '/admin/audit-log', icon: FiShield, roles: ['admin', 'super_admin'] },
