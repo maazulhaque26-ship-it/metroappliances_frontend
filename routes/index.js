@@ -4656,5 +4656,78 @@ router.post(  '/admin/bi/bookmarks',              protect, admin, biCfg.createBo
 router.patch( '/admin/bi/bookmarks/:id/default',  protect, admin, biCfg.setDefaultBookmark);
 router.delete('/admin/bi/bookmarks/:id',          protect, admin, biCfg.deleteBookmark);
 
+// ═══════════════════════════════════════════════════════════════════════════
+// Sprint 16B — Enterprise AI Forecasting & Predictive Intelligence
+// ═══════════════════════════════════════════════════════════════════════════
+const aiFC   = require('../controllers/aiForecastController');
+const aiAnom = require('../controllers/aiAnomalyController');
+const aiRec  = require('../controllers/aiRecommendationController');
+const aiDash = require('../controllers/aiDashboardController');
+const aiCfg  = require('../controllers/aiConfigController');
+
+// AI Dashboard & Insights
+router.get('/admin/ai/dashboard',                protect, admin, aiDash.getAIDashboard);
+router.get('/admin/ai/dashboard/accuracy',       protect, admin, aiDash.getForecastAccuracy);
+router.get('/admin/ai/dashboard/insights',       protect, admin, aiDash.getAIInsights);
+
+// Scenarios
+router.get('/admin/ai/scenarios',                protect, admin, aiDash.getScenarios);
+router.post('/admin/ai/scenarios',               protect, admin, aiDash.createScenario);
+router.get('/admin/ai/scenarios/compare',        protect, admin, aiDash.compareScenarios);
+router.delete('/admin/ai/scenarios/:id',         protect, admin, aiDash.deleteScenario);
+
+// Prediction History
+router.get('/admin/ai/history',                  protect, admin, aiDash.getPredictionHistory);
+router.get('/admin/ai/history/accuracy',         protect, admin, aiCfg.getModelPerformance);
+
+// Forecasts — list & detail
+router.get('/admin/ai/forecasts',                protect, admin, aiFC.listForecasts);
+router.get('/admin/ai/forecasts/:id',            protect, admin, aiFC.getForecast);
+router.delete('/admin/ai/forecasts/:id',         protect, admin, aiFC.deleteForecast);
+
+// Forecasts — generate by type
+router.post('/admin/ai/forecasts/sales',         protect, admin, aiFC.generateSalesForecast);
+router.post('/admin/ai/forecasts/demand',        protect, admin, aiFC.generateDemandForecast);
+router.post('/admin/ai/forecasts/inventory',     protect, admin, aiFC.generateInventoryForecast);
+router.post('/admin/ai/forecasts/production',    protect, admin, aiFC.generateProductionForecast);
+router.post('/admin/ai/forecasts/cashflow',      protect, admin, aiFC.generateCashFlowForecast);
+router.post('/admin/ai/forecasts/revenue',       protect, admin, aiFC.generateRevenueForecast);
+router.post('/admin/ai/forecasts/expense',       protect, admin, aiFC.generateExpenseForecast);
+router.post('/admin/ai/forecasts/workforce',     protect, admin, aiFC.generateWorkforceForecast);
+router.post('/admin/ai/forecasts/maintenance',   protect, admin, aiFC.generateMaintenanceForecast);
+router.post('/admin/ai/forecasts/warranty',      protect, admin, aiFC.generateWarrantyForecast);
+router.post('/admin/ai/forecasts/projects',      protect, admin, aiFC.generateProjectForecast);
+
+// Anomalies
+router.get('/admin/ai/anomalies',                protect, admin, aiAnom.listAnomalies);
+router.get('/admin/ai/anomalies/stats',          protect, admin, aiAnom.getAnomalyStats);
+router.post('/admin/ai/anomalies/detect',        protect, admin, aiAnom.detectAllAnomalies);
+router.post('/admin/ai/anomalies/detect/demand', protect, admin, aiAnom.detectDemandAnomalies);
+router.post('/admin/ai/anomalies/detect/inventory', protect, admin, aiAnom.detectInventoryAnomalies);
+router.post('/admin/ai/anomalies/detect/cash',   protect, admin, aiAnom.detectCashAnomalies);
+router.post('/admin/ai/anomalies/detect/production', protect, admin, aiAnom.detectProductionAnomalies);
+router.patch('/admin/ai/anomalies/:id/resolve',  protect, admin, aiAnom.resolveAnomaly);
+
+// Recommendations
+router.get('/admin/ai/recommendations',          protect, admin, aiRec.listRecommendations);
+router.get('/admin/ai/recommendations/stats',    protect, admin, aiRec.getRecommendationStats);
+router.post('/admin/ai/recommendations/generate',           protect, admin, aiRec.generateAllRecommendations);
+router.post('/admin/ai/recommendations/generate/inventory', protect, admin, aiRec.generateInventoryRecommendations);
+router.post('/admin/ai/recommendations/generate/production',protect, admin, aiRec.generateProductionRecommendations);
+router.post('/admin/ai/recommendations/generate/hr',        protect, admin, aiRec.generateHRRecommendations);
+router.post('/admin/ai/recommendations/generate/maintenance',protect, admin, aiRec.generateMaintenanceRecommendations);
+router.patch('/admin/ai/recommendations/:id/status', protect, admin, aiRec.updateRecommendationStatus);
+
+// Config — Settings
+router.get('/admin/ai/settings',                 protect, admin, aiCfg.listSettings);
+router.put('/admin/ai/settings/:key',            protect, admin, aiCfg.updateSetting);
+router.post('/admin/ai/settings/seed',           protect, admin, aiCfg.seedDefaultSettings);
+
+// Config — Forecast Models
+router.get('/admin/ai/models',                   protect, admin, aiCfg.getForecastModels);
+router.post('/admin/ai/models',                  protect, admin, aiCfg.createForecastModel);
+router.put('/admin/ai/models/:id',               protect, admin, aiCfg.updateForecastModel);
+router.delete('/admin/ai/models/:id',            protect, admin, aiCfg.deleteForecastModel);
+
 module.exports = router;
 
