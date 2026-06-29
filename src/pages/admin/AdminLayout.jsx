@@ -17,6 +17,9 @@ import {
   FiFolder, FiFlag, FiArchive,
 } from 'react-icons/fi';
 import Logo from '../../components/ui/Logo';
+import { DOMAIN_GROUPS } from './AdminDomainConfig';
+import AdminDomainRail from './AdminDomainRail';
+import AdminModuleSidebar from './AdminModuleSidebar';
 
 // Grouped exactly like Linear/Stripe sidebars — flat lists of 14 items read as
 // noise; grouped by function lets the eye scan to the right section instantly.
@@ -628,8 +631,23 @@ const NOTIFICATION_META = {
   'review:created':      { icon: FiStar,        text: () => 'New product review submitted', path: '/admin/reviews' },
 };
 
-const SIDEBAR_BG    = '#0C0C0C';
-const SIDEBAR_WIDTH = 'w-60';
+const SIDEBAR_BG = '#0C0C0C';
+
+function findDomainForPath(pathname) {
+  for (const [domainId, groupLabels] of Object.entries(DOMAIN_GROUPS)) {
+    for (const groupLabel of groupLabels) {
+      const group = NAV_GROUPS.find(g => g.label === groupLabel);
+      if (!group) continue;
+      for (const item of group.items) {
+        const hit = item.path === '/admin'
+          ? pathname === '/admin'
+          : pathname.startsWith(item.path);
+        if (hit) return domainId;
+      }
+    }
+  }
+  return 'commerce';
+}
 
 export default function AdminLayout({ children }) {
   const dispatch  = useDispatch();
@@ -642,7 +660,9 @@ export default function AdminLayout({ children }) {
   const [notifOpen,     setNotifOpen]     = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [unseenCount,   setUnseenCount]   = useState(0);
-  const [userOpen,      setUserOpen]      = useState(false);
+  const [userOpen,        setUserOpen]        = useState(false);
+  const [activeDomain,    setActiveDomain]    = useState(() => findDomainForPath(location.pathname));
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const searchRef = useRef(null);
   const notifRef  = useRef(null);
@@ -685,6 +705,13 @@ export default function AdminLayout({ children }) {
     return () => document.removeEventListener('mousedown', close);
   }, []);
 
+  useEffect(() => {
+    setActiveDomain(findDomainForPath(location.pathname));
+  }, [location.pathname]);
+
+  const domainGroupLabels = DOMAIN_GROUPS[activeDomain] || [];
+  const domainNavGroups   = visibleGroups.filter(g => domainGroupLabels.includes(g.label));
+
   const searchResults = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     if (!q) return [];
@@ -698,95 +725,79 @@ export default function AdminLayout({ children }) {
 
       {/* ── Sidebar ──────────────────────────────────────────────── */}
       <aside
-        className={`fixed top-0 left-0 bottom-0 z-40 ${SIDEBAR_WIDTH} flex flex-col transition-transform duration-300 ${
+        className={`fixed top-0 left-0 bottom-0 z-40 flex overflow-hidden transition-[width,transform] duration-200 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
-        style={{ background: SIDEBAR_BG, borderRight: '1px solid rgba(255,255,255,0.06)' }}
+        style={{
+          width: sidebarCollapsed ? '48px' : '268px',
+          background: SIDEBAR_BG,
+          borderRight: '1px solid rgba(255,255,255,0.06)',
+        }}
+        aria-label="Admin navigation"
       >
-        {/* Logo area — brightness-0/invert previously flattened this full-colour
-            badge (black ring, white text, gold stars) into a plain white blob.
-            The badge's own colours already read cleanly on the dark sidebar. */}
-        <div className="flex items-center justify-between px-6" style={{ height: '92px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-          <Logo imageClass="h-14 w-auto" />
-          <button onClick={() => setSidebarOpen(false)} className="lg:hidden p-1 text-white/50 hover:text-white">
-            <FiX size={18} />
-          </button>
-        </div>
+        {/* Domain Rail — 48px, full height */}
+        <AdminDomainRail activeDomain={activeDomain} onSelect={setActiveDomain} />
 
-        {/* Role badge */}
-        {user?.role && (
-          <div className="px-5 py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-            <span
-              className="text-[9px] font-bold uppercase tracking-[0.2em] px-2.5 py-1"
-              style={{
-                color: 'var(--accent)',
-                background: 'rgba(255,138,0,0.1)',
-                border: '1px solid rgba(255,138,0,0.18)',
-                borderRadius: 'var(--radius-sm)',
-              }}
-            >
-              {user.role.replace('_', ' ')}
-            </span>
+        {/* Module column — fills remaining width */}
+        <div className="flex flex-col flex-1 overflow-hidden" style={{ minWidth: 0 }}>
+
+          {/* Logo area */}
+          <div
+            className="flex items-center justify-between px-5 flex-shrink-0"
+            style={{ height: '92px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+          >
+            <Logo imageClass="h-12 w-auto" />
+            <button onClick={() => setSidebarOpen(false)} className="lg:hidden p-1 text-white/50 hover:text-white flex-shrink-0">
+              <FiX size={18} />
+            </button>
           </div>
-        )}
 
-        {/* Nav — grouped */}
-        <nav className="flex-1 px-3 py-4 overflow-y-auto no-scrollbar space-y-4">
-          {visibleGroups.map(group => (
-            <div key={group.label}>
-              <p className="px-3.5 mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em]" style={{ color: 'rgba(255,255,255,0.25)' }}>
-                {group.label}
-              </p>
-              <div className="space-y-0.5">
-                {group.items.map(({ label, path, icon: Icon }) => {
-                  const active = isActive(path);
-                  return (
-                    <Link
-                      key={path}
-                      to={path}
-                      onClick={() => setSidebarOpen(false)}
-                      className="flex items-center gap-3 px-3.5 py-2.5 text-[12.5px] font-medium transition-all duration-150"
-                      style={{
-                        color: active ? '#ffffff' : 'rgba(255,255,255,0.45)',
-                        background: active ? 'rgba(255,255,255,0.09)' : 'transparent',
-                        borderLeft: `2px solid ${active ? 'var(--accent)' : 'transparent'}`,
-                        borderRadius: '0 var(--radius-sm) var(--radius-sm) 0',
-                        fontWeight: active ? 600 : 400,
-                        letterSpacing: '0.01em',
-                      }}
-                      onMouseEnter={e => { if (!active) { e.currentTarget.style.color = 'rgba(255,255,255,0.8)'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; }}}
-                      onMouseLeave={e => { if (!active) { e.currentTarget.style.color = 'rgba(255,255,255,0.45)'; e.currentTarget.style.background = 'transparent'; }}}
-                    >
-                      <Icon size={14} strokeWidth={active ? 2.5 : 1.75} style={{ color: active ? 'var(--accent)' : 'inherit', flexShrink: 0 }} />
-                      {label}
-                    </Link>
-                  );
-                })}
+          {/* Role badge */}
+          {user?.role && (
+            <div className="px-5 py-3 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+              <span
+                className="text-[9px] font-bold uppercase tracking-[0.2em] px-2.5 py-1"
+                style={{
+                  color: 'var(--accent)',
+                  background: 'rgba(255,138,0,0.1)',
+                  border: '1px solid rgba(255,138,0,0.18)',
+                  borderRadius: 'var(--radius-sm)',
+                }}
+              >
+                {user.role.replace('_', ' ')}
+              </span>
+            </div>
+          )}
+
+          {/* Module nav — scrollable, accordion grouped */}
+          <AdminModuleSidebar
+            groups={domainNavGroups}
+            isActive={isActive}
+            onNavigate={() => setSidebarOpen(false)}
+          />
+
+          {/* User footer */}
+          <div className="px-4 py-4 flex-shrink-0" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            <div className="flex items-center gap-3 px-3 py-3 mb-2" style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-sm)' }}>
+              <div className="w-7 h-7 flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0" style={{ background: 'var(--accent)', borderRadius: 'var(--radius-sm)' }}>
+                {user?.name?.[0]?.toUpperCase()}
+              </div>
+              <div className="min-w-0">
+                <p className="text-[12px] font-semibold truncate" style={{ color: '#fff' }}>{user?.name}</p>
+                <p className="text-[10px] truncate" style={{ color: 'rgba(255,255,255,0.38)' }}>{user?.email}</p>
               </div>
             </div>
-          ))}
-        </nav>
-
-        {/* User footer */}
-        <div className="px-4 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-          <div className="flex items-center gap-3 px-3 py-3 mb-2" style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-sm)' }}>
-            <div className="w-7 h-7 flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0" style={{ background: 'var(--accent)', borderRadius: 'var(--radius-sm)' }}>
-              {user?.name?.[0]?.toUpperCase()}
-            </div>
-            <div className="min-w-0">
-              <p className="text-[12px] font-semibold truncate" style={{ color: '#fff' }}>{user?.name}</p>
-              <p className="text-[10px] truncate" style={{ color: 'rgba(255,255,255,0.38)' }}>{user?.email}</p>
-            </div>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 w-full px-3 py-2.5 text-[12px] font-medium transition-colors duration-150"
+              style={{ color: 'rgba(255,255,255,0.35)', borderRadius: 'var(--radius-sm)' }}
+              onMouseEnter={e => { e.currentTarget.style.color = '#f87171'; e.currentTarget.style.background = 'rgba(248,113,113,0.06)'; }}
+              onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.35)'; e.currentTarget.style.background = 'transparent'; }}
+            >
+              <FiLogOut size={13} strokeWidth={1.75} /> Sign Out
+            </button>
           </div>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-3 w-full px-3 py-2.5 text-[12px] font-medium transition-colors duration-150"
-            style={{ color: 'rgba(255,255,255,0.35)', borderRadius: 'var(--radius-sm)' }}
-            onMouseEnter={e => { e.currentTarget.style.color = '#f87171'; e.currentTarget.style.background = 'rgba(248,113,113,0.06)'; }}
-            onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.35)'; e.currentTarget.style.background = 'transparent'; }}
-          >
-            <FiLogOut size={13} strokeWidth={1.75} /> Sign Out
-          </button>
+
         </div>
       </aside>
 
@@ -796,15 +807,27 @@ export default function AdminLayout({ children }) {
       )}
 
       {/* ── Main content ─────────────────────────────────────────── */}
-      <main className="flex-1 lg:ml-60 min-w-0 flex flex-col">
+      <main className={`flex-1 min-w-0 flex flex-col transition-[margin-left] duration-200 ${sidebarCollapsed ? 'lg:ml-12' : 'lg:ml-[268px]'}`}>
 
         {/* Topbar */}
         <div className="sticky top-0 z-20" style={{ background: 'var(--card)', borderBottom: '1px solid var(--border)', boxShadow: '0 1px 0 rgba(0,0,0,0.03)' }}>
           <div className="flex items-center justify-between px-6 lg:px-8 h-14 gap-4">
             {/* Left: hamburger + breadcrumb */}
             <div className="flex items-center gap-4 min-w-0">
+              {/* Mobile: open slide-over */}
               <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-1.5 transition-colors flex-shrink-0" style={{ color: 'var(--text)' }}>
                 <FiMenu size={20} strokeWidth={1.75} />
+              </button>
+              {/* Desktop: toggle sidebar collapse */}
+              <button
+                onClick={() => setSidebarCollapsed(c => !c)}
+                className="hidden lg:block p-1.5 transition-colors flex-shrink-0"
+                style={{ color: 'var(--text-3)' }}
+                aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                onMouseEnter={e => e.currentTarget.style.color = 'var(--text)'}
+                onMouseLeave={e => e.currentTarget.style.color = 'var(--text-3)'}
+              >
+                <FiMenu size={18} strokeWidth={1.75} />
               </button>
               <div className="flex items-center gap-1.5 text-[13px] min-w-0" style={{ fontFamily: 'var(--font-display)' }}>
                 <span className="font-medium hidden sm:inline" style={{ color: 'var(--text-4)' }}>Admin</span>
