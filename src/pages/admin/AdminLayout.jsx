@@ -5,9 +5,9 @@ import { clearAuth, logout } from '../../redux/slices/authSlice';
 import useAdminSocket from '../../hooks/useAdminSocket';
 import {
   FiGrid, FiPackage, FiShoppingBag, FiUsers, FiTag, FiSettings,
-  FiMenu, FiX, FiLogOut, FiBell, FiStar, FiSearch, FiUser,
+  FiX, FiLogOut, FiBell, FiStar,
   FiMail, FiList, FiShield, FiLayout, FiImage, FiArrowUpRight,
-  FiChevronRight, FiChevronDown, FiAward, FiBook, FiHash,
+  FiAward, FiBook, FiHash,
   FiZap, FiLayers, FiTarget, FiRadio, FiMessageSquare, FiBriefcase,
   FiBarChart2, FiTrendingUp, FiMap, FiMapPin, FiActivity, FiDownload, FiSliders,
   FiBox, FiDatabase, FiRefreshCw, FiAlertTriangle, FiFileText, FiClipboard,
@@ -20,6 +20,7 @@ import Logo from '../../components/ui/Logo';
 import { DOMAIN_GROUPS } from './AdminDomainConfig';
 import AdminDomainRail from './AdminDomainRail';
 import AdminModuleSidebar from './AdminModuleSidebar';
+import AdminHeader from './AdminHeader';
 
 // Grouped exactly like Linear/Stripe sidebars — flat lists of 14 items read as
 // noise; grouped by function lets the eye scan to the right section instantly.
@@ -625,13 +626,58 @@ const NAV_GROUPS = [
 
 const ALL_ITEMS = NAV_GROUPS.flatMap(g => g.items);
 
-const NOTIFICATION_META = {
-  'order:created':       { icon: FiShoppingBag, text: (p) => `New order ${p?.order?.orderNumber ? `#${p.order.orderNumber}` : ''} placed`, path: '/admin/orders' },
-  'order:statusChanged': { icon: FiShoppingBag, text: (p) => `Order ${p?.order?.orderNumber ? `#${p.order.orderNumber}` : ''} status changed`, path: '/admin/orders' },
-  'review:created':      { icon: FiStar,        text: () => 'New product review submitted', path: '/admin/reviews' },
+const SIDEBAR_BG = '#0C0C0C';
+
+const PAGE_DESCRIPTIONS = {
+  '/admin':                                    'Enterprise overview — key metrics, live activity, and system health.',
+  '/admin/products':                           'Browse, create, and manage your entire product catalog.',
+  '/admin/categories':                         'Organize products into hierarchical categories for easy navigation.',
+  '/admin/orders':                             'Monitor and process customer orders end-to-end.',
+  '/admin/users':                              'View and manage registered customer accounts and profiles.',
+  '/admin/finance':                            'Financial overview — general ledger, P&L, and cash flow at a glance.',
+  '/admin/accounts-payable':                   'Manage vendor bills, payment runs, and AP aging.',
+  '/admin/accounts-receivable':                'Track customer invoices, receipts, collections, and AR aging.',
+  '/admin/tax':                                'GST, TDS, compliance calendar, e-invoice, and e-way bill management.',
+  '/admin/banking':                            'Bank accounts, reconciliation, treasury, and cash forecasting.',
+  '/admin/cfo':                                'CFO executive dashboard — budgets, forecasts, and financial KPIs.',
+  '/admin/hr':                                 'People & HR overview — headcount, attendance, and payroll at a glance.',
+  '/admin/manufacturing':                      'Manufacturing operations — factories, work centers, BOMs, and production orders.',
+  '/admin/manufacturing/planning':             'Production planning — master schedule, capacity, and scheduling board.',
+  '/admin/mrp':                                'Material Requirements Planning — runs, shortages, and purchase/production suggestions.',
+  '/admin/mes':                                'Manufacturing Execution — work orders, OEE tracking, and production events.',
+  '/admin/qms':                                'Quality Management System — inspection plans, CAPA, and audit programs.',
+  '/admin/eam':                                'Enterprise Asset Management — maintenance plans, work orders, and condition monitoring.',
+  '/admin/warehouse':                          'Warehouse overview — zones, locations, and inventory control.',
+  '/admin/inventory':                          'Inventory management — stock levels, transactions, GRN, and cycle counts.',
+  '/admin/procurement':                        'Procurement dashboard — vendors, purchase orders, and approval queues.',
+  '/admin/logistics':                          'Dispatch, shipments, couriers, and stock transfers.',
+  '/admin/barcodes':                           'Barcode generation, label printing, bin management, and scanner activity.',
+  '/admin/iot':                                'IoT & Industry 4.0 — devices, sensors, RFID, and automation rules.',
+  '/admin/service':                            'After-sales service — requests, technicians, warranty, and spare parts.',
+  '/admin/installation':                       'Installation management — requests, engineers, and product registrations.',
+  '/admin/projects/dashboard':                 'Project management overview — status, milestones, and resource utilization.',
+  '/admin/portfolio/dashboard':                'Portfolio (PPM) overview — programs, initiatives, and portfolio finance.',
+  '/admin/pmo/dashboard':                      'PMO governance — compliance, business cases, scorecards, and audits.',
+  '/admin/bpm/dashboard':                      'Business Process Management — workflow instances, approvals, and SLA tracking.',
+  '/admin/dms/dashboard':                      'Document management — library, templates, review queue, and knowledge base.',
+  '/admin/bi-exec/dashboard':                  'Executive BI — KPIs, board reports, department analytics, and benchmarks.',
+  '/admin/ai/dashboard':                       'AI & Forecasting — predictions, anomaly detection, and scenario modeling.',
+  '/admin/ai-copilot/dashboard':               'AI Copilot — executive briefings, AI chat, insights, and automation center.',
+  '/admin/dealers':                            'Manage dealer accounts, pricing, orders, wallets, and credit lines.',
+  '/admin/sales-agents':                       'CRM sales agents — territories, leads, visit reports, and assignments.',
+  '/admin/bi/dashboard':                       'Business intelligence — revenue, sales, agent performance, and territory analytics.',
+  '/admin/audit-log':                          'Enterprise audit trail — all system actions with user and timestamp.',
+  '/admin/settings':                           'Store configuration — general settings, integrations, and preferences.',
+  '/admin/management':                         'Admin user management — roles, permissions, and access control.',
 };
 
-const SIDEBAR_BG = '#0C0C0C';
+function getPageDescription(path, label, group) {
+  if (PAGE_DESCRIPTIONS[path]) return PAGE_DESCRIPTIONS[path];
+  if (label.toLowerCase().includes('dashboard')) return `Overview and analytics for the ${group || label} module.`;
+  if (label.toLowerCase().includes('report')) return `Reports and data exports for ${group || label}.`;
+  if (label.toLowerCase().includes('setting')) return `Configuration and settings for the ${group || label} module.`;
+  return `Manage ${label.toLowerCase()} — ${group ? group + ' module' : 'Admin Panel'}.`;
+}
 
 function findDomainForPath(pathname) {
   for (const [domainId, groupLabels] of Object.entries(DOMAIN_GROUPS)) {
@@ -810,187 +856,51 @@ export default function AdminLayout({ children }) {
       {/* ── Main content ─────────────────────────────────────────── */}
       <main className={`flex-1 min-w-0 flex flex-col transition-[margin-left] duration-200 ${sidebarCollapsed ? 'lg:ml-12' : 'lg:ml-[268px]'}`}>
 
-        {/* Topbar */}
-        <div className="sticky top-0 z-20" style={{ background: 'var(--card)', borderBottom: '1px solid var(--border)', boxShadow: '0 1px 0 rgba(0,0,0,0.03)' }}>
-          <div className="flex items-center justify-between px-6 lg:px-8 h-14 gap-4">
-            {/* Left: hamburger + breadcrumb */}
-            <div className="flex items-center gap-4 min-w-0">
-              {/* Mobile: open slide-over */}
-              <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-1.5 transition-colors flex-shrink-0" style={{ color: 'var(--text)' }}>
-                <FiMenu size={20} strokeWidth={1.75} />
-              </button>
-              {/* Desktop: toggle sidebar collapse */}
-              <button
-                onClick={() => setSidebarCollapsed(c => !c)}
-                className="hidden lg:block p-1.5 transition-colors flex-shrink-0"
-                style={{ color: 'var(--text-3)' }}
-                aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-                onMouseEnter={e => e.currentTarget.style.color = 'var(--text)'}
-                onMouseLeave={e => e.currentTarget.style.color = 'var(--text-3)'}
-              >
-                <FiMenu size={18} strokeWidth={1.75} />
-              </button>
-              <div className="flex items-center gap-1.5 text-[13px] min-w-0" style={{ fontFamily: 'var(--font-display)' }}>
-                <span className="font-medium hidden sm:inline" style={{ color: 'var(--text-4)' }}>Admin</span>
-                {currentGroup && (
-                  <>
-                    <FiChevronRight size={12} className="hidden sm:inline" style={{ color: 'var(--text-5)' }} />
-                    <span className="font-medium hidden sm:inline" style={{ color: 'var(--text-4)' }}>{currentGroup}</span>
-                  </>
-                )}
-                <FiChevronRight size={12} className="hidden sm:inline" style={{ color: 'var(--text-5)' }} />
-                <span className="font-semibold truncate" style={{ color: 'var(--text)', letterSpacing: '-0.01em' }}>{currentLabel}</span>
-              </div>
-            </div>
+        {/* Enterprise Header */}
+        <AdminHeader
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          sidebarCollapsed={sidebarCollapsed}
+          setSidebarCollapsed={setSidebarCollapsed}
+          currentLabel={currentLabel}
+          currentGroup={currentGroup}
+          searchRef={searchRef}
+          searchOpen={searchOpen}
+          setSearchOpen={setSearchOpen}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          searchResults={searchResults}
+          goTo={goTo}
+          notifRef={notifRef}
+          notifOpen={notifOpen}
+          setNotifOpen={setNotifOpen}
+          unseenCount={unseenCount}
+          setUnseenCount={setUnseenCount}
+          notifications={notifications}
+          userRef={userRef}
+          userOpen={userOpen}
+          setUserOpen={setUserOpen}
+          user={user}
+          handleLogout={handleLogout}
+        />
 
-            {/* Right: search, notifications, view store, user */}
-            <div className="flex items-center gap-2">
-              {/* Search */}
-              <div className="relative" ref={searchRef}>
-                <div
-                  className="flex items-center transition-all"
-                  style={{
-                    background: 'var(--bg)',
-                    border: '1px solid var(--border)',
-                    borderRadius: 'var(--radius-sm)',
-                    width: searchOpen ? '220px' : '36px',
-                    overflow: 'hidden',
-                  }}
-                >
-                  <button onClick={() => setSearchOpen(o => !o)} className="p-2 flex-shrink-0" style={{ color: 'var(--text-3)' }} aria-label="Search admin pages">
-                    <FiSearch size={15} strokeWidth={1.75} />
-                  </button>
-                  {searchOpen && (
-                    <input
-                      autoFocus
-                      value={searchQuery}
-                      onChange={e => setSearchQuery(e.target.value)}
-                      placeholder="Search pages…"
-                      className="bg-transparent outline-none text-[12.5px] pr-3 w-full"
-                      style={{ color: 'var(--text)' }}
-                    />
-                  )}
-                </div>
-                {searchOpen && searchResults.length > 0 && (
-                  <div
-                    className="absolute right-0 mt-2 w-60 overflow-hidden"
-                    style={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-md)' }}
-                  >
-                    {searchResults.map(r => (
-                      <button
-                        key={r.path}
-                        onClick={() => goTo(r.path)}
-                        className="w-full flex items-center gap-3 px-4 py-2.5 text-left text-[12.5px] font-medium transition-colors"
-                        style={{ color: 'var(--text-2)' }}
-                        onMouseEnter={e => e.currentTarget.style.background = 'var(--bg)'}
-                        onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                      >
-                        <r.icon size={14} style={{ color: 'var(--text-4)' }} /> {r.label}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Notifications */}
-              <div className="relative" ref={notifRef}>
-                <button
-                  onClick={() => { setNotifOpen(o => !o); setUnseenCount(0); }}
-                  className="relative p-2 transition-colors"
-                  style={{ color: 'var(--text-3)' }}
-                  onMouseEnter={e => e.currentTarget.style.color = 'var(--text)'}
-                  onMouseLeave={e => e.currentTarget.style.color = 'var(--text-3)'}
-                  aria-label="Notifications"
-                >
-                  <FiBell size={17} strokeWidth={1.75} />
-                  {unseenCount > 0 && (
-                    <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border-2" style={{ borderColor: 'var(--card)' }} />
-                  )}
-                </button>
-                {notifOpen && (
-                  <div
-                    className="absolute right-0 mt-2 w-72 overflow-hidden"
-                    style={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-md)' }}
-                  >
-                    <div className="px-4 py-3" style={{ borderBottom: '1px solid var(--border)' }}>
-                      <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: 'var(--text-3)' }}>Notifications</p>
-                    </div>
-                    {notifications.length === 0 ? (
-                      <p className="px-4 py-6 text-center text-[12px]" style={{ color: 'var(--text-4)' }}>No new activity this session.</p>
-                    ) : (
-                      <div className="max-h-72 overflow-y-auto no-scrollbar">
-                        {notifications.map(n => {
-                          const meta = NOTIFICATION_META[n.event];
-                          const Icon = meta?.icon || FiBell;
-                          return (
-                            <button
-                              key={n.id}
-                              onClick={() => { navigate(meta?.path || '/admin'); setNotifOpen(false); }}
-                              className="w-full flex items-start gap-3 px-4 py-3 text-left transition-colors"
-                              style={{ borderBottom: '1px solid var(--border)' }}
-                              onMouseEnter={e => e.currentTarget.style.background = 'var(--bg)'}
-                              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                            >
-                              <Icon size={14} style={{ color: 'var(--accent)', marginTop: '2px', flexShrink: 0 }} />
-                              <div className="min-w-0">
-                                <p className="text-[12.5px] font-medium leading-snug" style={{ color: 'var(--text)' }}>{meta?.text(n.payload) || n.event}</p>
-                                <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-4)' }}>{n.at.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</p>
-                              </div>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {/* View Store */}
-              <Link
-                to="/"
-                className="hidden sm:flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest px-4 py-2 transition-all"
-                style={{ color: 'var(--text)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', background: 'var(--bg)' }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--border-hover)'; e.currentTarget.style.background = 'var(--bg-2)'; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'var(--bg)'; }}
-              >
-                View Store <FiArrowUpRight size={12} strokeWidth={2.5} />
-              </Link>
-
-              {/* User dropdown */}
-              <div className="relative" ref={userRef}>
-                <button
-                  onClick={() => setUserOpen(o => !o)}
-                  className="flex items-center gap-2 pl-1 pr-2 py-1 transition-colors"
-                  style={{ borderRadius: 'var(--radius-sm)' }}
-                >
-                  <div className="w-7 h-7 flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0" style={{ background: 'var(--text)', borderRadius: 'var(--radius-sm)' }}>
-                    {user?.name?.[0]?.toUpperCase() || <FiUser size={13} />}
-                  </div>
-                  <FiChevronDown size={13} style={{ color: 'var(--text-4)' }} />
-                </button>
-                {userOpen && (
-                  <div
-                    className="absolute right-0 mt-2 w-52 overflow-hidden"
-                    style={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-md)' }}
-                  >
-                    <div className="px-4 py-3" style={{ borderBottom: '1px solid var(--border)' }}>
-                      <p className="text-[12.5px] font-semibold truncate" style={{ color: 'var(--text)' }}>{user?.name}</p>
-                      <p className="text-[11px] truncate" style={{ color: 'var(--text-4)' }}>{user?.email}</p>
-                    </div>
-                    <button
-                      onClick={handleLogout}
-                      className="w-full flex items-center gap-2 px-4 py-2.5 text-[12.5px] font-medium transition-colors"
-                      style={{ color: '#DC2626' }}
-                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(220,38,38,0.06)'}
-                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                    >
-                      <FiLogOut size={14} /> Sign Out
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+        {/* Dynamic Page Header */}
+        <div
+          className="px-6 lg:px-10 pt-7 pb-5 flex-shrink-0"
+          style={{ borderBottom: '1px solid var(--border)', background: 'var(--card)' }}
+        >
+          <h1
+            className="text-[22px] font-bold tracking-tight leading-none"
+            style={{ color: 'var(--text)', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}
+          >
+            {currentLabel}
+          </h1>
+          <p
+            className="text-[13px] mt-2 leading-relaxed"
+            style={{ color: 'var(--text-3)', maxWidth: '60ch' }}
+          >
+            {getPageDescription(location.pathname, currentLabel, currentGroup)}
+          </p>
         </div>
 
         {/* Page content */}
