@@ -37,7 +37,7 @@ export default function AdminHeader({
   sidebarOpen, setSidebarOpen,
   sidebarCollapsed, setSidebarCollapsed,
   currentLabel, currentGroup,
-  searchRef, searchOpen, setSearchOpen, searchQuery, setSearchQuery, searchResults, goTo,
+  onOpenSearch,
   notifRef, notifOpen, setNotifOpen, unseenCount, setUnseenCount, notifications,
   userRef, userOpen, setUserOpen, user, handleLogout,
 }) {
@@ -186,75 +186,28 @@ export default function AdminHeader({
             </span>
           </div>
 
-          {/* Search */}
-          <div className="relative" ref={searchRef}>
-            <div
-              className="flex items-center transition-all duration-200"
-              style={{
-                background: 'var(--bg)',
-                border: '1px solid var(--border)',
-                borderRadius: 'var(--radius-sm)',
-                width: searchOpen ? '200px' : '34px',
-                overflow: 'hidden',
-              }}
-            >
-              <button
-                onClick={() => setSearchOpen(o => !o)}
-                className="p-1.5 flex-shrink-0"
-                style={{ color: 'var(--text-3)' }}
-                aria-label={searchOpen ? 'Close search' : 'Search modules and pages'}
-                aria-expanded={searchOpen}
-                aria-haspopup="listbox"
-              >
-                <FiSearch size={15} strokeWidth={1.75} />
-              </button>
-              {searchOpen && (
-                <input
-                  autoFocus
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  onKeyDown={e => { if (e.key === 'Escape') { setSearchOpen(false); setSearchQuery(''); } }}
-                  placeholder="Search modules..."
-                  className="bg-transparent outline-none text-[12px] pr-2 w-full"
-                  style={{ color: 'var(--text)' }}
-                  aria-label="Search admin pages"
-                  role="combobox"
-                  aria-autocomplete="list"
-                  aria-expanded={searchResults.length > 0}
-                />
-              )}
-            </div>
-            {searchOpen && searchResults.length > 0 && (
-              <div
-                className="absolute right-0 mt-1.5 w-56 overflow-hidden"
-                style={{
-                  background: 'var(--card)',
-                  border: '1px solid var(--border)',
-                  borderRadius: 'var(--radius-md)',
-                  boxShadow: 'var(--shadow-md)',
-                  zIndex: 50,
-                }}
-                role="listbox"
-                aria-label="Search results"
-              >
-                {searchResults.map(r => (
-                  <button
-                    key={r.path}
-                    onClick={() => goTo(r.path)}
-                    role="option"
-                    aria-selected="false"
-                    className="w-full flex items-center gap-3 px-3 py-2.5 text-left text-[12px] font-medium transition-colors"
-                    style={{ color: 'var(--text-2)' }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'var(--bg)'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                  >
-                    <r.icon size={13} style={{ color: 'var(--text-4)', flexShrink: 0 }} aria-hidden="true" />
-                    {r.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          {/* Search trigger — opens full command palette */}
+          <button
+            onClick={onOpenSearch}
+            className="hidden sm:flex items-center gap-2 px-3 py-1.5 transition-colors"
+            style={{
+              background: 'var(--bg)',
+              border: '1px solid var(--border)',
+              borderRadius: 'var(--radius-sm)',
+              color: 'var(--text-3)',
+            }}
+            aria-label="Open search (Ctrl+K)"
+            onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--text)'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-3)'; }}
+          >
+            <FiSearch size={13} strokeWidth={1.75} aria-hidden="true" />
+            <span className="hidden md:inline text-[11.5px]">Search...</span>
+            <kbd style={{
+              fontSize: 10, padding: '1px 5px', borderRadius: 3,
+              background: 'var(--card)', border: '1px solid var(--border)',
+              color: 'var(--text-4)', letterSpacing: '0.03em', lineHeight: '16px',
+            }}>⌘K</kbd>
+          </button>
 
           {/* Quick Actions */}
           <div className="relative" ref={qaRef}>

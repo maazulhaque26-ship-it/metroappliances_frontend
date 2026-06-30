@@ -3,628 +3,14 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearAuth, logout } from '../../redux/slices/authSlice';
 import useAdminSocket from '../../hooks/useAdminSocket';
-import {
-  FiGrid, FiPackage, FiShoppingBag, FiUsers, FiTag, FiSettings,
-  FiX, FiLogOut, FiBell, FiStar,
-  FiMail, FiList, FiShield, FiLayout, FiImage, FiArrowUpRight,
-  FiAward, FiBook, FiHash,
-  FiZap, FiLayers, FiTarget, FiRadio, FiMessageSquare, FiBriefcase,
-  FiBarChart2, FiTrendingUp, FiMap, FiMapPin, FiActivity, FiDownload, FiSliders,
-  FiBox, FiDatabase, FiRefreshCw, FiAlertTriangle, FiFileText, FiClipboard,
-  FiCamera, FiCpu, FiThermometer, FiWifi, FiTool, FiClock, FiCalendar,
-  FiPercent, FiGlobe, FiTruck, FiCheckSquare,
-  FiHome, FiCreditCard, FiDollarSign, FiArrowRight,
-  FiFolder, FiFlag, FiArchive,
-} from 'react-icons/fi';
+import { FiX, FiLogOut } from 'react-icons/fi';
 import Logo from '../../components/ui/Logo';
 import { DOMAIN_GROUPS } from './AdminDomainConfig';
+import { NAV_GROUPS, ALL_ITEMS } from './AdminNavConfig';
 import AdminDomainRail from './AdminDomainRail';
 import AdminModuleSidebar from './AdminModuleSidebar';
 import AdminHeader from './AdminHeader';
-
-// Grouped exactly like Linear/Stripe sidebars — flat lists of 14 items read as
-// noise; grouped by function lets the eye scan to the right section instantly.
-const NAV_GROUPS = [
-  {
-    label: 'Overview',
-    items: [
-      { label: 'Dashboard', path: '/admin', icon: FiGrid, roles: ['admin', 'super_admin', 'moderator'] },
-    ],
-  },
-  {
-    label: 'Catalog',
-    items: [
-      { label: 'Products',   path: '/admin/products',   icon: FiPackage, roles: ['admin', 'super_admin'] },
-      { label: 'Categories', path: '/admin/categories', icon: FiList,    roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Sales',
-    items: [
-      { label: 'Orders',  path: '/admin/orders',  icon: FiShoppingBag, roles: ['admin', 'super_admin'] },
-      { label: 'Coupons', path: '/admin/coupons', icon: FiTag,         roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Customers',
-    items: [
-      { label: 'Users',   path: '/admin/users',   icon: FiUsers, roles: ['admin', 'super_admin'] },
-      { label: 'Reviews', path: '/admin/reviews', icon: FiStar,  roles: ['admin', 'super_admin', 'moderator'] },
-    ],
-  },
-  {
-    label: 'Content',
-    items: [
-      { label: 'Achievements',   path: '/admin/achievements',       icon: FiAward, roles: ['admin', 'super_admin'] },
-      { label: 'Stat Counters',  path: '/admin/achievement-stats',  icon: FiHash,  roles: ['admin', 'super_admin'] },
-      { label: 'Gallery',        path: '/admin/gallery',            icon: FiImage, roles: ['admin', 'super_admin'] },
-      { label: 'Blog Posts',     path: '/admin/blogs',              icon: FiBook,  roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Marketing',
-    items: [
-      { label: 'Announcement Bar', path: '/admin/announcements',    icon: FiRadio,        roles: ['admin', 'super_admin'] },
-      { label: 'Popups',           path: '/admin/popups',           icon: FiMessageSquare, roles: ['admin', 'super_admin'] },
-      { label: 'Flash Sales',      path: '/admin/flash-sales',      icon: FiZap,          roles: ['admin', 'super_admin'] },
-      { label: 'Promo Sections',   path: '/admin/promo-sections',   icon: FiLayers,       roles: ['admin', 'super_admin'] },
-      { label: 'Campaigns',        path: '/admin/campaigns',        icon: FiTarget,       roles: ['admin', 'super_admin'] },
-      { label: 'Notifications',    path: '/admin/notifications',    icon: FiBell,         roles: ['admin', 'super_admin'] },
-      { label: 'Homepage Content', path: '/admin/homepage-content', icon: FiImage,        roles: ['admin', 'super_admin'] },
-      { label: 'Login Page Slider',path: '/admin/login-slider',     icon: FiLayout,       roles: ['admin', 'super_admin'] },
-      { label: 'Why Choose Metro', path: '/admin/why-choose',       icon: FiLayout,       roles: ['admin', 'super_admin'] },
-      { label: 'Testimonials',     path: '/admin/testimonials',     icon: FiStar,         roles: ['admin', 'super_admin', 'moderator'] },
-      { label: 'Team',             path: '/admin/team',             icon: FiUsers,        roles: ['admin', 'super_admin'] },
-      { label: 'Subscribers',      path: '/admin/subscribers',      icon: FiMail,         roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Dealers',
-    items: [
-      { label: 'All Dealers',     path: '/admin/dealers',             icon: FiBriefcase,   roles: ['admin', 'super_admin'] },
-      { label: 'Dealer Pricing',  path: '/admin/dealer-pricing',      icon: FiTag,         roles: ['admin', 'super_admin'] },
-      { label: 'Dealer Orders',   path: '/admin/dealer-orders',       icon: FiShoppingBag, roles: ['admin', 'super_admin'] },
-      { label: 'Dealer Wallets',  path: '/admin/dealer-wallet',       icon: FiLayers,      roles: ['admin', 'super_admin'] },
-      { label: 'Dealer Credit',   path: '/admin/dealer-credit',       icon: FiShield,      roles: ['admin', 'super_admin'] },
-      { label: 'Dealer Invoices', path: '/admin/dealer-invoices',     icon: FiList,        roles: ['admin', 'super_admin'] },
-      { label: 'Dealer Payments', path: '/admin/dealer-payments',     icon: FiArrowUpRight, roles: ['admin', 'super_admin'] },
-      { label: 'Credit Notes',    path: '/admin/dealer-credit-notes', icon: FiBook,        roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'CRM',
-    items: [
-      { label: 'Sales Agents',    path: '/admin/sales-agents',      icon: FiUsers,       roles: ['admin', 'super_admin'] },
-      { label: 'Territories',     path: '/admin/territories',        icon: FiTarget,      roles: ['admin', 'super_admin'] },
-      { label: 'Leads',           path: '/admin/leads',              icon: FiArrowUpRight, roles: ['admin', 'super_admin'] },
-      { label: 'Visit Reports',   path: '/admin/visit-reports',      icon: FiList,        roles: ['admin', 'super_admin'] },
-      { label: 'Agent Tasks',     path: '/admin/agent-tasks',        icon: FiHash,        roles: ['admin', 'super_admin'] },
-      { label: 'Assignments',     path: '/admin/agent-assignments',  icon: FiBriefcase,   roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'BI & Analytics',
-    items: [
-      { label: 'BI Dashboard',        path: '/admin/bi/dashboard',    icon: FiBarChart2, roles: ['admin', 'super_admin'] },
-      { label: 'Revenue Analytics',   path: '/admin/bi/revenue',      icon: FiTrendingUp, roles: ['admin', 'super_admin'] },
-      { label: 'Sales Dashboard',     path: '/admin/bi/sales',        icon: FiShoppingBag, roles: ['admin', 'super_admin'] },
-      { label: 'Agent Performance',   path: '/admin/bi/agents',       icon: FiUsers,      roles: ['admin', 'super_admin'] },
-      { label: 'Dealer Analytics',    path: '/admin/bi/dealers',      icon: FiBriefcase,  roles: ['admin', 'super_admin'] },
-      { label: 'Territory Analytics', path: '/admin/bi/territories',  icon: FiMap,        roles: ['admin', 'super_admin'] },
-      { label: 'Lead Funnel',         path: '/admin/bi/leads',        icon: FiActivity,   roles: ['admin', 'super_admin'] },
-      { label: 'Reports & Export',    path: '/admin/bi/reports',      icon: FiDownload,   roles: ['admin', 'super_admin'] },
-      { label: 'Targets',             path: '/admin/bi/targets',      icon: FiSliders,    roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Warehouse',
-    items: [
-      { label: 'WH Dashboard',   path: '/admin/warehouse',           icon: FiBox,      roles: ['admin', 'super_admin'] },
-      { label: 'Warehouses',     path: '/admin/warehouses',          icon: FiDatabase, roles: ['admin', 'super_admin'] },
-      { label: 'Zones',          path: '/admin/warehouse-zones',     icon: FiGrid,     roles: ['admin', 'super_admin'] },
-      { label: 'Locations',      path: '/admin/warehouse-locations', icon: FiMapPin,   roles: ['admin', 'super_admin'] },
-      { label: 'WH Users',       path: '/admin/warehouse-users',     icon: FiUsers,    roles: ['admin', 'super_admin'] },
-      { label: 'WH Settings',    path: '/admin/warehouse-settings',  icon: FiSettings, roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Inventory',
-    items: [
-      { label: 'Inv Dashboard',  path: '/admin/inventory',                  icon: FiPackage,       roles: ['admin', 'super_admin'] },
-      { label: 'Inventory List', path: '/admin/inventory/list',             icon: FiList,          roles: ['admin', 'super_admin'] },
-      { label: 'Transactions',   path: '/admin/inventory/transactions',     icon: FiTrendingUp,    roles: ['admin', 'super_admin'] },
-      { label: 'GRN',            path: '/admin/inventory/grn',              icon: FiFileText,      roles: ['admin', 'super_admin'] },
-      { label: 'Adjustments',    path: '/admin/inventory/adjustments',      icon: FiSliders,       roles: ['admin', 'super_admin'] },
-      { label: 'Cycle Counts',   path: '/admin/inventory/cycle-count',      icon: FiRefreshCw,     roles: ['admin', 'super_admin'] },
-      { label: 'Batches',        path: '/admin/inventory/batches',          icon: FiClipboard,     roles: ['admin', 'super_admin'] },
-      { label: 'Serials',        path: '/admin/inventory/serials',          icon: FiHash,          roles: ['admin', 'super_admin'] },
-      { label: 'Reservations',   path: '/admin/inventory/reservations',     icon: FiAlertTriangle, roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Procurement',
-    items: [
-      { label: 'Proc Dashboard',    path: '/admin/procurement',                    icon: FiBarChart2,   roles: ['admin', 'super_admin'] },
-      { label: 'Vendors',           path: '/admin/procurement/vendors',             icon: FiBriefcase,   roles: ['admin', 'super_admin'] },
-      { label: 'Vendor Performance',path: '/admin/procurement/vendor-performance',  icon: FiActivity,    roles: ['admin', 'super_admin'] },
-      { label: 'Requisitions',      path: '/admin/procurement/requisitions',        icon: FiClipboard,   roles: ['admin', 'super_admin'] },
-      { label: 'RFQs',              path: '/admin/procurement/rfq',                 icon: FiFileText,    roles: ['admin', 'super_admin'] },
-      { label: 'Purchase Orders',   path: '/admin/procurement/orders',              icon: FiShoppingBag, roles: ['admin', 'super_admin'] },
-      { label: 'Approval Queue',    path: '/admin/procurement/approvals',           icon: FiShield,      roles: ['admin', 'super_admin'] },
-      { label: 'Supplier Users',    path: '/admin/supplier-users',                  icon: FiUsers,       roles: ['admin', 'super_admin'] },
-      { label: 'Proc Reports',      path: '/admin/procurement/reports',             icon: FiDownload,    roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Logistics',
-    items: [
-      { label: 'Logistics Dash',  path: '/admin/logistics',             icon: FiTrendingUp, roles: ['admin', 'super_admin'] },
-      { label: 'Dispatch Queue',  path: '/admin/logistics/dispatches',  icon: FiBox,        roles: ['admin', 'super_admin'] },
-      { label: 'Shipments',       path: '/admin/logistics/shipments',   icon: FiPackage,    roles: ['admin', 'super_admin'] },
-      { label: 'Couriers',        path: '/admin/logistics/couriers',    icon: FiZap,        roles: ['admin', 'super_admin'] },
-      { label: 'Stock Transfers', path: '/admin/logistics/transfers',   icon: FiRefreshCw,  roles: ['admin', 'super_admin'] },
-      { label: 'Del. Challans',   path: '/admin/logistics/challans',    icon: FiFileText,   roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Barcode & Scanning',
-    items: [
-      { label: 'Barcode Dashboard',  path: '/admin/barcodes',          icon: FiCamera,      roles: ['admin', 'super_admin'] },
-      { label: 'Generator',          path: '/admin/barcodes/generate',  icon: FiHash,        roles: ['admin', 'super_admin'] },
-      { label: 'Label Center',       path: '/admin/barcodes/labels',    icon: FiFileText,    roles: ['admin', 'super_admin'] },
-      { label: 'Warehouse Map',      path: '/admin/warehouse-map',      icon: FiMapPin,      roles: ['admin', 'super_admin'] },
-      { label: 'Bin Management',     path: '/admin/bin-management',     icon: FiBox,         roles: ['admin', 'super_admin'] },
-      { label: 'Scanner Activity',   path: '/admin/scanner-activity',   icon: FiActivity,    roles: ['admin', 'super_admin'] },
-      { label: 'Automation',         path: '/admin/automation',         icon: FiZap,         roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'IoT & Industry 4.0',
-    items: [
-      { label: 'IoT Dashboard',      path: '/admin/iot',                icon: FiWifi,           roles: ['admin', 'super_admin'] },
-      { label: 'RFID Management',    path: '/admin/iot/rfid',           icon: FiRadio,          roles: ['admin', 'super_admin'] },
-      { label: 'Devices',            path: '/admin/iot/devices',        icon: FiCpu,            roles: ['admin', 'super_admin'] },
-      { label: 'Sensors',            path: '/admin/iot/sensors',        icon: FiThermometer,    roles: ['admin', 'super_admin'] },
-      { label: 'Alert Center',       path: '/admin/iot/alerts',         icon: FiAlertTriangle,  roles: ['admin', 'super_admin'] },
-      { label: 'Automation Rules',   path: '/admin/iot/automation',     icon: FiZap,            roles: ['admin', 'super_admin'] },
-      { label: 'Replenishment',      path: '/admin/iot/replenishment',  icon: FiPackage,        roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'After Sales Service',
-    items: [
-      { label: 'Service Dashboard', path: '/admin/service',               icon: FiTool,        roles: ['admin', 'super_admin'] },
-      { label: 'Service Requests',  path: '/admin/service/requests',      icon: FiClipboard,   roles: ['admin', 'super_admin'] },
-      { label: 'Technicians',       path: '/admin/service/technicians',   icon: FiUsers,       roles: ['admin', 'super_admin'] },
-      { label: 'Warranty & AMC',    path: '/admin/service/warranty',      icon: FiShield,      roles: ['admin', 'super_admin'] },
-      { label: 'Spare Parts',       path: '/admin/service/spare-parts',   icon: FiPackage,     roles: ['admin', 'super_admin'] },
-      { label: 'Service Reports',   path: '/admin/service/reports',       icon: FiBarChart2,   roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Installation',
-    items: [
-      { label: 'Installation Dashboard', path: '/admin/installation',                icon: FiZap,       roles: ['admin', 'super_admin'] },
-      { label: 'Install Requests',       path: '/admin/installation/requests',       icon: FiClipboard, roles: ['admin', 'super_admin'] },
-      { label: 'Engineers',              path: '/admin/installation-engineers',       icon: FiUsers,     roles: ['admin', 'super_admin'] },
-      { label: 'Product Registrations',  path: '/admin/product-registrations',        icon: FiPackage,   roles: ['admin', 'super_admin'] },
-      { label: 'Install Reports',        path: '/admin/installation/reports',         icon: FiBarChart2, roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Manufacturing',
-    items: [
-      { label: 'MFG Dashboard',     path: '/admin/manufacturing',                icon: FiCpu,       roles: ['admin', 'super_admin'] },
-      { label: 'Factories',         path: '/admin/manufacturing/factories',       icon: FiMapPin,    roles: ['admin', 'super_admin'] },
-      { label: 'Work Centers',      path: '/admin/manufacturing/work-centers',    icon: FiLayers,    roles: ['admin', 'super_admin'] },
-      { label: 'Machines',          path: '/admin/manufacturing/machines',        icon: FiTool,      roles: ['admin', 'super_admin'] },
-      { label: 'Shift Planner',     path: '/admin/manufacturing/shifts',          icon: FiClock,     roles: ['admin', 'super_admin'] },
-      { label: 'Bill of Materials', path: '/admin/manufacturing/bom',             icon: FiList,      roles: ['admin', 'super_admin'] },
-      { label: 'Production Orders', path: '/admin/manufacturing/orders',          icon: FiClipboard, roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Production Planning',
-    items: [
-      { label: 'Planning Dashboard', path: '/admin/manufacturing/planning',                  icon: FiBarChart2,  roles: ['admin', 'super_admin'] },
-      { label: 'Production Plans',   path: '/admin/manufacturing/planning/plans',            icon: FiCalendar,   roles: ['admin', 'super_admin'] },
-      { label: 'Master Schedule',    path: '/admin/manufacturing/planning/mps',              icon: FiClipboard,  roles: ['admin', 'super_admin'] },
-      { label: 'Capacity Planning',  path: '/admin/manufacturing/planning/capacity',         icon: FiTrendingUp, roles: ['admin', 'super_admin'] },
-      { label: 'Scheduling Board',   path: '/admin/manufacturing/planning/scheduling',       icon: FiActivity,   roles: ['admin', 'super_admin'] },
-      { label: 'Machine Calendar',   path: '/admin/manufacturing/planning/machine-cal',      icon: FiTool,       roles: ['admin', 'super_admin'] },
-      { label: 'Production Calendar',path: '/admin/manufacturing/planning/prod-cal',         icon: FiClock,      roles: ['admin', 'super_admin'] },
-      { label: 'Scenarios',          path: '/admin/manufacturing/planning/scenarios',        icon: FiLayers,     roles: ['admin', 'super_admin'] },
-      { label: 'Planning Reports',   path: '/admin/manufacturing/planning/reports',          icon: FiFileText,   roles: ['admin', 'super_admin'] },
-      { label: 'Planning Settings',  path: '/admin/manufacturing/planning/settings',         icon: FiSliders,    roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'MRP',
-    items: [
-      { label: 'MRP Dashboard',          path: '/admin/mrp',                        icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
-      { label: 'MRP Runs',               path: '/admin/mrp/runs',                   icon: FiActivity,     roles: ['admin', 'super_admin'] },
-      { label: 'Material Requirements',  path: '/admin/mrp/requirements',           icon: FiDatabase,     roles: ['admin', 'super_admin'] },
-      { label: 'Shortages',              path: '/admin/mrp/shortages',              icon: FiAlertTriangle,roles: ['admin', 'super_admin'] },
-      { label: 'Reservations',           path: '/admin/mrp/reservations',           icon: FiBox,          roles: ['admin', 'super_admin'] },
-      { label: 'Purchase Suggestions',   path: '/admin/mrp/purchase-suggestions',   icon: FiShoppingBag,  roles: ['admin', 'super_admin'] },
-      { label: 'Production Suggestions', path: '/admin/mrp/production-suggestions', icon: FiCpu,          roles: ['admin', 'super_admin'] },
-      { label: 'Demand Forecast',        path: '/admin/mrp/forecasts',              icon: FiTrendingUp,   roles: ['admin', 'super_admin'] },
-      { label: 'Inventory Projection',   path: '/admin/mrp/projections',            icon: FiRefreshCw,    roles: ['admin', 'super_admin'] },
-      { label: 'Safety Stock',           path: '/admin/mrp/safety-stock',           icon: FiShield,       roles: ['admin', 'super_admin'] },
-      { label: 'MRP Reports',            path: '/admin/mrp/reports',                icon: FiFileText,     roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'MES',
-    items: [
-      { label: 'MES Dashboard',         path: '/admin/mes',                        icon: FiActivity,     roles: ['admin', 'super_admin'] },
-      { label: 'Work Orders',           path: '/admin/mes/work-orders',            icon: FiClipboard,    roles: ['admin', 'super_admin'] },
-      { label: 'Operations',            path: '/admin/mes/operations',             icon: FiLayers,       roles: ['admin', 'super_admin'] },
-      { label: 'Production Execution',  path: '/admin/mes/execution',              icon: FiZap,          roles: ['admin', 'super_admin'] },
-      { label: 'Quality Inspection',    path: '/admin/mes/quality',                icon: FiShield,       roles: ['admin', 'super_admin'] },
-      { label: 'Quality Dashboard',     path: '/admin/mes/quality-dashboard',      icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
-      { label: 'OEE Dashboard',         path: '/admin/mes/oee',                    icon: FiTrendingUp,   roles: ['admin', 'super_admin'] },
-      { label: 'Downtime',              path: '/admin/mes/downtime',               icon: FiAlertTriangle,roles: ['admin', 'super_admin'] },
-      { label: 'Machine Runtime',       path: '/admin/mes/machine-runtime',        icon: FiCpu,          roles: ['admin', 'super_admin'] },
-      { label: 'Tool Management',       path: '/admin/mes/tools',                  icon: FiTool,         roles: ['admin', 'super_admin'] },
-      { label: 'Operator Management',   path: '/admin/mes/operators',              icon: FiUsers,        roles: ['admin', 'super_admin'] },
-      { label: 'Attendance',            path: '/admin/mes/attendance',             icon: FiClock,        roles: ['admin', 'super_admin'] },
-      { label: 'Scrap',                 path: '/admin/mes/scrap',                  icon: FiBox,          roles: ['admin', 'super_admin'] },
-      { label: 'Rework',                path: '/admin/mes/rework',                 icon: FiRefreshCw,    roles: ['admin', 'super_admin'] },
-      { label: 'Production Events',     path: '/admin/mes/events',                 icon: FiRadio,        roles: ['admin', 'super_admin'] },
-      { label: 'MES Reports',           path: '/admin/mes/reports',                icon: FiFileText,     roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'QMS',
-    items: [
-      { label: 'QMS Dashboard',         path: '/admin/qms',                        icon: FiShield,       roles: ['admin', 'super_admin'] },
-      { label: 'Inspection Plans',      path: '/admin/qms/inspection-plans',       icon: FiClipboard,    roles: ['admin', 'super_admin'] },
-      { label: 'Inspection Lots',       path: '/admin/qms/inspection-lots',        icon: FiList,         roles: ['admin', 'super_admin'] },
-      { label: 'Certificates',          path: '/admin/qms/certificates',           icon: FiAward,        roles: ['admin', 'super_admin'] },
-      { label: 'CAPA',                  path: '/admin/qms/capas',                  icon: FiAlertTriangle,roles: ['admin', 'super_admin'] },
-      { label: 'Non-Conformance',       path: '/admin/qms/non-conformance',        icon: FiAlertTriangle,roles: ['admin', 'super_admin'] },
-      { label: 'Audit Programs',        path: '/admin/qms/audit-programs',         icon: FiCalendar,     roles: ['admin', 'super_admin'] },
-      { label: 'Quality Audits',        path: '/admin/qms/audits',                 icon: FiClipboard,    roles: ['admin', 'super_admin'] },
-      { label: 'Calibration',           path: '/admin/qms/calibration',            icon: FiTool,         roles: ['admin', 'super_admin'] },
-      { label: 'Gauge Management',      path: '/admin/qms/gauges',                 icon: FiSliders,      roles: ['admin', 'super_admin'] },
-      { label: 'Supplier Quality',      path: '/admin/qms/supplier-quality',       icon: FiUsers,        roles: ['admin', 'super_admin'] },
-      { label: 'Quality Reports',       path: '/admin/qms/reports',                icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
-      { label: 'Document Control',      path: '/admin/qms/documents',              icon: FiFileText,     roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'EAM',
-    items: [
-      { label: 'EAM Dashboard',         path: '/admin/eam',                        icon: FiCpu,          roles: ['admin', 'super_admin'] },
-      { label: 'Asset Register',         path: '/admin/eam/assets',                 icon: FiBox,          roles: ['admin', 'super_admin'] },
-      { label: 'Asset Hierarchy',        path: '/admin/eam/hierarchy',              icon: FiLayers,       roles: ['admin', 'super_admin'] },
-      { label: 'Maintenance Plans',      path: '/admin/eam/maintenance-plans',      icon: FiClipboard,    roles: ['admin', 'super_admin'] },
-      { label: 'Maint. Calendar',        path: '/admin/eam/calendar',               icon: FiCalendar,     roles: ['admin', 'super_admin'] },
-      { label: 'Work Orders',            path: '/admin/eam/work-orders',            icon: FiTool,         roles: ['admin', 'super_admin'] },
-      { label: 'Maint. Requests',        path: '/admin/eam/requests',               icon: FiFileText,     roles: ['admin', 'super_admin'] },
-      { label: 'Breakdowns',             path: '/admin/eam/breakdowns',             icon: FiAlertTriangle,roles: ['admin', 'super_admin'] },
-      { label: 'Meters',                 path: '/admin/eam/meters',                 icon: FiActivity,     roles: ['admin', 'super_admin'] },
-      { label: 'Condition Monitoring',   path: '/admin/eam/condition-monitoring',   icon: FiThermometer,  roles: ['admin', 'super_admin'] },
-      { label: 'Contracts',              path: '/admin/eam/contracts',              icon: FiBriefcase,    roles: ['admin', 'super_admin'] },
-      { label: 'Warranties',             path: '/admin/eam/warranties',             icon: FiShield,       roles: ['admin', 'super_admin'] },
-      { label: 'Maint. Reports',         path: '/admin/eam/reports',                icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
-      { label: 'Maint. Analytics',       path: '/admin/eam/analytics',              icon: FiTrendingUp,   roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Finance',
-    items: [
-      { label: 'Finance Dashboard',     path: '/admin/finance',                    icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
-      { label: 'Chart of Accounts',     path: '/admin/finance/accounts',           icon: FiHash,         roles: ['admin', 'super_admin'] },
-      { label: 'Account Groups',        path: '/admin/finance/account-groups',     icon: FiLayers,       roles: ['admin', 'super_admin'] },
-      { label: 'Journal Entries',       path: '/admin/finance/journals',           icon: FiBook,         roles: ['admin', 'super_admin'] },
-      { label: 'General Ledger',        path: '/admin/finance/ledger',             icon: FiList,         roles: ['admin', 'super_admin'] },
-      { label: 'Fiscal Years',          path: '/admin/finance/fiscal-years',       icon: FiCalendar,     roles: ['admin', 'super_admin'] },
-      { label: 'Accounting Periods',    path: '/admin/finance/periods',            icon: FiClock,        roles: ['admin', 'super_admin'] },
-      { label: 'Cost Centers',          path: '/admin/finance/cost-centers',       icon: FiTarget,       roles: ['admin', 'super_admin'] },
-      { label: 'Profit Centers',        path: '/admin/finance/profit-centers',     icon: FiTrendingUp,   roles: ['admin', 'super_admin'] },
-      { label: 'Posting Rules',         path: '/admin/finance/posting-rules',      icon: FiZap,          roles: ['admin', 'super_admin'] },
-      { label: 'Voucher Series',        path: '/admin/finance/voucher-series',     icon: FiFileText,     roles: ['admin', 'super_admin'] },
-      { label: 'Trial Balance',         path: '/admin/finance/trial-balance',      icon: FiSliders,      roles: ['admin', 'super_admin'] },
-      { label: 'Balance Sheet',         path: '/admin/finance/balance-sheet',      icon: FiActivity,     roles: ['admin', 'super_admin'] },
-      { label: 'Profit & Loss',         path: '/admin/finance/profit-loss',        icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
-      { label: 'Cash Book',             path: '/admin/finance/cash-book',          icon: FiDatabase,     roles: ['admin', 'super_admin'] },
-      { label: 'Bank Book',             path: '/admin/finance/bank-book',          icon: FiDatabase,     roles: ['admin', 'super_admin'] },
-      { label: 'Finance Settings',      path: '/admin/finance/settings',           icon: FiSettings,     roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Accounts Payable',
-    items: [
-      { label: 'AP Dashboard',          path: '/admin/accounts-payable',                  icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
-      { label: 'Vendor Bills',          path: '/admin/accounts-payable/bills',            icon: FiFileText,     roles: ['admin', 'super_admin'] },
-      { label: 'Vendor Payments',       path: '/admin/accounts-payable/payments',         icon: FiHash,         roles: ['admin', 'super_admin'] },
-      { label: 'Payment Runs',          path: '/admin/accounts-payable/payment-runs',     icon: FiZap,          roles: ['admin', 'super_admin'] },
-      { label: 'Vendor Ledger',         path: '/admin/accounts-payable/ledger',           icon: FiBook,         roles: ['admin', 'super_admin'] },
-      { label: 'Vendor Statements',     path: '/admin/accounts-payable/statements',       icon: FiList,         roles: ['admin', 'super_admin'] },
-      { label: 'AP Aging',              path: '/admin/accounts-payable/aging',            icon: FiClock,        roles: ['admin', 'super_admin'] },
-      { label: 'Debit Notes',           path: '/admin/accounts-payable/debit-notes',      icon: FiLayers,       roles: ['admin', 'super_admin'] },
-      { label: 'Credit Notes',          path: '/admin/accounts-payable/credit-notes',     icon: FiLayers,       roles: ['admin', 'super_admin'] },
-      { label: 'Invoice Matching',      path: '/admin/accounts-payable/invoice-matching', icon: FiTarget,       roles: ['admin', 'super_admin'] },
-      { label: 'Payment Advice',        path: '/admin/accounts-payable/payment-advice',   icon: FiActivity,     roles: ['admin', 'super_admin'] },
-      { label: 'AP Reports',            path: '/admin/accounts-payable/reports',          icon: FiTrendingUp,   roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Accounts Receivable',
-    items: [
-      { label: 'AR Dashboard',          path: '/admin/accounts-receivable',                  icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
-      { label: 'Customer Invoices',     path: '/admin/accounts-receivable/invoices',          icon: FiFileText,     roles: ['admin', 'super_admin'] },
-      { label: 'Customer Receipts',     path: '/admin/accounts-receivable/receipts',          icon: FiHash,         roles: ['admin', 'super_admin'] },
-      { label: 'Allocations',           path: '/admin/accounts-receivable/allocations',       icon: FiTarget,       roles: ['admin', 'super_admin'] },
-      { label: 'Customer Ledger',       path: '/admin/accounts-receivable/ledger',            icon: FiBook,         roles: ['admin', 'super_admin'] },
-      { label: 'Statements',            path: '/admin/accounts-receivable/statements',        icon: FiList,         roles: ['admin', 'super_admin'] },
-      { label: 'AR Aging',              path: '/admin/accounts-receivable/aging',             icon: FiClock,        roles: ['admin', 'super_admin'] },
-      { label: 'Collections',           path: '/admin/accounts-receivable/collections',       icon: FiActivity,     roles: ['admin', 'super_admin'] },
-      { label: 'Credit Management',     path: '/admin/accounts-receivable/credit',            icon: FiShield,       roles: ['admin', 'super_admin'] },
-      { label: 'Promise to Pay',        path: '/admin/accounts-receivable/promises',          icon: FiZap,          roles: ['admin', 'super_admin'] },
-      { label: 'Write-Offs',            path: '/admin/accounts-receivable/write-offs',        icon: FiLayers,       roles: ['admin', 'super_admin'] },
-      { label: 'Bad Debt',              path: '/admin/accounts-receivable/bad-debt',          icon: FiAlertTriangle, roles: ['admin', 'super_admin'] },
-      { label: 'AR Reports',            path: '/admin/accounts-receivable/reports',           icon: FiTrendingUp,   roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Tax & Compliance',
-    items: [
-      { label: 'Tax Dashboard',         path: '/admin/tax',                   icon: FiPercent,      roles: ['admin', 'super_admin'] },
-      { label: 'Tax Codes',             path: '/admin/tax/codes',             icon: FiHash,         roles: ['admin', 'super_admin'] },
-      { label: 'Tax Rates',             path: '/admin/tax/rates',             icon: FiLayers,       roles: ['admin', 'super_admin'] },
-      { label: 'GST Management',        path: '/admin/tax/gst',               icon: FiGlobe,        roles: ['admin', 'super_admin'] },
-      { label: 'GST Returns',           path: '/admin/tax/gst/returns',       icon: FiFileText,     roles: ['admin', 'super_admin'] },
-      { label: 'Input Tax Credit',      path: '/admin/tax/gst/itc',           icon: FiArrowUpRight, roles: ['admin', 'super_admin'] },
-      { label: 'Output Tax',            path: '/admin/tax/gst/output',        icon: FiTrendingUp,   roles: ['admin', 'super_admin'] },
-      { label: 'TDS Management',        path: '/admin/tax/tds',               icon: FiBook,         roles: ['admin', 'super_admin'] },
-      { label: 'TDS Certificates',      path: '/admin/tax/tds/certificates',  icon: FiAward,        roles: ['admin', 'super_admin'] },
-      { label: 'Compliance Calendar',   path: '/admin/tax/compliance',        icon: FiCalendar,     roles: ['admin', 'super_admin'] },
-      { label: 'E-Invoice',             path: '/admin/tax/einvoice',          icon: FiZap,          roles: ['admin', 'super_admin'] },
-      { label: 'E-Way Bill',            path: '/admin/tax/ewaybill',          icon: FiTruck,        roles: ['admin', 'super_admin'] },
-      { label: 'Tax Reports',           path: '/admin/tax/reports',           icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Banking & Treasury',
-    items: [
-      { label: 'Banking Dashboard',     path: '/admin/banking',                  icon: FiHome,         roles: ['admin', 'super_admin'] },
-      { label: 'Banks & Branches',      path: '/admin/banking/banks',            icon: FiHome,         roles: ['admin', 'super_admin'] },
-      { label: 'Bank Accounts',         path: '/admin/banking/accounts',         icon: FiCreditCard,   roles: ['admin', 'super_admin'] },
-      { label: 'Bank Statements',       path: '/admin/banking/statements',       icon: FiFileText,     roles: ['admin', 'super_admin'] },
-      { label: 'Reconciliation',        path: '/admin/banking/reconciliation',   icon: FiCheckSquare,  roles: ['admin', 'super_admin'] },
-      { label: 'Cash Book',             path: '/admin/banking/cash-book',        icon: FiBook,         roles: ['admin', 'super_admin'] },
-      { label: 'Petty Cash',            path: '/admin/banking/petty-cash',       icon: FiDollarSign,   roles: ['admin', 'super_admin'] },
-      { label: 'Cash Transfers',        path: '/admin/banking/cash-transfers',   icon: FiArrowRight,   roles: ['admin', 'super_admin'] },
-      { label: 'Cheque Books',          path: '/admin/banking/cheque-books',     icon: FiLayers,       roles: ['admin', 'super_admin'] },
-      { label: 'Treasury',              path: '/admin/banking/treasury',         icon: FiShield,       roles: ['admin', 'super_admin'] },
-      { label: 'Cash Forecast',         path: '/admin/banking/cash-forecast',    icon: FiTrendingUp,   roles: ['admin', 'super_admin'] },
-      { label: 'Liquidity Forecast',    path: '/admin/banking/liquidity-forecast', icon: FiBarChart2,  roles: ['admin', 'super_admin'] },
-      { label: 'Investments',           path: '/admin/banking/investments',      icon: FiTrendingUp,   roles: ['admin', 'super_admin'] },
-      { label: 'Fixed Deposits',        path: '/admin/banking/fixed-deposits',   icon: FiAward,        roles: ['admin', 'super_admin'] },
-      { label: 'Bank Guarantees',       path: '/admin/banking/bank-guarantees',  icon: FiShield,       roles: ['admin', 'super_admin'] },
-      { label: 'Letters of Credit',     path: '/admin/banking/letters-of-credit', icon: FiGlobe,       roles: ['admin', 'super_admin'] },
-      { label: 'FX Management',         path: '/admin/banking/fx',               icon: FiRefreshCw,    roles: ['admin', 'super_admin'] },
-      { label: 'Banking Reports',       path: '/admin/banking/reports',          icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'CFO & Executive',
-    items: [
-      { label: 'CFO Dashboard',         path: '/admin/cfo',                      icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
-      { label: 'Budgets',               path: '/admin/cfo/budgets',              icon: FiDollarSign,   roles: ['admin', 'super_admin'] },
-      { label: 'Forecasts',             path: '/admin/cfo/forecasts',            icon: FiTrendingUp,   roles: ['admin', 'super_admin'] },
-      { label: 'Financial KPIs',        path: '/admin/cfo/kpis',                 icon: FiZap,          roles: ['admin', 'super_admin'] },
-      { label: 'Cash Flow',             path: '/admin/cfo/cash-flow',            icon: FiArrowRight,   roles: ['admin', 'super_admin'] },
-      { label: 'Profitability',         path: '/admin/cfo/profitability',        icon: FiLayers,       roles: ['admin', 'super_admin'] },
-      { label: 'Consolidation',         path: '/admin/cfo/consolidation',        icon: FiGlobe,        roles: ['admin', 'super_admin'] },
-      { label: 'Board Reports',         path: '/admin/cfo/board-reports',        icon: FiBook,         roles: ['admin', 'super_admin'] },
-      { label: 'Variance Analysis',     path: '/admin/cfo/variance',             icon: FiCheckSquare,  roles: ['admin', 'super_admin'] },
-      { label: 'Financial Alerts',      path: '/admin/cfo/alerts',               icon: FiAlertTriangle, roles: ['admin', 'super_admin'] },
-      { label: 'Executive Reports',     path: '/admin/cfo/reports',              icon: FiFileText,     roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'HRMS',
-    items: [
-      { label: 'HR Dashboard',     path: '/admin/hr',              icon: FiHome,       roles: ['admin', 'super_admin'] },
-      { label: 'Employees',        path: '/admin/hr/employees',    icon: FiUsers,      roles: ['admin', 'super_admin'] },
-      { label: 'Departments',      path: '/admin/hr/departments',  icon: FiLayers,     roles: ['admin', 'super_admin'] },
-      { label: 'Designations',     path: '/admin/hr/designations', icon: FiFileText,   roles: ['admin', 'super_admin'] },
-      { label: 'Org Chart',        path: '/admin/hr/org-chart',    icon: FiGlobe,      roles: ['admin', 'super_admin'] },
-      { label: 'Documents',        path: '/admin/hr/documents',    icon: FiBook,       roles: ['admin', 'super_admin'] },
-      { label: 'Transfers',        path: '/admin/hr/transfers',    icon: FiArrowRight, roles: ['admin', 'super_admin'] },
-      { label: 'Promotions',       path: '/admin/hr/promotions',   icon: FiTrendingUp, roles: ['admin', 'super_admin'] },
-      { label: 'Probation',        path: '/admin/hr/probation',    icon: FiCheckSquare,roles: ['admin', 'super_admin'] },
-      { label: 'Exits',            path: '/admin/hr/exits',        icon: FiAlertTriangle, roles: ['admin', 'super_admin'] },
-      { label: 'HR Reports',       path: '/admin/hr/reports',      icon: FiBarChart2,  roles: ['admin', 'super_admin'] },
-      { label: 'Attendance',       path: '/admin/hr/attendance',                icon: FiClock,      roles: ['admin', 'super_admin'] },
-      { label: 'Att. Register',    path: '/admin/hr/attendance/register',       icon: FiClipboard,  roles: ['admin', 'super_admin'] },
-      { label: 'Adjustments',      path: '/admin/hr/attendance/adjustments',    icon: FiRefreshCw,  roles: ['admin', 'super_admin'] },
-      { label: 'Att. Policies',    path: '/admin/hr/attendance/policies',       icon: FiSliders,    roles: ['admin', 'super_admin'] },
-      { label: 'Leave Types',      path: '/admin/hr/leave/types',               icon: FiTag,        roles: ['admin', 'super_admin'] },
-      { label: 'Leave Requests',   path: '/admin/hr/leave/requests',            icon: FiFileText,   roles: ['admin', 'super_admin'] },
-      { label: 'Leave Approvals',  path: '/admin/hr/leave/approvals',           icon: FiCheckSquare,roles: ['admin', 'super_admin'] },
-      { label: 'Leave Balances',   path: '/admin/hr/leave/balances',            icon: FiDatabase,   roles: ['admin', 'super_admin'] },
-      { label: 'Holidays',         path: '/admin/hr/leave/holidays',            icon: FiCalendar,   roles: ['admin', 'super_admin'] },
-      { label: 'Att. Reports',     path: '/admin/hr/attendance/reports',        icon: FiBarChart2,  roles: ['admin', 'super_admin'] },
-      { label: 'Leave Reports',    path: '/admin/hr/leave/reports',             icon: FiActivity,   roles: ['admin', 'super_admin'] },
-      // ── Sprint 14C: Payroll ──────────────────────────────────────────────
-      { label: 'Payroll',          path: '/admin/hr/payroll',                   icon: FiDollarSign,   roles: ['admin', 'super_admin'] },
-      { label: 'Payroll Runs',     path: '/admin/hr/payroll/runs',              icon: FiZap,          roles: ['admin', 'super_admin'] },
-      { label: 'Sal. Structures',  path: '/admin/hr/payroll/structures',        icon: FiLayers,       roles: ['admin', 'super_admin'] },
-      { label: 'Sal. Components',  path: '/admin/hr/payroll/components',        icon: FiSliders,      roles: ['admin', 'super_admin'] },
-      { label: 'Employee Salary',  path: '/admin/hr/payroll/employee-salary',   icon: FiUsers,        roles: ['admin', 'super_admin'] },
-      { label: 'Payslips',         path: '/admin/hr/payroll/payslips',          icon: FiFileText,     roles: ['admin', 'super_admin'] },
-      { label: 'Loans',            path: '/admin/hr/payroll/loans',             icon: FiCreditCard,   roles: ['admin', 'super_admin'] },
-      { label: 'Advances',         path: '/admin/hr/payroll/advances',          icon: FiArrowUpRight, roles: ['admin', 'super_admin'] },
-      { label: 'Bonuses',          path: '/admin/hr/payroll/bonuses',           icon: FiAward,        roles: ['admin', 'super_admin'] },
-      { label: 'Payroll Reports',  path: '/admin/hr/payroll/reports',           icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
-      { label: 'Payroll Settings', path: '/admin/hr/payroll/settings',          icon: FiSettings,     roles: ['admin', 'super_admin'] },
-      // ── Sprint 14D: Recruitment & ATS ────────────────────────────────────
-      { label: 'Recruitment',      path: '/admin/hr/recruitment',               icon: FiBriefcase,    roles: ['admin', 'super_admin'] },
-      { label: 'Job Openings',     path: '/admin/hr/recruitment/jobs',          icon: FiHash,         roles: ['admin', 'super_admin'] },
-      { label: 'Candidates',       path: '/admin/hr/recruitment/candidates',    icon: FiUsers,        roles: ['admin', 'super_admin'] },
-      { label: 'Applications',     path: '/admin/hr/recruitment/applications',  icon: FiFileText,     roles: ['admin', 'super_admin'] },
-      { label: 'Interviews',       path: '/admin/hr/recruitment/interviews',    icon: FiCalendar,     roles: ['admin', 'super_admin'] },
-      { label: 'Feedback',         path: '/admin/hr/recruitment/feedback',      icon: FiStar,         roles: ['admin', 'super_admin'] },
-      { label: 'Offer Letters',    path: '/admin/hr/recruitment/offers',        icon: FiMail,         roles: ['admin', 'super_admin'] },
-      { label: 'BGV & Onboarding', path: '/admin/hr/recruitment/bgv',           icon: FiCheckSquare,  roles: ['admin', 'super_admin'] },
-      { label: 'Talent Pool',      path: '/admin/hr/recruitment/talent-pool',   icon: FiAward,        roles: ['admin', 'super_admin'] },
-      { label: 'Recruit. Reports', path: '/admin/hr/recruitment/reports',       icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
-      { label: 'Recruit. Settings',path: '/admin/hr/recruitment/settings',      icon: FiSliders,      roles: ['admin', 'super_admin'] },
-      // ── Sprint 14E: Performance Management, Learning & ESS ───────────────
-      { label: 'Performance',      path: '/admin/hr/performance',               icon: FiTarget,       roles: ['admin', 'super_admin'] },
-      { label: 'Goals',            path: '/admin/hr/performance/goals',          icon: FiCheckSquare,  roles: ['admin', 'super_admin'] },
-      { label: 'Reviews',          path: '/admin/hr/performance/reviews',        icon: FiStar,         roles: ['admin', 'super_admin'] },
-      { label: 'KPIs',             path: '/admin/hr/performance/kpis',           icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
-      { label: 'Appraisals',       path: '/admin/hr/performance/appraisals',     icon: FiAward,        roles: ['admin', 'super_admin'] },
-      { label: 'Training',         path: '/admin/hr/performance/training',       icon: FiBook,         roles: ['admin', 'super_admin'] },
-      { label: 'Learning Paths',   path: '/admin/hr/performance/learning-paths', icon: FiLayers,       roles: ['admin', 'super_admin'] },
-      { label: 'Certifications',   path: '/admin/hr/performance/certifications', icon: FiHash,         roles: ['admin', 'super_admin'] },
-      { label: 'Career Dev.',      path: '/admin/hr/performance/career',         icon: FiTrendingUp,   roles: ['admin', 'super_admin'] },
-      { label: 'Succession',       path: '/admin/hr/performance/succession',     icon: FiUsers,        roles: ['admin', 'super_admin'] },
-      { label: 'Perf. Reports',    path: '/admin/hr/performance/reports',        icon: FiBarChart2,    roles: ['admin', 'super_admin'] },
-      { label: 'Announcements',    path: '/admin/hr/performance/announcements',  icon: FiRadio,        roles: ['admin', 'super_admin'] },
-      { label: 'Recognition',      path: '/admin/hr/performance/recognition',    icon: FiAward,        roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Projects',
-    items: [
-      { label: 'PM Dashboard',  path: '/admin/projects/dashboard',      icon: FiGrid,          roles: ['admin', 'super_admin'] },
-      { label: 'Projects',      path: '/admin/projects',                 icon: FiFolder,        roles: ['admin', 'super_admin'] },
-      { label: 'Milestones',    path: '/admin/projects/milestones/all',  icon: FiFlag,          roles: ['admin', 'super_admin'] },
-      { label: 'Tasks',         path: '/admin/projects/tasks/all',       icon: FiList,          roles: ['admin', 'super_admin'] },
-      { label: 'Timesheets',    path: '/admin/projects/timesheets/all',  icon: FiClock,         roles: ['admin', 'super_admin'] },
-      { label: 'Resources',     path: '/admin/projects/resources/all',   icon: FiUsers,         roles: ['admin', 'super_admin'] },
-      { label: 'Risks',         path: '/admin/projects/risks/all',       icon: FiAlertTriangle, roles: ['admin', 'super_admin'] },
-      { label: 'Issues',        path: '/admin/projects/issues/all',      icon: FiBriefcase,     roles: ['admin', 'super_admin'] },
-      { label: 'PM Reports',    path: '/admin/projects/reports',         icon: FiBarChart2,     roles: ['admin', 'super_admin'] },
-      { label: 'PM Settings',   path: '/admin/projects/settings',        icon: FiSettings,      roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Portfolio (PPM)',
-    items: [
-      { label: 'PPM Dashboard',   path: '/admin/portfolio/dashboard',   icon: FiGrid,          roles: ['admin', 'super_admin'] },
-      { label: 'Executive View',  path: '/admin/portfolio/executive',   icon: FiActivity,      roles: ['admin', 'super_admin'] },
-      { label: 'Portfolios',      path: '/admin/portfolio',             icon: FiBriefcase,     roles: ['admin', 'super_admin'] },
-      { label: 'Programs',        path: '/admin/portfolio/programs',    icon: FiLayers,        roles: ['admin', 'super_admin'] },
-      { label: 'Initiatives',     path: '/admin/portfolio/initiatives', icon: FiTarget,        roles: ['admin', 'super_admin'] },
-      { label: 'Resource Capacity', path: '/admin/portfolio/resources', icon: FiUsers,         roles: ['admin', 'super_admin'] },
-      { label: 'Portfolio Finance', path: '/admin/portfolio/finance',   icon: FiDollarSign,    roles: ['admin', 'super_admin'] },
-      { label: 'PPM Reports',     path: '/admin/portfolio/reports',     icon: FiBarChart2,     roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'PMO Governance',
-    items: [
-      { label: 'PMO Dashboard',     path: '/admin/pmo/dashboard',       icon: FiGrid,          roles: ['admin', 'super_admin'] },
-      { label: 'PMO Analytics',     path: '/admin/pmo/analytics',       icon: FiTrendingUp,    roles: ['admin', 'super_admin'] },
-      { label: 'Governance Boards', path: '/admin/pmo/governance',      icon: FiShield,        roles: ['admin', 'super_admin'] },
-      { label: 'Compliance',        path: '/admin/pmo/compliance',      icon: FiCheckSquare,   roles: ['admin', 'super_admin'] },
-      { label: 'Business Cases',    path: '/admin/pmo/business-cases',  icon: FiBriefcase,     roles: ['admin', 'super_admin'] },
-      { label: 'Investments',       path: '/admin/pmo/investments',     icon: FiDollarSign,    roles: ['admin', 'super_admin'] },
-      { label: 'Charters',          path: '/admin/pmo/charters',        icon: FiFileText,      roles: ['admin', 'super_admin'] },
-      { label: 'Lessons Learned',   path: '/admin/pmo/lessons',         icon: FiBook,          roles: ['admin', 'super_admin'] },
-      { label: 'Templates',         path: '/admin/pmo/templates',       icon: FiClipboard,     roles: ['admin', 'super_admin'] },
-      { label: 'Documents',         path: '/admin/pmo/documents',       icon: FiFolder,        roles: ['admin', 'super_admin'] },
-      { label: 'Project Audits',    path: '/admin/pmo/audits',          icon: FiAlertTriangle, roles: ['admin', 'super_admin'] },
-      { label: 'Scorecards',        path: '/admin/pmo/scorecards',      icon: FiBarChart2,     roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'BPM & Workflow',
-    items: [
-      { label: 'BPM Dashboard',    path: '/admin/bpm/dashboard',      icon: FiActivity,      roles: ['admin', 'super_admin'] },
-      { label: 'Workflow Designer',path: '/admin/bpm/designer',       icon: FiSliders,       roles: ['admin', 'super_admin'] },
-      { label: 'WF Templates',     path: '/admin/bpm/templates',      icon: FiLayers,        roles: ['admin', 'super_admin'] },
-      { label: 'Instances',        path: '/admin/bpm/instances',      icon: FiCpu,           roles: ['admin', 'super_admin'] },
-      { label: 'Approvals',        path: '/admin/bpm/approvals',      icon: FiCheckSquare,   roles: ['admin', 'super_admin'] },
-      { label: 'Escalations',      path: '/admin/bpm/escalations',    icon: FiZap,           roles: ['admin', 'super_admin'] },
-      { label: 'SLA Management',   path: '/admin/bpm/sla',            icon: FiClock,         roles: ['admin', 'super_admin'] },
-      { label: 'Audit History',    path: '/admin/bpm/history',        icon: FiBook,          roles: ['admin', 'super_admin'] },
-      { label: 'BPM Analytics',    path: '/admin/bpm/analytics',      icon: FiTrendingUp,    roles: ['admin', 'super_admin'] },
-      { label: 'Rules Engine',     path: '/admin/bpm/rules',          icon: FiTarget,        roles: ['admin', 'super_admin'] },
-      { label: 'Triggers',         path: '/admin/bpm/triggers',       icon: FiRadio,         roles: ['admin', 'super_admin'] },
-      { label: 'BPM Reports',      path: '/admin/bpm/reports',        icon: FiBarChart2,     roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Document Management',
-    items: [
-      { label: 'DMS Dashboard',    path: '/admin/dms/dashboard',  icon: FiGrid,       roles: ['admin', 'super_admin'] },
-      { label: 'Document Library', path: '/admin/dms/library',    icon: FiFileText,   roles: ['admin', 'super_admin'] },
-      { label: 'Folders',          path: '/admin/dms/folders',    icon: FiFolder,     roles: ['admin', 'super_admin'] },
-      { label: 'Templates',        path: '/admin/dms/templates',  icon: FiLayers,     roles: ['admin', 'super_admin'] },
-      { label: 'Review Queue',     path: '/admin/dms/reviews',    icon: FiCheckSquare,roles: ['admin', 'super_admin'] },
-      { label: 'Retention',        path: '/admin/dms/retention',  icon: FiClock,      roles: ['admin', 'super_admin'] },
-      { label: 'Archive',          path: '/admin/dms/archive',    icon: FiArchive,    roles: ['admin', 'super_admin'] },
-      { label: 'Knowledge Base',   path: '/admin/dms/knowledge',  icon: FiBook,       roles: ['admin', 'super_admin'] },
-      { label: 'DMS Reports',      path: '/admin/dms/reports',    icon: FiBarChart2,  roles: ['admin', 'super_admin'] },
-      { label: 'DMS Settings',     path: '/admin/dms/settings',   icon: FiSettings,   roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'BI Executive Analytics',
-    items: [
-      { label: 'Executive Dashboard', path: '/admin/bi-exec/dashboard',  icon: FiGrid,       roles: ['admin', 'super_admin'] },
-      { label: 'Executive View',      path: '/admin/bi-exec/executive',  icon: FiBarChart2,  roles: ['admin', 'super_admin'] },
-      { label: 'Board Reports',       path: '/admin/bi-exec/board',      icon: FiFileText,   roles: ['admin', 'super_admin'] },
-      { label: 'Department KPIs',     path: '/admin/bi-exec/department', icon: FiLayers,     roles: ['admin', 'super_admin'] },
-      { label: 'KPI Explorer',        path: '/admin/bi-exec/kpis',       icon: FiTrendingUp, roles: ['admin', 'super_admin'] },
-      { label: 'Trend Analytics',     path: '/admin/bi-exec/trends',     icon: FiActivity,   roles: ['admin', 'super_admin'] },
-      { label: 'Benchmarks',          path: '/admin/bi-exec/benchmark',  icon: FiTarget,     roles: ['admin', 'super_admin'] },
-      { label: 'Enterprise Health',   path: '/admin/bi-exec/health',     icon: FiGlobe,      roles: ['admin', 'super_admin'] },
-      { label: 'Report Builder',      path: '/admin/bi-exec/reports',    icon: FiClipboard,  roles: ['admin', 'super_admin'] },
-      { label: 'BI Settings',         path: '/admin/bi-exec/settings',   icon: FiSettings,   roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'AI & Forecasting',
-    items: [
-      { label: 'AI Dashboard',      path: '/admin/ai/dashboard',       icon: FiCpu,           roles: ['admin', 'super_admin'] },
-      { label: 'Forecast Center',   path: '/admin/ai/forecasts',       icon: FiTrendingUp,    roles: ['admin', 'super_admin'] },
-      { label: 'Predictions',       path: '/admin/ai/predictions',     icon: FiBarChart2,     roles: ['admin', 'super_admin'] },
-      { label: 'Recommendations',   path: '/admin/ai/recommendations', icon: FiZap,           roles: ['admin', 'super_admin'] },
-      { label: 'Anomaly Center',    path: '/admin/ai/anomalies',       icon: FiAlertTriangle, roles: ['admin', 'super_admin'] },
-      { label: 'Scenarios',         path: '/admin/ai/scenarios',       icon: FiLayers,        roles: ['admin', 'super_admin'] },
-      { label: 'Forecast Reports',  path: '/admin/ai/reports',         icon: FiClipboard,     roles: ['admin', 'super_admin'] },
-      { label: 'AI Settings',       path: '/admin/ai/settings',        icon: FiSliders,       roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'AI Copilot',
-    items: [
-      { label: 'Copilot Dashboard', path: '/admin/ai-copilot/dashboard',       icon: FiCpu,           roles: ['admin', 'super_admin'] },
-      { label: 'AI Chat',           path: '/admin/ai-copilot/chat',            icon: FiMessageSquare, roles: ['admin', 'super_admin'] },
-      { label: 'Exec Briefing',     path: '/admin/ai-copilot/briefing',        icon: FiClipboard,     roles: ['admin', 'super_admin'] },
-      { label: 'AI Insights',       path: '/admin/ai-copilot/insights',        icon: FiZap,           roles: ['admin', 'super_admin'] },
-      { label: 'Recommendations',   path: '/admin/ai-copilot/recommendations', icon: FiTarget,        roles: ['admin', 'super_admin'] },
-      { label: 'Automation Center', path: '/admin/ai-copilot/automation',      icon: FiLayers,        roles: ['admin', 'super_admin'] },
-      { label: 'Automation Rules',  path: '/admin/ai-copilot/rules',           icon: FiSliders,       roles: ['admin', 'super_admin'] },
-      { label: 'Knowledge Base',    path: '/admin/ai-copilot/knowledge',       icon: FiBook,          roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Enterprise',
-    items: [
-      { label: 'Audit Log', path: '/admin/audit-log', icon: FiShield, roles: ['admin', 'super_admin'] },
-    ],
-  },
-  {
-    label: 'Settings',
-    items: [
-      { label: 'Store Settings', path: '/admin/settings',   icon: FiSettings, roles: ['admin', 'super_admin'] },
-      { label: 'Admins',         path: '/admin/management', icon: FiShield,   roles: ['super_admin'] },
-    ],
-  },
-];
-
-const ALL_ITEMS = NAV_GROUPS.flatMap(g => g.items);
+import SearchDialog from './search/SearchDialog';
 
 const SIDEBAR_BG = '#0C0C0C';
 
@@ -700,19 +86,17 @@ export default function AdminLayout({ children }) {
   const navigate  = useNavigate();
   const location  = useLocation();
   const { user }  = useSelector(s => s.auth);
-  const [sidebarOpen,   setSidebarOpen]   = useState(false);
-  const [searchOpen,    setSearchOpen]    = useState(false);
-  const [searchQuery,   setSearchQuery]   = useState('');
-  const [notifOpen,     setNotifOpen]     = useState(false);
-  const [notifications, setNotifications] = useState([]);
-  const [unseenCount,   setUnseenCount]   = useState(0);
-  const [userOpen,        setUserOpen]        = useState(false);
-  const [activeDomain,    setActiveDomain]    = useState(() => findDomainForPath(location.pathname));
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarOpen,       setSidebarOpen]       = useState(false);
+  const [searchDialogOpen,  setSearchDialogOpen]  = useState(false);
+  const [notifOpen,         setNotifOpen]         = useState(false);
+  const [notifications,     setNotifications]     = useState([]);
+  const [unseenCount,       setUnseenCount]       = useState(0);
+  const [userOpen,          setUserOpen]          = useState(false);
+  const [activeDomain,      setActiveDomain]      = useState(() => findDomainForPath(location.pathname));
+  const [sidebarCollapsed,  setSidebarCollapsed]  = useState(false);
 
-  const searchRef = useRef(null);
-  const notifRef  = useRef(null);
-  const userRef   = useRef(null);
+  const notifRef = useRef(null);
+  const userRef  = useRef(null);
 
   const handleLogout = () => { dispatch(clearAuth()); dispatch(logout()); navigate('/'); };
   const isActive = (path) => path === '/admin'
@@ -727,9 +111,6 @@ export default function AdminLayout({ children }) {
   const currentLabel = currentItem?.label || 'Admin';
   const currentGroup = visibleGroups.find(g => g.items.includes(currentItem))?.label;
 
-  // Real-time notifications — reuses the same socket events Dashboard.jsx already
-  // listens to (order:created, order:statusChanged, review:created). No backend
-  // change: these events are already emitted by the existing order/review controllers.
   useAdminSocket({
     'order:created':       (p) => pushNotification('order:created', p),
     'order:statusChanged': (p) => pushNotification('order:statusChanged', p),
@@ -743,7 +124,6 @@ export default function AdminLayout({ children }) {
 
   useEffect(() => {
     const close = (e) => {
-      if (searchRef.current && !searchRef.current.contains(e.target)) setSearchOpen(false);
       if (notifRef.current && !notifRef.current.contains(e.target)) setNotifOpen(false);
       if (userRef.current && !userRef.current.contains(e.target)) setUserOpen(false);
     };
@@ -751,20 +131,36 @@ export default function AdminLayout({ children }) {
     return () => document.removeEventListener('mousedown', close);
   }, []);
 
+  // Track recently visited pages for the search dialog home state
   useEffect(() => {
     setActiveDomain(findDomainForPath(location.pathname));
+    const match = ALL_ITEMS.find(i =>
+      i.path === '/admin' ? location.pathname === '/admin' : location.pathname.startsWith(i.path)
+    );
+    if (match) {
+      try {
+        const prev = JSON.parse(localStorage.getItem('ma_erp_recent_pages')) || [];
+        const entry = { label: match.label, path: match.path };
+        const next = [entry, ...prev.filter(p => p.path !== match.path)].slice(0, 15);
+        localStorage.setItem('ma_erp_recent_pages', JSON.stringify(next));
+      } catch {}
+    }
   }, [location.pathname]);
+
+  // CTRL+K global shortcut opens the search dialog
+  useEffect(() => {
+    const handler = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setSearchDialogOpen(true);
+      }
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, []);
 
   const domainGroupLabels = DOMAIN_GROUPS[activeDomain] || [];
   const domainNavGroups   = visibleGroups.filter(g => domainGroupLabels.includes(g.label));
-
-  const searchResults = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
-    if (!q) return [];
-    return ALL_ITEMS.filter(i => (!i.roles || i.roles.includes(user?.role)) && i.label.toLowerCase().includes(q)).slice(0, 6);
-  }, [searchQuery, user?.role]);
-
-  const goTo = (path) => { navigate(path); setSearchOpen(false); setSearchQuery(''); setSidebarOpen(false); };
 
   return (
     <div className="min-h-screen flex" style={{ background: 'var(--bg)', fontFamily: 'var(--font-body)' }}>
@@ -864,13 +260,7 @@ export default function AdminLayout({ children }) {
           setSidebarCollapsed={setSidebarCollapsed}
           currentLabel={currentLabel}
           currentGroup={currentGroup}
-          searchRef={searchRef}
-          searchOpen={searchOpen}
-          setSearchOpen={setSearchOpen}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          searchResults={searchResults}
-          goTo={goTo}
+          onOpenSearch={() => setSearchDialogOpen(true)}
           notifRef={notifRef}
           notifOpen={notifOpen}
           setNotifOpen={setNotifOpen}
@@ -908,6 +298,13 @@ export default function AdminLayout({ children }) {
           {children}
         </div>
       </main>
+
+      {/* Global Search Dialog */}
+      <SearchDialog
+        open={searchDialogOpen}
+        onClose={() => setSearchDialogOpen(false)}
+        user={user}
+      />
     </div>
   );
 }
