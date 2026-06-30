@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   FiMenu, FiBell, FiSearch, FiChevronRight, FiChevronDown,
   FiArrowUpRight, FiLogOut, FiUser, FiPlus, FiUsers, FiPackage,
   FiShoppingBag, FiFileText, FiBriefcase, FiUserPlus,
-  FiHelpCircle, FiBook, FiCommand, FiSliders, FiStar,
+  FiHelpCircle, FiBook, FiCommand, FiSliders,
 } from 'react-icons/fi';
 
 const WORKSPACE = { name: 'Metro Appliances ERP', env: 'Production', version: 'v1.0.1' };
@@ -17,12 +17,6 @@ const QUICK_ACTIONS = [
   { label: 'New Vendor',    path: '/admin/procurement/vendors',          icon: FiBriefcase },
   { label: 'New Invoice',   path: '/admin/accounts-receivable/invoices', icon: FiFileText },
 ];
-
-const NOTIFICATION_META = {
-  'order:created':       { icon: FiShoppingBag, text: (p) => `New order ${p?.order?.orderNumber ? `#${p.order.orderNumber}` : ''} placed`,           path: '/admin/orders' },
-  'order:statusChanged': { icon: FiShoppingBag, text: (p) => `Order ${p?.order?.orderNumber ? `#${p.order.orderNumber}` : ''} status changed`,        path: '/admin/orders' },
-  'review:created':      { icon: FiStar,        text: () => 'New product review submitted',                                                           path: '/admin/reviews' },
-};
 
 function useDateTime() {
   const [now, setNow] = useState(() => new Date());
@@ -38,10 +32,9 @@ export default function AdminHeader({
   sidebarCollapsed, setSidebarCollapsed,
   currentLabel, currentGroup,
   onOpenSearch,
-  notifRef, notifOpen, setNotifOpen, unseenCount, setUnseenCount, notifications,
+  onOpenNotifications, unseenCount,
   userRef, userOpen, setUserOpen, user, handleLogout,
 }) {
-  const navigate = useNavigate();
   const now      = useDateTime();
   const qaRef    = useRef(null);
   const [qaOpen, setQaOpen] = useState(false);
@@ -266,132 +259,35 @@ export default function AdminHeader({
             )}
           </div>
 
-          {/* Notification center */}
-          <div className="relative" ref={notifRef}>
-            <button
-              onClick={() => { setNotifOpen(o => !o); setUnseenCount(0); }}
-              className="relative p-1.5 transition-colors rounded"
-              style={{ color: 'var(--text-3)' }}
-              aria-label={`Notifications${unseenCount > 0 ? `, ${unseenCount} unread` : ''}`}
-              aria-expanded={notifOpen}
-              aria-haspopup="dialog"
-              onMouseEnter={e => e.currentTarget.style.color = 'var(--text)'}
-              onMouseLeave={e => e.currentTarget.style.color = 'var(--text-3)'}
-            >
-              <FiBell size={17} strokeWidth={1.75} />
-              {unseenCount > 0 && (
-                <span
-                  className="absolute top-0.5 right-0.5 flex items-center justify-center text-white font-bold leading-none"
-                  style={{
-                    minWidth: '14px',
-                    height: '14px',
-                    padding: '0 3px',
-                    background: '#EF4444',
-                    borderRadius: '7px',
-                    fontSize: '8px',
-                    border: '1.5px solid var(--card)',
-                  }}
-                  aria-hidden="true"
-                >
-                  {unseenCount > 9 ? '9+' : unseenCount}
-                </span>
-              )}
-            </button>
-            {notifOpen && (
-              <div
-                className="absolute right-0 mt-1.5 w-80 overflow-hidden"
+          {/* Notification Center — opens full slide-over panel */}
+          <button
+            onClick={onOpenNotifications}
+            className="relative p-1.5 transition-colors rounded"
+            style={{ color: 'var(--text-3)' }}
+            aria-label={`Notifications${unseenCount > 0 ? `, ${unseenCount} unread` : ''}`}
+            aria-haspopup="dialog"
+            onMouseEnter={e => e.currentTarget.style.color = 'var(--text)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'var(--text-3)'}
+          >
+            <FiBell size={17} strokeWidth={1.75} />
+            {unseenCount > 0 && (
+              <span
+                className="absolute top-0.5 right-0.5 flex items-center justify-center text-white font-bold leading-none"
                 style={{
-                  background: 'var(--card)',
-                  border: '1px solid var(--border)',
-                  borderRadius: 'var(--radius-md)',
-                  boxShadow: 'var(--shadow-md)',
-                  zIndex: 50,
+                  minWidth: '14px',
+                  height: '14px',
+                  padding: '0 3px',
+                  background: '#EF4444',
+                  borderRadius: '7px',
+                  fontSize: '8px',
+                  border: '1.5px solid var(--card)',
                 }}
-                role="dialog"
-                aria-label="Notification center"
+                aria-hidden="true"
               >
-                {/* Header */}
-                <div
-                  className="flex items-center justify-between px-4 py-3"
-                  style={{ borderBottom: '1px solid var(--border)' }}
-                >
-                  <div>
-                    <p className="text-[12.5px] font-bold" style={{ color: 'var(--text)' }}>Notifications</p>
-                    <p className="text-[10px]" style={{ color: 'var(--text-4)' }}>Real-time activity alerts</p>
-                  </div>
-                  {notifications.length > 0 && (
-                    <button
-                      className="text-[10px] font-semibold transition-colors"
-                      style={{ color: 'var(--accent)' }}
-                      onClick={() => setUnseenCount(0)}
-                    >
-                      Mark all read
-                    </button>
-                  )}
-                </div>
-
-                {/* Empty state */}
-                {notifications.length === 0 ? (
-                  <div className="px-4 py-8 flex flex-col items-center">
-                    <div
-                      className="w-10 h-10 flex items-center justify-center rounded-full mb-3"
-                      style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}
-                    >
-                      <FiBell size={16} style={{ color: 'var(--text-4)' }} aria-hidden="true" />
-                    </div>
-                    <p className="text-[12px] font-semibold mb-1" style={{ color: 'var(--text-2)' }}>All caught up</p>
-                    <p className="text-[11px] text-center" style={{ color: 'var(--text-4)' }}>
-                      No new activity this session.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="max-h-72 overflow-y-auto no-scrollbar">
-                    {notifications.map(n => {
-                      const meta = NOTIFICATION_META[n.event];
-                      const Icon = meta?.icon || FiBell;
-                      return (
-                        <button
-                          key={n.id}
-                          onClick={() => { navigate(meta?.path || '/admin'); setNotifOpen(false); }}
-                          className="w-full flex items-start gap-3 px-4 py-3 text-left transition-colors"
-                          style={{ borderBottom: '1px solid var(--border)' }}
-                          onMouseEnter={e => e.currentTarget.style.background = 'var(--bg)'}
-                          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                        >
-                          <div
-                            className="w-7 h-7 flex items-center justify-center rounded-full flex-shrink-0 mt-0.5"
-                            style={{ background: 'rgba(255,122,0,0.08)', border: '1px solid rgba(255,122,0,0.15)' }}
-                          >
-                            <Icon size={13} style={{ color: 'var(--accent)' }} aria-hidden="true" />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="text-[12px] font-medium leading-snug" style={{ color: 'var(--text)' }}>
-                              {meta?.text(n.payload) || n.event}
-                            </p>
-                            <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-4)' }}>
-                              {n.at.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
-                            </p>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* Footer */}
-                <div className="px-4 py-2.5" style={{ borderTop: '1px solid var(--border)' }}>
-                  <Link
-                    to="/admin/orders"
-                    onClick={() => setNotifOpen(false)}
-                    className="text-[11px] font-semibold transition-colors"
-                    style={{ color: 'var(--accent)' }}
-                  >
-                    View all activity →
-                  </Link>
-                </div>
-              </div>
+                {unseenCount > 9 ? '9+' : unseenCount}
+              </span>
             )}
-          </div>
+          </button>
 
           {/* View Store */}
           <Link

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearAuth, logout } from '../../redux/slices/authSlice';
@@ -11,6 +11,21 @@ import AdminDomainRail from './AdminDomainRail';
 import AdminModuleSidebar from './AdminModuleSidebar';
 import AdminHeader from './AdminHeader';
 import SearchDialog from './search/SearchDialog';
+import NotificationCenter from './notifications/NotificationCenter';
+import { seedNotifications, SOCKET_EVENT_META } from './notifications/notificationData';
+
+const NOTIF_KEY = 'ma_erp_notifications';
+function loadNotifications() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(NOTIF_KEY));
+    return Array.isArray(stored) && stored.length > 0 ? stored : seedNotifications();
+  } catch {
+    return seedNotifications();
+  }
+}
+function saveNotifications(notifs) {
+  try { localStorage.setItem(NOTIF_KEY, JSON.stringify(notifs)); } catch {}
+}
 
 const SIDEBAR_BG = '#0C0C0C';
 
@@ -88,15 +103,18 @@ export default function AdminLayout({ children }) {
   const { user }  = useSelector(s => s.auth);
   const [sidebarOpen,       setSidebarOpen]       = useState(false);
   const [searchDialogOpen,  setSearchDialogOpen]  = useState(false);
-  const [notifOpen,         setNotifOpen]         = useState(false);
-  const [notifications,     setNotifications]     = useState([]);
-  const [unseenCount,       setUnseenCount]       = useState(0);
+  const [notifCenterOpen,   setNotifCenterOpen]   = useState(false);
+  const [notifications,     setNotifications]     = useState(loadNotifications);
   const [userOpen,          setUserOpen]          = useState(false);
   const [activeDomain,      setActiveDomain]      = useState(() => findDomainForPath(location.pathname));
   const [sidebarCollapsed,  setSidebarCollapsed]  = useState(false);
 
-  const notifRef = useRef(null);
-  const userRef  = useRef(null);
+  const userRef = useRef(null);
+
+  const unseenCount = useMemo(
+    () => notifications.filter(n => !n.isRead && !n.isArchived).length,
+    [notifications]
+  );
 
   const handleLogout = () => { dispatch(clearAuth()); dispatch(logout()); navigate('/'); };
   const isActive = (path) => path === '/admin'
@@ -111,20 +129,63 @@ export default function AdminLayout({ children }) {
   const currentLabel = currentItem?.label || 'Admin';
   const currentGroup = visibleGroups.find(g => g.items.includes(currentItem))?.label;
 
+  const pushNotification = useCallback((event, payload) => {
+    const meta = SOCKET_EVENT_META[event];
+    if (!meta) return;
+    const newNotif = {
+      id: `${event}-${Date.now()}`,
+      ...meta(payload),
+      at: Date.now(),
+      isRead: false,
+      isArchived: false,
+    };
+    setNotifications(prev => {
+      const next = [newNotif, ...prev].slice(0, 100);
+      saveNotifications(next);
+      return next;
+    });
+  }, []);
+
   useAdminSocket({
     'order:created':       (p) => pushNotification('order:created', p),
     'order:statusChanged': (p) => pushNotification('order:statusChanged', p),
     'review:created':      (p) => pushNotification('review:created', p),
   });
 
-  function pushNotification(event, payload) {
-    setNotifications(prev => [{ id: `${event}-${Date.now()}`, event, payload, at: new Date() }, ...prev].slice(0, 8));
-    setUnseenCount(c => c + 1);
-  }
+  const markNotifRead = useCallback((id) => {
+    setNotifications(prev => {
+      const next = prev.map(n => n.id === id ? { ...n, isRead: true } : n);
+      saveNotifications(next);
+      return next;
+    });
+  }, []);
+
+  const markAllRead = useCallback(() => {
+    setNotifications(prev => {
+      const next = prev.map(n => ({ ...n, isRead: true }));
+      saveNotifications(next);
+      return next;
+    });
+  }, []);
+
+  const archiveNotif = useCallback((id) => {
+    setNotifications(prev => {
+      const next = prev.map(n => n.id === id ? { ...n, isArchived: true } : n);
+      saveNotifications(next);
+      return next;
+    });
+  }, []);
+
+  const dismissNotif = useCallback((id) => {
+    setNotifications(prev => {
+      const next = prev.filter(n => n.id !== id);
+      saveNotifications(next);
+      return next;
+    });
+  }, []);
 
   useEffect(() => {
     const close = (e) => {
-      if (notifRef.current && !notifRef.current.contains(e.target)) setNotifOpen(false);
       if (userRef.current && !userRef.current.contains(e.target)) setUserOpen(false);
     };
     document.addEventListener('mousedown', close);
@@ -261,12 +322,8 @@ export default function AdminLayout({ children }) {
           currentLabel={currentLabel}
           currentGroup={currentGroup}
           onOpenSearch={() => setSearchDialogOpen(true)}
-          notifRef={notifRef}
-          notifOpen={notifOpen}
-          setNotifOpen={setNotifOpen}
+          onOpenNotifications={() => setNotifCenterOpen(true)}
           unseenCount={unseenCount}
-          setUnseenCount={setUnseenCount}
-          notifications={notifications}
           userRef={userRef}
           userOpen={userOpen}
           setUserOpen={setUserOpen}
@@ -304,6 +361,18 @@ export default function AdminLayout({ children }) {
         open={searchDialogOpen}
         onClose={() => setSearchDialogOpen(false)}
         user={user}
+      />
+
+      {/* Enterprise Notification Center */}
+      <NotificationCenter
+        open={notifCenterOpen}
+        onClose={() => setNotifCenterOpen(false)}
+        notifications={notifications}
+        unseenCount={unseenCount}
+        onMarkRead={markNotifRead}
+        onMarkAllRead={markAllRead}
+        onArchive={archiveNotif}
+        onDismiss={dismissNotif}
       />
     </div>
   );
