@@ -774,6 +774,7 @@ export default function AdminLayout({ children }) {
             groups={domainNavGroups}
             isActive={isActive}
             onNavigate={() => setSidebarOpen(false)}
+            pathname={location.pathname}
           />
 
           {/* User footer */}
