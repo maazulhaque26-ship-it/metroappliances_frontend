@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { FiPackage } from 'react-icons/fi';
 import DealerLayout from '../../components/dealer/DealerLayout';
 import dealerAPI from '../../services/dealerAPI';
 import { addToCart } from '../../redux/slices/dealerCartSlice';
@@ -37,7 +38,7 @@ export default function DealerProductDetail() {
     return (
       <DealerLayout>
         <div style={{ textAlign: 'center', padding: '60px 0' }}>
-          <div style={{ fontSize: '40px' }}>📦</div>
+          <div style={{ width: 52, height: 52, borderRadius: '50%', background: 'var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}><FiPackage size={22} style={{ color: 'var(--text-4)' }} aria-hidden="true" /></div>
           <div style={{ fontSize: '16px', fontWeight: 700, margin: '12px 0 8px', color: 'var(--text,#111)' }}>{error || 'Product not found'}</div>
           <Link to="/dealer/products" style={{ fontSize: '13px', color: 'var(--accent,#FF7A00)', fontWeight: 600, textDecoration: 'none' }}>← Back to Catalog</Link>
         </div>

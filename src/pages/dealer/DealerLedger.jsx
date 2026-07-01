@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import {
+  FiPackage, FiCreditCard, FiRotateCcw, FiChevronUp, FiChevronDown,
+  FiFileText, FiSettings, FiFile, FiCircle, FiDownload,
+} from 'react-icons/fi';
 import DealerLayout from '../../components/dealer/DealerLayout';
 import dealerAPI from '../../services/dealerAPI';
 
 const STATUS_COLORS = { paid: '#10B981', overdue: '#EF4444', pending: '#F59E0B', na: '#9CA3AF' };
 const TYPE_COLORS   = { credit: '#10B981', debit: '#EF4444' };
-const CAT_ICONS     = { order: '📦', payment: '💳', refund: '↩', wallet_topup: '⬆', wallet_deduct: '⬇', credit_note: '📝', adjustment: '⚙', invoice_charge: '🧾', reversal: '🔄', default: '🔹' };
+const CAT_ICONS     = { order: FiPackage, payment: FiCreditCard, refund: FiRotateCcw, wallet_topup: FiChevronUp, wallet_deduct: FiChevronDown, credit_note: FiFileText, adjustment: FiSettings, invoice_charge: FiFile, reversal: FiRotateCcw, default: FiCircle };
 
 export default function DealerLedger() {
   const [entries,     setEntries]     = useState([]);
@@ -52,7 +56,7 @@ export default function DealerLedger() {
           </div>
           <button onClick={() => alert('CSV export coming soon. Use browser Print to save as PDF.')}
             style={{ padding: '8px 14px', borderRadius: '8px', border: '1px solid var(--border,#E5E7EB)', background: 'var(--card,#fff)', fontSize: '12px', fontWeight: 600, cursor: 'pointer', color: 'var(--text,#111)' }}>
-            ⇩ Export
+            <FiDownload size={13} style={{ marginRight: '5px', verticalAlign: 'middle' }} aria-hidden="true" />Export
           </button>
         </div>
       </div>
@@ -105,7 +109,7 @@ export default function DealerLedger() {
                 </td>
                 <td style={{ padding: '12px 14px', color: 'var(--text,#111)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span>{CAT_ICONS[e.category] || CAT_ICONS.default}</span>
+                    {(() => { const Icon = CAT_ICONS[e.category] || CAT_ICONS.default; return <div style={{ width: 28, height: 28, borderRadius: '7px', background: 'var(--bg)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon size={13} style={{ color: 'var(--text-4)' }} aria-hidden="true" /></div>; })()}
                     <div>
                       <div style={{ fontWeight: 500, maxWidth: '220px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.description}</div>
                       {e.reference && <div style={{ fontSize: '11px', color: 'var(--text-4,#9CA3AF)' }}>{e.reference}</div>}

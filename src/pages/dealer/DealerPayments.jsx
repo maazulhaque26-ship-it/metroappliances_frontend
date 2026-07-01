@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import {
+  FiCreditCard, FiRotateCcw, FiSettings, FiFileText, FiChevronUp, FiDollarSign,
+} from 'react-icons/fi';
 import DealerLayout from '../../components/dealer/DealerLayout';
 import dealerAPI from '../../services/dealerAPI';
 
 const STATUS_COLORS = { pending: '#F59E0B', verified: '#10B981', failed: '#EF4444', reversed: '#6B7280' };
-const TYPE_ICONS    = { payment: '💳', refund: '↩', adjustment: '⚙', credit_note: '📝', wallet_topup: '⬆' };
+const TYPE_ICONS    = { payment: FiCreditCard, refund: FiRotateCcw, adjustment: FiSettings, credit_note: FiFileText, wallet_topup: FiChevronUp };
 const METHOD_LABELS = { bank_transfer: 'Bank Transfer', cheque: 'Cheque', upi: 'UPI', neft: 'NEFT', rtgs: 'RTGS', cash: 'Cash', wallet: 'Wallet', other: 'Other' };
 
 export default function DealerPayments() {
@@ -70,7 +73,7 @@ export default function DealerPayments() {
               <tr><td colSpan={7} style={{ padding: '40px', textAlign: 'center', color: 'var(--text-4,#9CA3AF)' }}>Loading…</td></tr>
             ) : payments.length === 0 ? (
               <tr><td colSpan={7} style={{ padding: '48px', textAlign: 'center', color: 'var(--text-4,#9CA3AF)' }}>
-                <div style={{ fontSize: '28px', marginBottom: '10px' }}>💳</div>
+                <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px' }}><FiCreditCard size={20} style={{ color: 'var(--text-4)' }} aria-hidden="true" /></div>
                 <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text,#111)', marginBottom: '4px' }}>No payments yet</div>
                 <div style={{ fontSize: '12px' }}>Payment records will appear here once recorded by admin</div>
               </td></tr>
@@ -82,7 +85,7 @@ export default function DealerPayments() {
                 </td>
                 <td style={{ padding: '12px 14px', color: 'var(--text,#111)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span>{TYPE_ICONS[p.type] || '💰'}</span>
+                    {(() => { const Icon = TYPE_ICONS[p.type] || FiDollarSign; return <div style={{ width: 26, height: 26, borderRadius: '6px', background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Icon size={12} style={{ color: 'var(--text-4)' }} aria-hidden="true" /></div>; })()}
                     <span style={{ textTransform: 'capitalize' }}>{p.type?.replace(/_/g, ' ')}</span>
                   </div>
                 </td>

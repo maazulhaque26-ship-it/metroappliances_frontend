@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FiZap, FiAlertTriangle } from 'react-icons/fi';
 import DealerLayout from '../../components/dealer/DealerLayout';
 import dealerAPI from '../../services/dealerAPI';
 
@@ -33,7 +34,7 @@ export default function DealerCredit() {
 
       {!credit || credit.creditStatus === 'none' ? (
         <div style={{ background: 'var(--card,#fff)', border: '1px solid var(--border,#E5E7EB)', borderRadius: '12px', padding: '48px', textAlign: 'center' }}>
-          <div style={{ fontSize: '32px', marginBottom: '12px' }}>◇</div>
+          <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}><FiZap size={20} style={{ color: 'var(--text-4)' }} aria-hidden="true" /></div>
           <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text,#111)', marginBottom: '6px' }}>No Credit Limit Assigned</div>
           <div style={{ fontSize: '13px', color: 'var(--text-4,#9CA3AF)' }}>Contact your account manager to request a credit facility.</div>
         </div>
@@ -42,7 +43,7 @@ export default function DealerCredit() {
           {/* Hold banner */}
           {credit.isOnHold && (
             <div style={{ padding: '12px 16px', background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: '10px', marginBottom: '20px', display: 'flex', gap: '10px', alignItems: 'flex-start', fontSize: '13px' }}>
-              <span>⚠️</span>
+              <FiAlertTriangle size={16} style={{ color: '#B91C1C', flexShrink: 0 }} aria-hidden="true" />
               <div>
                 <div style={{ fontWeight: 700, color: '#B91C1C' }}>Credit on Hold</div>
                 {credit.holdReason && <div style={{ color: '#991B1B', marginTop: '2px' }}>{credit.holdReason}</div>}

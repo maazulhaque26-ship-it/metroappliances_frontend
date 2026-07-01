@@ -1,10 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import {
+  FiPackage, FiCreditCard, FiRotateCcw, FiChevronUp, FiChevronDown,
+  FiFileText, FiSettings, FiFile, FiCircle,
+} from 'react-icons/fi';
 import DealerLayout from '../../components/dealer/DealerLayout';
 import dealerAPI from '../../services/dealerAPI';
 
 const CATEGORIES = ['', 'order', 'payment', 'refund', 'wallet_topup', 'wallet_deduct', 'credit_note', 'adjustment', 'invoice_charge', 'reversal'];
 const TYPE_COLORS = { credit: '#10B981', debit: '#EF4444' };
-const CAT_ICONS   = { order: '📦', payment: '💳', refund: '↩', wallet_topup: '⬆', wallet_deduct: '⬇', credit_note: '📝', adjustment: '⚙', invoice_charge: '🧾', reversal: '🔄' };
+const CAT_ICONS   = { order: FiPackage, payment: FiCreditCard, refund: FiRotateCcw, wallet_topup: FiChevronUp, wallet_deduct: FiChevronDown, credit_note: FiFileText, adjustment: FiSettings, invoice_charge: FiFile, reversal: FiRotateCcw };
 
 function fmt(n) {
   return `₹${(n || 0).toLocaleString('en-IN')}`;
@@ -73,7 +77,7 @@ export default function DealerWallet() {
           {/* Last recharge */}
           {wallet?.lastRecharge?.date && (
             <div style={{ background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: '10px', padding: '12px 16px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px' }}>
-              <span>⬆</span>
+              <FiChevronUp size={16} style={{ color: '#166534', flexShrink: 0 }} aria-hidden="true" />
               <span style={{ color: '#166534' }}>Last recharge: <strong>{fmt(wallet.lastRecharge.amount)}</strong> on {new Date(wallet.lastRecharge.date).toLocaleDateString('en-IN')}{wallet.lastRecharge.method ? ` via ${wallet.lastRecharge.method}` : ''}{wallet.lastRecharge.reference ? ` (Ref: ${wallet.lastRecharge.reference})` : ''}</span>
             </div>
           )}
@@ -112,7 +116,9 @@ export default function DealerWallet() {
           <div style={{ padding: '40px', textAlign: 'center', color: 'var(--text-4,#9CA3AF)' }}>Loading…</div>
         ) : entries.length === 0 ? (
           <div style={{ padding: '40px', textAlign: 'center', color: 'var(--text-4,#9CA3AF)' }}>
-            <div style={{ fontSize: '32px', marginBottom: '10px' }}>◈</div>
+            <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px' }}>
+              <FiCreditCard size={20} style={{ color: 'var(--text-4)' }} aria-hidden="true" />
+            </div>
             <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text,#111)', marginBottom: '4px' }}>No transactions yet</div>
             <div style={{ fontSize: '12px' }}>Your transaction history will appear here</div>
           </div>
@@ -133,7 +139,7 @@ export default function DealerWallet() {
                     <td style={{ padding: '12px 16px', color: 'var(--text-4,#9CA3AF)', fontSize: '12px', whiteSpace: 'nowrap' }}>{new Date(e.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
                     <td style={{ padding: '12px 16px', color: 'var(--text,#111)' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span>{CAT_ICONS[e.category] || '🔹'}</span>
+                        {(() => { const Icon = CAT_ICONS[e.category] || FiCircle; return <div style={{ width: 28, height: 28, borderRadius: '7px', background: 'var(--bg)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon size={13} style={{ color: 'var(--text-4)' }} aria-hidden="true" /></div>; })()}
                         <div>
                           <div style={{ fontWeight: 500 }}>{e.description}</div>
                           {e.reference && <div style={{ fontSize: '11px', color: 'var(--text-4,#9CA3AF)' }}>{e.reference}</div>}

@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import {
+  FiBell, FiPackage, FiDollarSign, FiCheckCircle,
+  FiShield, FiRadio, FiSettings,
+} from 'react-icons/fi';
 import DealerLayout from '../../components/dealer/DealerLayout';
 import dealerAPI from '../../services/dealerAPI';
 
 const TYPE_ICONS = {
-  order:        '📦',
-  pricing:      '💰',
-  approval:     '✅',
-  kyc:          '📋',
-  announcement: '📢',
-  admin:        '⚙️',
-  system:       '🔔',
+  order:        FiPackage,
+  pricing:      FiDollarSign,
+  approval:     FiCheckCircle,
+  kyc:          FiShield,
+  announcement: FiRadio,
+  admin:        FiSettings,
+  system:       FiBell,
 };
 
 export default function DealerNotifications() {
@@ -69,7 +73,9 @@ export default function DealerNotifications() {
         </div>
       ) : notifications.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-4,#9CA3AF)' }}>
-          <div style={{ fontSize: '40px', marginBottom: '12px' }}>🔔</div>
+          <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
+            <FiBell size={22} style={{ color: 'var(--text-4)' }} aria-hidden="true" />
+          </div>
           <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text,#111)', marginBottom: '6px' }}>No notifications</div>
           <div style={{ fontSize: '13px' }}>You're all caught up!</div>
         </div>
@@ -86,7 +92,11 @@ export default function DealerNotifications() {
               }}
                 onClick={() => !n.isRead && markRead(n._id)}
               >
-                <div style={{ fontSize: '22px', flexShrink: 0, marginTop: '2px' }}>{TYPE_ICONS[n.type] || '🔔'}</div>
+                {(() => { const Icon = TYPE_ICONS[n.type] || FiBell; return (
+                  <div style={{ width: 34, height: 34, borderRadius: '8px', flexShrink: 0, background: !n.isRead ? 'rgba(255,122,0,0.08)' : 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '2px' }}>
+                    <Icon size={15} style={{ color: !n.isRead ? 'var(--accent)' : 'var(--text-4)' }} aria-hidden="true" />
+                  </div>
+                ); })()}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px' }}>
                     <div style={{ fontSize: '13px', fontWeight: n.isRead ? 500 : 700, color: 'var(--text,#111)' }}>{n.title}</div>

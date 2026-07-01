@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { FiFile, FiPrinter } from 'react-icons/fi';
 import DealerLayout from '../../components/dealer/DealerLayout';
 import dealerAPI from '../../services/dealerAPI';
 
@@ -36,7 +37,7 @@ export default function DealerInvoiceDetail() {
   if (!invoice) return (
     <DealerLayout>
       <div style={{ padding: '40px', textAlign: 'center' }}>
-        <div style={{ fontSize: '24px', marginBottom: '10px' }}>🧾</div>
+        <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px' }}><FiFile size={18} style={{ color: 'var(--text-4)' }} aria-hidden="true" /></div>
         <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text,#111)', marginBottom: '6px' }}>Invoice not found</div>
         <Link to="/dealer/finance/invoices" style={{ color: 'var(--accent,#FF7A00)', fontSize: '13px' }}>← Back to Invoices</Link>
       </div>
@@ -57,7 +58,7 @@ export default function DealerInvoiceDetail() {
         </span>
         <button onClick={handlePrint}
           style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid var(--border,#E5E7EB)', background: 'var(--card,#fff)', fontSize: '12px', fontWeight: 600, cursor: 'pointer', color: 'var(--text,#111)' }}>
-          🖨 Print
+          <FiPrinter size={13} style={{ marginRight: '5px', verticalAlign: 'middle' }} aria-hidden="true" />Print
         </button>
         <button onClick={() => alert('PDF download coming soon.')}
           style={{ padding: '8px 16px', borderRadius: '8px', border: 'none', background: 'var(--accent,#FF7A00)', fontSize: '12px', fontWeight: 700, cursor: 'pointer', color: '#fff' }}>

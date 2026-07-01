@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { FiFileText } from 'react-icons/fi';
 import DealerLayout from '../../components/dealer/DealerLayout';
 import dealerAPI from '../../services/dealerAPI';
 
@@ -77,7 +78,7 @@ export default function DealerOrders() {
         </div>
       ) : orders.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-4,#9CA3AF)' }}>
-          <div style={{ fontSize: '40px', marginBottom: '12px' }}>📋</div>
+          <div style={{ width: 52, height: 52, borderRadius: '50%', background: 'var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}><FiFileText size={22} style={{ color: 'var(--text-4)' }} aria-hidden="true" /></div>
           <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text,#111)', marginBottom: '6px' }}>No orders found</div>
           <div style={{ fontSize: '13px', marginBottom: '20px' }}>Place your first order from the dealer catalog</div>
           <Link to="/dealer/products" style={{ padding: '10px 24px', borderRadius: '8px', background: 'var(--accent,#FF7A00)', color: '#fff', fontWeight: 700, fontSize: '13px', textDecoration: 'none' }}>Browse Catalog</Link>

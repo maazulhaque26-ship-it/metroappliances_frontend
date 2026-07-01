@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { FiFile } from 'react-icons/fi';
 import DealerLayout from '../../components/dealer/DealerLayout';
 import dealerAPI from '../../services/dealerAPI';
 
@@ -64,7 +65,7 @@ export default function DealerInvoices() {
               <tr><td colSpan={7} style={{ padding: '40px', textAlign: 'center', color: 'var(--text-4,#9CA3AF)' }}>Loading…</td></tr>
             ) : invoices.length === 0 ? (
               <tr><td colSpan={7} style={{ padding: '48px', textAlign: 'center', color: 'var(--text-4,#9CA3AF)' }}>
-                <div style={{ fontSize: '28px', marginBottom: '10px' }}>🧾</div>
+                <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px' }}><FiFile size={20} style={{ color: 'var(--text-4)' }} aria-hidden="true" /></div>
                 <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text,#111)', marginBottom: '4px' }}>No invoices yet</div>
                 <div style={{ fontSize: '12px' }}>Invoices will appear here once raised by admin</div>
               </td></tr>

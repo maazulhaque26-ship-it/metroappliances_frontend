@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import {
+  FiCreditCard, FiZap, FiList, FiFile, FiArrowUpRight, FiTag,
+  FiPackage, FiDollarSign, FiRotateCcw, FiAlertTriangle,
+  FiChevronUp, FiChevronDown, FiFileText, FiSettings, FiCircle,
+} from 'react-icons/fi';
 import DealerLayout from '../../components/dealer/DealerLayout';
 import dealerAPI from '../../services/dealerAPI';
 
-function FinCard({ label, value, sub, color = 'var(--accent,#FF7A00)', link, icon }) {
+function FinCard({ label, value, sub, color = 'var(--accent,#FF7A00)', link, icon: Icon }) {
   const inner = (
     <div style={{ background: 'var(--card,#fff)', border: '1px solid var(--border,#E5E7EB)', borderRadius: '12px', padding: '20px', display: 'flex', flexDirection: 'column', gap: '6px', cursor: link ? 'pointer' : 'default', transition: 'box-shadow 0.15s ease' }}
       onMouseEnter={e => { if (link) e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'; }}
       onMouseLeave={e => e.currentTarget.style.boxShadow = ''}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <span style={{ fontSize: '11px', color: 'var(--text-4,#9CA3AF)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</span>
-        <span style={{ fontSize: '18px' }}>{icon}</span>
+        {Icon && (
+          <div style={{ width: 28, height: 28, borderRadius: '7px', background: `${color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Icon size={13} style={{ color }} strokeWidth={2} aria-hidden="true" />
+          </div>
+        )}
       </div>
       <div style={{ fontSize: '26px', fontWeight: 900, color, lineHeight: 1 }}>{value}</div>
       {sub && <div style={{ fontSize: '11px', color: 'var(--text-4,#9CA3AF)' }}>{sub}</div>}
@@ -27,7 +36,7 @@ function fmt(n) {
   return `₹${n.toLocaleString('en-IN')}`;
 }
 
-const TYPE_ICONS = { order: '📦', payment: '💳', refund: '↩️', wallet_topup: '⬆️', wallet_deduct: '⬇️', credit_note: '📝', adjustment: '⚙️', invoice_charge: '🧾', reversal: '🔄' };
+const TYPE_ICONS = { order: FiPackage, payment: FiCreditCard, refund: FiRotateCcw, wallet_topup: FiChevronUp, wallet_deduct: FiChevronDown, credit_note: FiFileText, adjustment: FiSettings, invoice_charge: FiFile, reversal: FiRotateCcw };
 const TYPE_COLORS = { credit: '#10B981', debit: '#EF4444' };
 
 export default function DealerFinanceOverview() {
@@ -59,12 +68,12 @@ export default function DealerFinanceOverview() {
         <>
           {/* Finance stat cards */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(200px,1fr))', gap: '16px', marginBottom: '28px' }}>
-            <FinCard label="Wallet Balance"    value={fmt(s?.wallet?.availableBalance)} icon="◈" color="var(--accent,#FF7A00)" link="/dealer/finance/wallet" sub={`Total: ${fmt(s?.wallet?.totalBalance)}`} />
-            <FinCard label="Credit Limit"      value={fmt(s?.credit?.creditLimit)}      icon="◇" color="#8B5CF6" link="/dealer/finance/credit" sub={`Available: ${fmt(s?.credit?.remainingCredit)}`} />
-            <FinCard label="Outstanding"       value={fmt(Math.max(0, s?.outstanding))} icon="≡" color={s?.outstanding > 0 ? '#EF4444' : '#10B981'} link="/dealer/finance/ledger" sub="Running balance" />
-            <FinCard label="Unpaid Invoices"   value={s?.unpaidInvoices ?? 0}           icon="⊘" color="#F59E0B" link="/dealer/finance/invoices" sub="Pending payment" />
-            <FinCard label="Pending Payments"  value={s?.pendingPayments ?? 0}          icon="⊙" color="#3B82F6" link="/dealer/finance/payments" sub="Awaiting verification" />
-            <FinCard label="Credit Notes"      value={s?.pendingCreditNotes ?? 0}       icon="⊖" color="#10B981" link="/dealer/finance/credit-notes" sub="Pending / approved" />
+            <FinCard label="Wallet Balance"    value={fmt(s?.wallet?.availableBalance)} icon={FiCreditCard}    color="var(--accent,#FF7A00)" link="/dealer/finance/wallet" sub={`Total: ${fmt(s?.wallet?.totalBalance)}`} />
+            <FinCard label="Credit Limit"      value={fmt(s?.credit?.creditLimit)}      icon={FiZap}           color="#8B5CF6" link="/dealer/finance/credit" sub={`Available: ${fmt(s?.credit?.remainingCredit)}`} />
+            <FinCard label="Outstanding"       value={fmt(Math.max(0, s?.outstanding))} icon={FiList}          color={s?.outstanding > 0 ? '#EF4444' : '#10B981'} link="/dealer/finance/ledger" sub="Running balance" />
+            <FinCard label="Unpaid Invoices"   value={s?.unpaidInvoices ?? 0}           icon={FiFile}          color="#F59E0B" link="/dealer/finance/invoices" sub="Pending payment" />
+            <FinCard label="Pending Payments"  value={s?.pendingPayments ?? 0}          icon={FiArrowUpRight}  color="#3B82F6" link="/dealer/finance/payments" sub="Awaiting verification" />
+            <FinCard label="Credit Notes"      value={s?.pendingCreditNotes ?? 0}       icon={FiTag}           color="#10B981" link="/dealer/finance/credit-notes" sub="Pending / approved" />
           </div>
 
           {/* Credit utilization bar */}
@@ -82,8 +91,9 @@ export default function DealerFinanceOverview() {
                 <span>Available: {fmt(s.credit.remainingCredit)} / {fmt(s.credit.creditLimit)}</span>
               </div>
               {s.credit.isOnHold && (
-                <div style={{ marginTop: '10px', padding: '8px 12px', background: '#FEF2F2', borderRadius: '6px', fontSize: '12px', color: '#EF4444', fontWeight: 600 }}>
-                  ⚠️ Credit on hold — contact support
+                <div style={{ marginTop: '10px', padding: '8px 12px', background: '#FEF2F2', borderRadius: '6px', fontSize: '12px', color: '#EF4444', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <FiAlertTriangle size={13} aria-hidden="true" />
+                  Credit on hold — contact support
                 </div>
               )}
               {s.credit.creditExpiry && (
@@ -103,7 +113,7 @@ export default function DealerFinanceOverview() {
               </div>
               {s.recentLedger.map(e => (
                 <div key={e._id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: '1px solid var(--border,#E5E7EB)' }}>
-                  <span style={{ fontSize: '18px' }}>{TYPE_ICONS[e.category] || '🔹'}</span>
+                  {(() => { const Icon = TYPE_ICONS[e.category] || FiCircle; return <div style={{ width: 32, height: 32, borderRadius: '8px', flexShrink: 0, background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon size={14} style={{ color: 'var(--text-4)' }} aria-hidden="true" /></div>; })()}
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text,#111)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.description}</div>
                     <div style={{ fontSize: '11px', color: 'var(--text-4,#9CA3AF)', marginTop: '2px' }}>

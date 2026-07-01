@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { FiPackage, FiCheck } from 'react-icons/fi';
 import DealerLayout from '../../components/dealer/DealerLayout';
 import dealerAPI from '../../services/dealerAPI';
 import { addToCart } from '../../redux/slices/dealerCartSlice';
@@ -121,7 +122,7 @@ export default function DealerProducts() {
         </div>
       ) : products.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-4,#9CA3AF)' }}>
-          <div style={{ fontSize: '40px', marginBottom: '12px' }}>📦</div>
+          <div style={{ width: 52, height: 52, borderRadius: '50%', background: 'var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}><FiPackage size={22} style={{ color: 'var(--text-4)' }} aria-hidden="true" /></div>
           <div style={{ fontSize: '16px', fontWeight: 700, marginBottom: '6px' }}>No products found</div>
           <div style={{ fontSize: '13px' }}>Try adjusting your filters or search term</div>
         </div>
@@ -177,7 +178,7 @@ export default function DealerProducts() {
                         transition: 'background 0.2s',
                       }}
                     >
-                      {addingId === p._id ? 'Adding…' : addedId === p._id ? '✓ Added' : `Add to Cart (MOQ: ${dp?.moq || 1})`}
+                      {addingId === p._id ? 'Adding…' : addedId === p._id ? <><FiCheck size={12} style={{ marginRight: '4px', verticalAlign: 'middle' }} aria-hidden="true" />Added</> : `Add to Cart (MOQ: ${dp?.moq || 1})`}
                     </button>
                   </div>
                 </div>

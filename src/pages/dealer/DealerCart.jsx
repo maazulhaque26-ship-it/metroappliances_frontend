@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { FiShoppingCart, FiAlertTriangle, FiUpload } from 'react-icons/fi';
 import DealerLayout from '../../components/dealer/DealerLayout';
 import {
   fetchDealerCart,
@@ -98,7 +99,7 @@ export default function DealerCart() {
         <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-4,#9CA3AF)' }}>Loading cart…</div>
       ) : items.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px 0' }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>🛒</div>
+          <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}><FiShoppingCart size={24} style={{ color: 'var(--text-4)' }} aria-hidden="true" /></div>
           <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text,#111)', marginBottom: '8px' }}>Your cart is empty</div>
           <div style={{ fontSize: '13px', color: 'var(--text-4,#9CA3AF)', marginBottom: '20px' }}>Browse the dealer catalog to add products</div>
           <Link to="/dealer/products" style={{ padding: '10px 24px', borderRadius: '8px', background: 'var(--accent,#FF7A00)', color: '#fff', fontWeight: 700, fontSize: '13px', textDecoration: 'none' }}>Browse Catalog</Link>
@@ -110,7 +111,7 @@ export default function DealerCart() {
             {/* CSV import placeholder */}
             <div style={{ padding: '12px 20px', background: 'var(--bg,#F9FAFB)', borderBottom: '1px solid var(--border,#E5E7EB)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span style={{ fontSize: '12px', color: 'var(--text-4,#9CA3AF)' }}>Bulk import via CSV — <em>coming soon</em></span>
-              <button disabled style={{ padding: '5px 12px', borderRadius: '6px', border: '1px solid var(--border,#E5E7EB)', background: 'var(--card,#fff)', fontSize: '11px', color: 'var(--text-4,#9CA3AF)', cursor: 'not-allowed' }}>⇡ Import CSV</button>
+              <button disabled style={{ padding: '5px 12px', borderRadius: '6px', border: '1px solid var(--border,#E5E7EB)', background: 'var(--card,#fff)', fontSize: '11px', color: 'var(--text-4,#9CA3AF)', cursor: 'not-allowed', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><FiUpload size={11} aria-hidden="true" /> Import CSV</button>
             </div>
 
             {items.map((item, idx) => (
@@ -170,7 +171,7 @@ export default function DealerCart() {
 
             {subtotal > 100000 && (
               <div style={{ background: '#FFF7ED', border: '1px solid #FED7AA', borderRadius: '8px', padding: '10px 12px', marginBottom: '12px', fontSize: '12px', color: '#92400E' }}>
-                ⚠️ Orders above ₹1L require admin approval before processing.
+                <FiAlertTriangle size={13} style={{ marginRight: '6px', verticalAlign: 'middle', flexShrink: 0 }} aria-hidden="true" />Orders above ₹1L require admin approval before processing.
               </div>
             )}
 
