@@ -6,6 +6,7 @@ import {
 } from 'react-icons/fi';
 import { SEARCH_INDEX } from './SearchRegistry';
 import { scoreMatch, groupResults } from './SearchUtils';
+import FavoriteButton from '../personalization/FavoriteButton';
 
 const RECENT_SEARCHES_KEY = 'ma_erp_recent_searches';
 const RECENT_PAGES_KEY    = 'ma_erp_recent_pages';
@@ -260,33 +261,41 @@ export default function SearchDialog({ open, onClose }) {
                     const Icon = item.icon;
                     const isActive = idx === activeIdx;
                     return (
-                      <button
+                      <div
                         key={item.path}
                         role="option"
                         aria-selected={isActive}
                         data-idx={idx}
-                        onClick={() => goTo(item.path, query)}
                         onMouseEnter={() => setActiveIdx(idx)}
-                        className="w-full flex items-center gap-3 px-4 py-2 text-left transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 transition-colors"
                         style={{
                           background: isActive ? 'rgba(255,122,0,0.08)' : 'transparent',
                           borderLeft: isActive ? '2px solid var(--accent)' : '2px solid transparent',
                           color: 'var(--text)',
+                          cursor: 'default',
                         }}
                       >
-                        <span className="flex items-center justify-center w-7 h-7 rounded" style={{ background: 'var(--bg)', border: '1px solid var(--border)', flexShrink: 0 }}>
-                          <Icon size={13} style={{ color: isActive ? 'var(--accent)' : 'var(--text-3)' }} />
-                        </span>
-                        <span className="flex-1 min-w-0">
-                          <span style={{ fontSize: 13, fontWeight: 500 }}>
-                            <Highlight text={item.label} query={query} />
+                        <button
+                          onClick={() => goTo(item.path, query)}
+                          className="flex items-center gap-3 flex-1 min-w-0 text-left"
+                          tabIndex={-1}
+                          style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: 'inherit' }}
+                        >
+                          <span className="flex items-center justify-center w-7 h-7 rounded" style={{ background: 'var(--bg)', border: '1px solid var(--border)', flexShrink: 0 }}>
+                            <Icon size={13} style={{ color: isActive ? 'var(--accent)' : 'var(--text-3)' }} />
                           </span>
-                          <span className="block truncate" style={{ fontSize: 11, color: 'var(--text-4)', marginTop: 1 }}>
-                            {item.path}
+                          <span className="flex-1 min-w-0">
+                            <span style={{ fontSize: 13, fontWeight: 500 }}>
+                              <Highlight text={item.label} query={query} />
+                            </span>
+                            <span className="block truncate" style={{ fontSize: 11, color: 'var(--text-4)', marginTop: 1 }}>
+                              {item.path}
+                            </span>
                           </span>
-                        </span>
+                        </button>
+                        <FavoriteButton path={item.path} tabIndex={-1} size={12} />
                         <FiArrowRight size={12} style={{ color: 'var(--text-5)', flexShrink: 0, opacity: isActive ? 1 : 0 }} />
-                      </button>
+                      </div>
                     );
                   })}
                 </div>
@@ -318,28 +327,36 @@ export default function SearchDialog({ open, onClose }) {
                     const Icon = page.icon;
                     const isActive = i === activeIdx;
                     return (
-                      <button
+                      <div
                         key={page.path}
                         role="option"
                         aria-selected={isActive}
                         data-idx={i}
-                        onClick={() => goTo(page.path, '')}
                         onMouseEnter={() => setActiveIdx(i)}
-                        className="w-full flex items-center gap-3 px-4 py-2 text-left transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 transition-colors"
                         style={{
                           background: isActive ? 'rgba(255,122,0,0.08)' : 'transparent',
                           borderLeft: isActive ? '2px solid var(--accent)' : '2px solid transparent',
+                          cursor: 'default',
                         }}
                       >
-                        <span className="flex items-center justify-center w-7 h-7 rounded" style={{ background: 'var(--bg)', border: '1px solid var(--border)', flexShrink: 0 }}>
-                          <Icon size={13} style={{ color: isActive ? 'var(--accent)' : 'var(--text-3)' }} />
-                        </span>
-                        <span className="flex-1 min-w-0">
-                          <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text)' }}>{page.label}</span>
-                          <span className="block truncate" style={{ fontSize: 11, color: 'var(--text-4)', marginTop: 1 }}>{page.path}</span>
-                        </span>
+                        <button
+                          onClick={() => goTo(page.path, '')}
+                          className="flex items-center gap-3 flex-1 min-w-0 text-left"
+                          tabIndex={-1}
+                          style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: 'inherit' }}
+                        >
+                          <span className="flex items-center justify-center w-7 h-7 rounded" style={{ background: 'var(--bg)', border: '1px solid var(--border)', flexShrink: 0 }}>
+                            <Icon size={13} style={{ color: isActive ? 'var(--accent)' : 'var(--text-3)' }} />
+                          </span>
+                          <span className="flex-1 min-w-0">
+                            <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text)' }}>{page.label}</span>
+                            <span className="block truncate" style={{ fontSize: 11, color: 'var(--text-4)', marginTop: 1 }}>{page.path}</span>
+                          </span>
+                        </button>
+                        <FavoriteButton path={page.path} tabIndex={-1} size={12} />
                         <FiClock size={11} style={{ color: 'var(--text-5)', flexShrink: 0 }} />
-                      </button>
+                      </div>
                     );
                   })}
                 </div>

@@ -13,6 +13,8 @@ import AdminHeader from './AdminHeader';
 import SearchDialog from './search/SearchDialog';
 import NotificationCenter from './notifications/NotificationCenter';
 import { seedNotifications, SOCKET_EVENT_META } from './notifications/notificationData';
+import PersonalizationDrawer from './personalization/PersonalizationDrawer';
+import { getThemePref, applyTheme } from './personalization/personalizationStore';
 
 const NOTIF_KEY = 'ma_erp_notifications';
 function loadNotifications() {
@@ -101,9 +103,10 @@ export default function AdminLayout({ children }) {
   const navigate  = useNavigate();
   const location  = useLocation();
   const { user }  = useSelector(s => s.auth);
-  const [sidebarOpen,       setSidebarOpen]       = useState(false);
-  const [searchDialogOpen,  setSearchDialogOpen]  = useState(false);
-  const [notifCenterOpen,   setNotifCenterOpen]   = useState(false);
+  const [sidebarOpen,           setSidebarOpen]           = useState(false);
+  const [searchDialogOpen,      setSearchDialogOpen]      = useState(false);
+  const [notifCenterOpen,       setNotifCenterOpen]       = useState(false);
+  const [personalizationOpen,   setPersonalizationOpen]   = useState(false);
   const [notifications,     setNotifications]     = useState(loadNotifications);
   const [userOpen,          setUserOpen]          = useState(false);
   const [activeDomain,      setActiveDomain]      = useState(() => findDomainForPath(location.pathname));
@@ -207,6 +210,9 @@ export default function AdminLayout({ children }) {
       } catch {}
     }
   }, [location.pathname]);
+
+  // Apply saved theme on mount
+  useEffect(() => { applyTheme(getThemePref()); }, []);
 
   // CTRL+K global shortcut opens the search dialog
   useEffect(() => {
@@ -324,6 +330,7 @@ export default function AdminLayout({ children }) {
           onOpenSearch={() => setSearchDialogOpen(true)}
           onOpenNotifications={() => setNotifCenterOpen(true)}
           unseenCount={unseenCount}
+          onOpenPersonalization={() => setPersonalizationOpen(true)}
           userRef={userRef}
           userOpen={userOpen}
           setUserOpen={setUserOpen}
@@ -373,6 +380,12 @@ export default function AdminLayout({ children }) {
         onMarkAllRead={markAllRead}
         onArchive={archiveNotif}
         onDismiss={dismissNotif}
+      />
+
+      {/* Personalization Drawer */}
+      <PersonalizationDrawer
+        open={personalizationOpen}
+        onClose={() => setPersonalizationOpen(false)}
       />
     </div>
   );

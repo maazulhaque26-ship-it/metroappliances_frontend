@@ -19,6 +19,9 @@ import RecentActivity     from './workspace/RecentActivity';
 import Announcements      from './workspace/Announcements';
 import WorkspaceSchedule  from './workspace/WorkspaceSchedule';
 import WorkspaceSection   from './workspace/WorkspaceSection';
+import FavoritesPanel     from './personalization/FavoritesPanel';
+import ShortcutGrid       from './personalization/ShortcutGrid';
+import { getLayout }      from './personalization/personalizationStore';
 
 const STATUS_COLORS = {
   Pending:    { bg: 'rgba(255,138,0,0.07)',  text: '#B45309', border: 'rgba(255,138,0,0.18)' },
@@ -33,6 +36,7 @@ export default function AdminDashboard() {
   const [stats,         setStats]         = useState(null);
   const [loading,       setLoading]       = useState(true);
   const [recentOrders,  setRecentOrders]  = useState([]);
+  const [layout,        setLayout]        = useState(getLayout);
 
   const fetchAll = () => {
     API.get('/admin/stats').then(r => setStats(r.data.stats || r.data)).catch(() => {});
@@ -44,6 +48,12 @@ export default function AdminDashboard() {
     'order:statusChanged': fetchAll,
     'review:created':      fetchAll,
   });
+
+  useEffect(() => {
+    const handler = (e) => { if (e.detail?.key === 'layout') setLayout(e.detail.value); };
+    window.addEventListener('ma:personalization', handler);
+    return () => window.removeEventListener('ma:personalization', handler);
+  }, []);
 
   useEffect(() => {
     Promise.all([
@@ -58,9 +68,11 @@ export default function AdminDashboard() {
       .finally(() => setLoading(false));
   }, []);
 
+  const gapClass = layout === 'compact' ? 'space-y-4' : layout === 'expanded' ? 'space-y-12' : 'space-y-8';
+
   return (
     <AdminLayout>
-      <div className="space-y-8">
+      <div className={gapClass}>
 
         {/* ── Feature 1: Workspace Hero ──────────────────────────── */}
         <WorkspaceHero user={user} />
@@ -69,16 +81,22 @@ export default function AdminDashboard() {
         <WorkspaceKPIs stats={stats} loading={loading} />
 
         {/* ── Main workspace grid ───────────────────────────────── */}
-        <div className="grid xl:grid-cols-3 gap-8">
+        <div className={`grid xl:grid-cols-3 ${layout === 'compact' ? 'gap-4' : layout === 'expanded' ? 'gap-12' : 'gap-8'}`}>
 
           {/* ── Left column (2/3) ──────────────────────────────── */}
-          <div className="xl:col-span-2 space-y-8">
+          <div className={`xl:col-span-2 ${gapClass}`}>
 
             {/* Feature 2: My Work */}
             <MyWorkPanel stats={stats} />
 
             {/* Feature 3: Continue Working */}
             <ContinueWorking />
+
+            {/* Starred Pages */}
+            <FavoritesPanel />
+
+            {/* My Shortcuts */}
+            <ShortcutGrid />
 
             {/* Feature 5: Quick Actions */}
             <QuickActions />
@@ -227,7 +245,7 @@ export default function AdminDashboard() {
           </div>
 
           {/* ── Right column (1/3) ─────────────────────────────── */}
-          <div className="space-y-8">
+          <div className={gapClass}>
 
             {/* Feature 4: Favorite Modules */}
             <FavoriteModules />

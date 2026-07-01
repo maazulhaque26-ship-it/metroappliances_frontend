@@ -33,6 +33,7 @@ export default function AdminHeader({
   currentLabel, currentGroup,
   onOpenSearch,
   onOpenNotifications, unseenCount,
+  onOpenPersonalization,
   userRef, userOpen, setUserOpen, user, handleLogout,
 }) {
   const now      = useDateTime();
@@ -287,6 +288,19 @@ export default function AdminHeader({
                 {unseenCount > 9 ? '9+' : unseenCount}
               </span>
             )}
+          </button>
+
+          {/* Personalization */}
+          <button
+            onClick={onOpenPersonalization}
+            className="p-1.5 transition-colors rounded"
+            style={{ color: 'var(--text-3)' }}
+            aria-label="Personalization settings"
+            aria-haspopup="dialog"
+            onMouseEnter={e => e.currentTarget.style.color = 'var(--text)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'var(--text-3)'}
+          >
+            <FiSliders size={17} strokeWidth={1.75} />
           </button>
 
           {/* View Store */}

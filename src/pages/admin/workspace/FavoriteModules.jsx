@@ -48,6 +48,8 @@ const FavoriteModules = React.memo(function FavoriteModules() {
   const navigate    = useNavigate();
   const [favs,     setFavs]   = useState(() => readFavorites());
   const [picking,  setPicking] = useState(false);
+  const [dragIdx,  setDragIdx] = useState(null);
+  const [dropIdx,  setDropIdx] = useState(null);
   const pickerRef = useRef(null);
 
   const removeFav = useCallback((path) => {
@@ -67,6 +69,31 @@ const FavoriteModules = React.memo(function FavoriteModules() {
     });
     setPicking(false);
   }, []);
+
+  const handleDragStart = useCallback((e, idx) => {
+    setDragIdx(idx);
+    e.dataTransfer.effectAllowed = 'move';
+  }, []);
+
+  const handleDragOver = useCallback((e, idx) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setDropIdx(idx);
+  }, []);
+
+  const handleDrop = useCallback((e, idx) => {
+    e.preventDefault();
+    if (dragIdx === null || dragIdx === idx) { setDragIdx(null); setDropIdx(null); return; }
+    const next = [...favs];
+    const [removed] = next.splice(dragIdx, 1);
+    next.splice(idx, 0, removed);
+    setFavs(next);
+    saveFavorites(next);
+    setDragIdx(null);
+    setDropIdx(null);
+  }, [dragIdx, favs]);
+
+  const handleDragEnd = useCallback(() => { setDragIdx(null); setDropIdx(null); }, []);
 
   const notPinned = useMemo(() =>
     ALL_PINNABLE.filter(p => !favs.find(f => f.path === p.path)),
@@ -143,26 +170,34 @@ const FavoriteModules = React.memo(function FavoriteModules() {
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-2" role="list" aria-label="Favorite modules">
-          {favs.map(fav => {
+          {favs.map((fav, idx) => {
             const Icon = ICON_MAP[fav.icon] || FiGrid;
+            const isDragging = dragIdx === idx;
+            const isDropTarget = dropIdx === idx && dragIdx !== idx;
             return (
               <div
                 key={fav.path}
                 role="listitem"
                 className="relative group"
+                draggable
+                onDragStart={e => handleDragStart(e, idx)}
+                onDragOver={e => handleDragOver(e, idx)}
+                onDrop={e => handleDrop(e, idx)}
+                onDragEnd={handleDragEnd}
+                style={{ opacity: isDragging ? 0.4 : 1 }}
               >
                 <button
                   onClick={() => navigate(fav.path)}
                   className="w-full flex items-center gap-2.5 px-3 py-3 text-left transition-all duration-150"
                   style={{
-                    background: 'var(--card)',
-                    border: '1px solid var(--border)',
+                    background: isDropTarget ? 'rgba(255,122,0,0.07)' : 'var(--card)',
+                    border: `1px solid ${isDropTarget ? 'rgba(255,122,0,0.35)' : 'var(--border)'}`,
                     borderRadius: 'var(--radius-md)',
                     fontFamily: 'var(--font-display)',
                   }}
                   aria-label={`Go to ${fav.label}`}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg)'; e.currentTarget.style.borderColor = 'var(--accent)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'var(--card)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
+                  onMouseEnter={e => { if (!isDropTarget) { e.currentTarget.style.background = 'var(--bg)'; e.currentTarget.style.borderColor = 'var(--accent)'; }}}
+                  onMouseLeave={e => { if (!isDropTarget) { e.currentTarget.style.background = 'var(--card)'; e.currentTarget.style.borderColor = 'var(--border)'; }}}
                 >
                   <div
                     className="w-7 h-7 flex items-center justify-center flex-shrink-0"
