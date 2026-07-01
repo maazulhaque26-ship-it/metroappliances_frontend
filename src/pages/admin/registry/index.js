@@ -13,4 +13,5 @@ export {
   RegistryProvider,
   useRole, useLanding, useWorkspace,
   useNavigationScope, useSearchScope, usePermissions,
+  usePreviewState,
 }                                                                   from './RegistryProvider';

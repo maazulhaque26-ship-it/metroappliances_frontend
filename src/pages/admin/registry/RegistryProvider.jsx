@@ -28,9 +28,20 @@ const RegistryContext = createContext(null);
 /**
  * Optional provider — lets deeply nested components call hooks without
  * passing roleId every time.  When not wrapped, pass roleId to each hook.
+ *
+ * Preview props (UX-1I-E) are optional; omitting them is safe for all
+ * existing consumers that only need roleId.
+ *   previewRoleId — active preview role id, or null
+ *   onSetPreview  — stable callback (useCallback) to set/clear the preview
+ *   actualRoleId  — the real role before any preview override
  */
-export function RegistryProvider({ roleId, children }) {
-  const value = useMemo(() => ({ roleId }), [roleId]);
+export function RegistryProvider({ roleId, previewRoleId, onSetPreview, actualRoleId, children }) {
+  const value = useMemo(() => ({
+    roleId,
+    previewRoleId: previewRoleId  ?? null,
+    onSetPreview:  onSetPreview   ?? null,
+    actualRoleId:  actualRoleId   ?? roleId,
+  }), [roleId, previewRoleId, onSetPreview, actualRoleId]);
   return (
     <RegistryContext.Provider value={value}>
       {children}
@@ -41,6 +52,20 @@ export function RegistryProvider({ roleId, children }) {
 function resolveRoleId(hookRoleId) {
   const ctx = useContext(RegistryContext);
   return hookRoleId ?? ctx?.roleId ?? 'admin';
+}
+
+/**
+ * Returns the workspace-preview state injected by AdminLayout.
+ * Safe to call from any component inside RegistryProvider.
+ */
+export function usePreviewState() {
+  const ctx = useContext(RegistryContext);
+  return {
+    previewRoleId:   ctx?.previewRoleId ?? null,
+    onSetPreview:    ctx?.onSetPreview  ?? null,
+    actualRoleId:    ctx?.actualRoleId  ?? 'admin',
+    isPreviewActive: !!(ctx?.previewRoleId),
+  };
 }
 
 /**

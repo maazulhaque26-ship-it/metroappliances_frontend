@@ -10,6 +10,7 @@ import { NAV_GROUPS, ALL_ITEMS } from './AdminNavConfig';
 import AdminDomainRail from './AdminDomainRail';
 import AdminModuleSidebar from './AdminModuleSidebar';
 import AdminHeader from './AdminHeader';
+import PreviewBanner from './workspace/PreviewBanner';
 import SearchDialog from './search/SearchDialog';
 import NotificationCenter from './notifications/NotificationCenter';
 import { seedNotifications, SOCKET_EVENT_META } from './notifications/notificationData';
@@ -38,6 +39,9 @@ function resolveRoleId(userRole) {
   if (userRole === 'super_admin') return 'super_admin';
   return 'admin';
 }
+
+// Workspace preview — production-available; persists across refreshes.
+const PREVIEW_KEY = 'ma_erp_workspace_preview';
 
 // Dev-only: persistent registry role override for testing navigation scopes.
 const DEV_ROLE_KEY = 'ma_erp_dev_role';
@@ -149,10 +153,27 @@ export default function AdminLayout({ children }) {
     } catch {}
   }, []);
 
+  // UX-1I-E: workspace preview state — production-available, no auth changes.
+  const [workspacePreview, setWorkspacePreviewRaw] = useState(() => {
+    try { return localStorage.getItem(PREVIEW_KEY) ?? null; } catch { return null; }
+  });
+
+  // Stable setter so RegistryProvider useMemo doesn't thrash on every render.
+  const setWorkspacePreview = useCallback((roleId) => {
+    setWorkspacePreviewRaw(roleId ?? null);
+    try {
+      if (roleId) localStorage.setItem(PREVIEW_KEY, roleId);
+      else localStorage.removeItem(PREVIEW_KEY);
+    } catch {}
+  }, []);
+
   const userRef = useRef(null);
 
-  // Phase 1: resolve effective registry role ID
-  const effectiveRoleId = devRole ?? resolveRoleId(user?.role);
+  // Phase 1: resolve effective registry role ID.
+  // actualRoleId = real role (dev override or user role) before any workspace preview.
+  // effectiveRoleId = what the whole layout renders as (preview wins when set).
+  const actualRoleId    = devRole ?? resolveRoleId(user?.role);
+  const effectiveRoleId = workspacePreview ?? actualRoleId;
 
   // Phase 1: derive nav + search scopes from registry (memoized — stable refs)
   const navScope = useMemo(
@@ -298,8 +319,13 @@ export default function AdminLayout({ children }) {
   const domainNavGroups   = visibleGroups.filter(g => domainGroupLabels.includes(g.label));
 
   return (
-    // Phase 1: RegistryProvider makes registry hooks available to all child components
-    <RegistryProvider roleId={effectiveRoleId}>
+    // Phase 1: RegistryProvider makes registry hooks + preview state available to all children.
+    <RegistryProvider
+      roleId={effectiveRoleId}
+      previewRoleId={workspacePreview}
+      onSetPreview={setWorkspacePreview}
+      actualRoleId={actualRoleId}
+    >
       <div className="min-h-screen flex" style={{ background: 'var(--bg)', fontFamily: 'var(--font-body)' }}>
 
         {/* ── Sidebar ──────────────────────────────────────────────── */}
@@ -411,6 +437,9 @@ export default function AdminLayout({ children }) {
             user={user}
             handleLogout={handleLogout}
           />
+
+          {/* UX-1I-E: Preview Banner — amber strip when workspace preview is active */}
+          <PreviewBanner />
 
           {/* Dynamic Page Header */}
           <div

@@ -6,6 +6,7 @@ import {
   FiShoppingBag, FiFileText, FiBriefcase, FiUserPlus,
   FiHelpCircle, FiBook, FiCommand, FiSliders,
 } from 'react-icons/fi';
+import WorkspaceSwitcher from './workspace/WorkspaceSwitcher';
 
 const WORKSPACE = { name: 'Metro Appliances ERP', env: 'Production', version: 'v1.0.1' };
 
@@ -179,6 +180,9 @@ export default function AdminHeader({
               {dateStr}
             </span>
           </div>
+
+          {/* Workspace Switcher — SuperAdmin / Admin only; hidden on xs */}
+          <WorkspaceSwitcher />
 
           {/* Search trigger — opens full command palette */}
           <button
