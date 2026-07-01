@@ -21,6 +21,8 @@ import WorkspaceSchedule  from './workspace/WorkspaceSchedule';
 import WorkspaceSection   from './workspace/WorkspaceSection';
 import FavoritesPanel     from './personalization/FavoritesPanel';
 import ShortcutGrid       from './personalization/ShortcutGrid';
+import RoleModuleLinks    from './workspace/RoleModuleLinks';
+import { useWorkspace }   from './registry';
 import { getLayout }      from './personalization/personalizationStore';
 
 const STATUS_COLORS = {
@@ -31,12 +33,41 @@ const STATUS_COLORS = {
   Cancelled:  { bg: 'rgba(239,68,68,0.07)',  text: '#DC2626', border: 'rgba(239,68,68,0.18)' },
 };
 
+/**
+ * Thin shell — AdminLayout houses RegistryProvider.
+ * All hooks and state live in DashboardContent so they execute
+ * inside the RegistryProvider context tree.
+ */
 export default function AdminDashboard() {
+  return (
+    <AdminLayout>
+      <DashboardContent />
+    </AdminLayout>
+  );
+}
+
+/**
+ * DashboardContent — rendered as a child of AdminLayout (inside RegistryProvider).
+ * Calls useWorkspace() to get the role-specific widget set from WorkspaceRegistry
+ * and composes the appropriate layout without any hardcoded role checks.
+ *
+ * Layout branches:
+ *   isFullWorkspace   → existing full admin layout (bit-for-bit identical)
+ *   isSingleColumn    → single-column fallback (auditor, sysadmin, portal roles, Phase 9)
+ *   else              → role-specific two-column workspace (Phases 2–8)
+ */
+function DashboardContent() {
   const { user }          = useSelector(s => s.auth);
   const [stats,         setStats]         = useState(null);
   const [loading,       setLoading]       = useState(true);
   const [recentOrders,  setRecentOrders]  = useState([]);
   const [layout,        setLayout]        = useState(getLayout);
+
+  // Phase 1 — resolve workspace config from WorkspaceRegistry via RegistryProvider context
+  const workspace  = useWorkspace();
+  const widgetSet  = useMemo(() => new Set(workspace.widgets), [workspace]);
+  const isFullWorkspace = widgetSet.has('recent-orders');
+  const isSingleColumn  = workspace.layout === 'single-column' || workspace.widgets.length === 0;
 
   const fetchAll = () => {
     API.get('/admin/stats').then(r => setStats(r.data.stats || r.data)).catch(() => {});
@@ -69,39 +100,34 @@ export default function AdminDashboard() {
   }, []);
 
   const gapClass = layout === 'compact' ? 'space-y-4' : layout === 'expanded' ? 'space-y-12' : 'space-y-8';
+  const gapGrid  = layout === 'compact' ? 'gap-4'     : layout === 'expanded' ? 'gap-12'     : 'gap-8';
 
   return (
-    <AdminLayout>
-      <div className={gapClass}>
+    <div className={gapClass}>
 
-        {/* ── Feature 1: Workspace Hero ──────────────────────────── */}
-        <WorkspaceHero user={user} />
+      {/* WorkspaceHero — always present; gets workspace.title from registry via its own hook */}
+      <WorkspaceHero user={user} />
 
-        {/* ── Feature 6: KPI Cards ──────────────────────────────── */}
-        <WorkspaceKPIs stats={stats} loading={loading} />
+      {/* KPIs — conditional; some roles (auditor, sysadmin) don't include 'kpis' */}
+      {widgetSet.has('kpis') && <WorkspaceKPIs stats={stats} loading={loading} />}
 
-        {/* ── Main workspace grid ───────────────────────────────── */}
-        <div className={`grid xl:grid-cols-3 ${layout === 'compact' ? 'gap-4' : layout === 'expanded' ? 'gap-12' : 'gap-8'}`}>
+      {/* ── Layout branch resolved from WorkspaceRegistry (no hardcoded role checks) ── */}
 
-          {/* ── Left column (2/3) ──────────────────────────────── */}
+      {isFullWorkspace ? (
+
+        /* ══ Full admin workspace — existing layout preserved exactly ══ */
+        <div className={`grid xl:grid-cols-3 ${gapGrid}`}>
+
+          {/* Left column (2/3) */}
           <div className={`xl:col-span-2 ${gapClass}`}>
 
-            {/* Feature 2: My Work */}
             <MyWorkPanel stats={stats} />
-
-            {/* Feature 3: Continue Working */}
             <ContinueWorking />
-
-            {/* Starred Pages */}
             <FavoritesPanel />
-
-            {/* My Shortcuts */}
             <ShortcutGrid />
-
-            {/* Feature 5: Quick Actions */}
             <QuickActions />
 
-            {/* Recent Orders — preserving existing real data */}
+            {/* Recent Orders */}
             <WorkspaceSection
               id="recent-orders"
               title="Recent Orders"
@@ -244,24 +270,56 @@ export default function AdminDashboard() {
             </WorkspaceSection>
           </div>
 
-          {/* ── Right column (1/3) ─────────────────────────────── */}
+          {/* Right column (1/3) */}
           <div className={gapClass}>
-
-            {/* Feature 4: Favorite Modules */}
             <FavoriteModules />
-
-            {/* Feature 8: Recent Activity */}
             <RecentActivity />
-
-            {/* Feature 9: Announcements */}
             <Announcements />
-
-            {/* Feature 7: Today's Schedule */}
             <WorkspaceSchedule />
           </div>
         </div>
 
-      </div>
-    </AdminLayout>
+      ) : isSingleColumn ? (
+
+        /* ══ Phase 9: Fallback / single-column workspace ══
+           Auditor, SystemAdmin, portal roles (dealer/employee/supplier/engineer/technician).
+           Minimal layout — no crash. */
+        <div className={gapClass}>
+          <ContinueWorking />
+          <RoleModuleLinks />
+          {widgetSet.has('recent-activity') && <RecentActivity />}
+          {widgetSet.has('announcements')   && <Announcements />}
+          {widgetSet.has('favorites-panel') && <FavoritesPanel />}
+        </div>
+
+      ) : (
+
+        /* ══ Phases 2–8: Role-specific two-column workspace ══
+           Finance / HR / Warehouse / Projects / Executive / Analyst / AI / Support.
+           Widget visibility driven by WorkspaceRegistry — no hardcoded role checks. */
+        <div className={`grid xl:grid-cols-3 ${gapGrid}`}>
+
+          {/* Left column — work items + role module shortcuts */}
+          <div className={`xl:col-span-2 ${gapClass}`}>
+            {widgetSet.has('my-work')          && <MyWorkPanel stats={stats} />}
+            {widgetSet.has('continue-working') && <ContinueWorking />}
+            {/* Phase 2–8 core: NavigationRegistry-driven module shortcuts */}
+            <RoleModuleLinks />
+            {widgetSet.has('favorites-panel')  && <FavoritesPanel />}
+            {widgetSet.has('shortcut-grid')    && <ShortcutGrid />}
+            {widgetSet.has('quick-actions')    && <QuickActions />}
+          </div>
+
+          {/* Right column — personalisation + schedule + activity */}
+          <div className={gapClass}>
+            {widgetSet.has('favorite-modules')   && <FavoriteModules />}
+            {widgetSet.has('recent-activity')    && <RecentActivity />}
+            {widgetSet.has('announcements')      && <Announcements />}
+            {widgetSet.has('workspace-schedule') && <WorkspaceSchedule />}
+          </div>
+        </div>
+      )}
+
+    </div>
   );
 }
