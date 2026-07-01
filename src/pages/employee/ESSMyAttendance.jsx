@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { FiClock, FiCheckCircle, FiXCircle, FiAlertCircle, FiCalendar, FiSun, FiFilter } from 'react-icons/fi';
 import { essGetAttendance } from '../../services/employeeSelfServiceAPI';
+import PortalKPICard from '../../components/shared/PortalKPICard';
 
 const STATUS_STYLE = {
   present:  { background: '#D1FAE5', color: '#065F46' },
@@ -22,8 +24,8 @@ export default function ESSMyAttendance() {
   const { token } = useSelector(s => s.employeeAuth);
 
   const now = new Date();
-  const [month, setMonth] = useState(now.getMonth() + 1);
-  const [year, setYear]   = useState(now.getFullYear());
+  const [month, setMonth]     = useState(now.getMonth() + 1);
+  const [year, setYear]       = useState(now.getFullYear());
   const [records, setRecords] = useState([]);
   const [summary, setSummary] = useState({});
   const [loading, setLoading] = useState(true);
@@ -48,73 +50,106 @@ export default function ESSMyAttendance() {
   const years  = [now.getFullYear() - 1, now.getFullYear()];
 
   return (
-    <div style={{ padding: '32px 28px', fontFamily: 'Poppins, sans-serif' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+    <div style={{ padding: '28px', fontFamily: 'var(--font-body,Poppins,sans-serif)' }}>
+
+      {/* Page header */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
         <div>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#111827', margin: 0 }}>My Attendance</h1>
-          <p style={{ fontSize: 13, color: '#6B7280', marginTop: 4 }}>Monthly attendance record</p>
+          <h1 style={{ fontSize: '20px', fontWeight: 800, color: 'var(--text,#111)', margin: 0 }}>My Attendance</h1>
+          <p style={{ fontSize: '13px', color: 'var(--text-4,#9CA3AF)', marginTop: '4px', marginBottom: 0 }}>Monthly attendance record</p>
         </div>
-        <div style={{ display: 'flex', gap: 10 }}>
-          <select value={month} onChange={e => setMonth(Number(e.target.value))}
-            style={{ border: '1px solid #D1D5DB', borderRadius: 8, padding: '7px 12px', fontSize: 13, background: '#fff', color: '#374151' }}>
-            {MONTHS.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
-          </select>
-          <select value={year} onChange={e => setYear(Number(e.target.value))}
-            style={{ border: '1px solid #D1D5DB', borderRadius: 8, padding: '7px 12px', fontSize: 13, background: '#fff', color: '#374151' }}>
+        <div style={{ display: 'flex', align: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '7px 12px', border: '1px solid var(--border,#E5E7EB)', borderRadius: '8px', background: 'var(--card,#fff)' }}>
+            <FiFilter size={13} style={{ color: 'var(--text-4,#9CA3AF)' }} aria-hidden="true" />
+            <select
+              value={month}
+              onChange={e => setMonth(Number(e.target.value))}
+              style={{ border: 'none', outline: 'none', fontSize: '13px', color: 'var(--text,#111)', background: 'transparent', cursor: 'pointer', fontFamily: 'inherit' }}
+              aria-label="Select month"
+            >
+              {MONTHS.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
+            </select>
+          </div>
+          <select
+            value={year}
+            onChange={e => setYear(Number(e.target.value))}
+            style={{ border: '1px solid var(--border,#E5E7EB)', borderRadius: '8px', padding: '7px 12px', fontSize: '13px', background: 'var(--card,#fff)', color: 'var(--text,#111)', cursor: 'pointer', fontFamily: 'inherit', outline: 'none' }}
+            aria-label="Select year"
+          >
             {years.map(y => <option key={y} value={y}>{y}</option>)}
           </select>
         </div>
       </div>
 
-      {/* Summary row */}
+      {/* Summary KPI cards */}
       {Object.keys(summary).length > 0 && (
-        <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
-          {[['Present', summary.present, '#10B981'], ['Absent', summary.absent, '#EF4444'], ['Late', summary.late, '#F59E0B'], ['Leave', summary.onLeave, '#8B5CF6'], ['Holidays', summary.holidays, '#6B7280']].map(([l, v, c]) => (
-            <div key={l} style={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: 10, padding: '12px 18px', minWidth: 90 }}>
-              <p style={{ fontSize: 11, color: '#6B7280', margin: 0, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{l}</p>
-              <p style={{ fontSize: 22, fontWeight: 700, color: c, margin: '4px 0 0' }}>{v ?? 0}</p>
-            </div>
-          ))}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '12px', marginBottom: '24px' }}>
+          <PortalKPICard label="Present"  value={summary.present  ?? 0} icon={FiCheckCircle}  color="#10B981" />
+          <PortalKPICard label="Absent"   value={summary.absent   ?? 0} icon={FiXCircle}      color="#EF4444" />
+          <PortalKPICard label="Late"     value={summary.late     ?? 0} icon={FiAlertCircle}  color="#F59E0B" />
+          <PortalKPICard label="On Leave" value={summary.onLeave  ?? 0} icon={FiCalendar}     color="#8B5CF6" />
+          <PortalKPICard label="Holidays" value={summary.holidays ?? 0} icon={FiSun}          color="#6B7280" />
         </div>
       )}
 
-      {loading && <div style={{ textAlign: 'center', padding: '40px 0', color: '#9CA3AF' }}>Loading…</div>}
-      {error   && <div style={{ color: '#EF4444', fontSize: 13, padding: '12px 16px', background: '#FEF2F2', borderRadius: 8, marginBottom: 16 }}>{error}</div>}
+      {loading && <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-4,#9CA3AF)' }}>Loading…</div>}
+      {error   && <div style={{ color: '#EF4444', fontSize: '13px', padding: '12px 16px', background: '#FEF2F2', borderRadius: '8px', marginBottom: '16px' }}>{error}</div>}
 
       {!loading && !error && (
-        <div style={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: 12, overflow: 'hidden' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
-            <thead style={{ background: '#F9FAFB' }}>
-              <tr>
-                {['Date', 'Day', 'Check In', 'Check Out', 'Hours', 'Status', 'Remarks'].map(h => (
-                  <th key={h} style={{ padding: '10px 16px', textAlign: 'left', fontSize: 11, fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '1px solid #F3F4F6' }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {records.length === 0 ? (
-                <tr><td colSpan={7} style={{ padding: '32px 0', textAlign: 'center', color: '#9CA3AF' }}>No attendance records found</td></tr>
-              ) : records.map((r, i) => {
-                const st = (r.status || '').toLowerCase().replace(/ /g, '_');
-                const style = STATUS_STYLE[st] || { background: '#F3F4F6', color: '#374151' };
-                return (
-                  <tr key={i} style={{ borderBottom: '1px solid #F9FAFB' }}>
-                    <td style={{ padding: '10px 16px', color: '#374151', fontWeight: 500 }}>{r.date ? new Date(r.date).toLocaleDateString('en-IN') : '—'}</td>
-                    <td style={{ padding: '10px 16px', color: '#6B7280' }}>{r.date ? new Date(r.date).toLocaleDateString('en-IN', { weekday: 'short' }) : '—'}</td>
-                    <td style={{ padding: '10px 16px', color: '#374151' }}>{fmtTime(r.checkIn)}</td>
-                    <td style={{ padding: '10px 16px', color: '#374151' }}>{fmtTime(r.checkOut)}</td>
-                    <td style={{ padding: '10px 16px', color: '#374151' }}>{r.hoursWorked ? `${r.hoursWorked}h` : '—'}</td>
-                    <td style={{ padding: '10px 16px' }}>
-                      <span style={{ ...style, padding: '2px 8px', borderRadius: 6, fontSize: 11, fontWeight: 600 }}>
-                        {r.status || '—'}
-                      </span>
+        <div style={{ background: 'var(--card,#fff)', border: '1px solid var(--border,#E5E7EB)', borderRadius: '12px', overflow: 'hidden' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '14px 20px', borderBottom: '1px solid var(--border,#E5E7EB)' }}>
+            <FiClock size={15} style={{ color: 'var(--accent,#FF7A00)' }} aria-hidden="true" />
+            <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text,#111)' }}>
+              {MONTHS[month - 1]} {year} — Attendance Log
+            </span>
+          </div>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+              <thead style={{ background: 'var(--bg,#F9FAFB)' }}>
+                <tr>
+                  {['Date', 'Day', 'Check In', 'Check Out', 'Hours', 'Status', 'Remarks'].map(h => (
+                    <th key={h} style={{ padding: '10px 16px', textAlign: 'left', fontSize: '11px', fontWeight: 600, color: 'var(--text-4,#9CA3AF)', textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '1px solid var(--border,#E5E7EB)', whiteSpace: 'nowrap' }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {records.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} style={{ padding: '40px 0', textAlign: 'center', color: 'var(--text-4,#9CA3AF)' }}>
+                      <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'var(--bg,#F9FAFB)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px' }}>
+                        <FiClock size={18} style={{ color: 'var(--text-4,#9CA3AF)' }} aria-hidden="true" />
+                      </div>
+                      No attendance records for this period
                     </td>
-                    <td style={{ padding: '10px 16px', color: '#9CA3AF', fontSize: 12 }}>{r.remarks || '—'}</td>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                ) : records.map((r, i) => {
+                  const st = (r.status || '').toLowerCase().replace(/ /g, '_');
+                  const sty = STATUS_STYLE[st] || { background: '#F3F4F6', color: '#374151' };
+                  return (
+                    <tr key={i} style={{ borderBottom: '1px solid var(--border,#E5E7EB)' }}>
+                      <td style={{ padding: '10px 16px', color: 'var(--text,#111)', fontWeight: 500 }}>
+                        {r.date ? new Date(r.date).toLocaleDateString('en-IN') : '—'}
+                      </td>
+                      <td style={{ padding: '10px 16px', color: 'var(--text-4,#9CA3AF)' }}>
+                        {r.date ? new Date(r.date).toLocaleDateString('en-IN', { weekday: 'short' }) : '—'}
+                      </td>
+                      <td style={{ padding: '10px 16px', color: 'var(--text-2,#374151)' }}>{fmtTime(r.checkIn)}</td>
+                      <td style={{ padding: '10px 16px', color: 'var(--text-2,#374151)' }}>{fmtTime(r.checkOut)}</td>
+                      <td style={{ padding: '10px 16px', color: 'var(--text-2,#374151)' }}>{r.hoursWorked ? `${r.hoursWorked}h` : '—'}</td>
+                      <td style={{ padding: '10px 16px' }}>
+                        <span style={{ ...sty, padding: '2px 8px', borderRadius: '6px', fontSize: '11px', fontWeight: 600 }}>
+                          {r.status || '—'}
+                        </span>
+                      </td>
+                      <td style={{ padding: '10px 16px', color: 'var(--text-4,#9CA3AF)', fontSize: '12px' }}>
+                        {r.remarks || '—'}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

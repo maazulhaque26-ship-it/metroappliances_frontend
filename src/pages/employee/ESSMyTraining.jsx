@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { FiBook, FiAward, FiCheckCircle, FiClock, FiX } from 'react-icons/fi';
 import { essGetTraining } from '../../services/employeeSelfServiceAPI';
 
-const badgeStyle = (status) => {
-  const map = {
-    enrolled:  { bg: '#EFF6FF', color: '#1D4ED8' },
-    completed: { bg: '#D1FAE5', color: '#065F46' },
-    cancelled: { bg: '#FEE2E2', color: '#991B1B' },
-  };
-  return map[status] || { bg: '#F3F4F6', color: '#374151' };
+const ENROLLMENT_STYLE = {
+  enrolled:  { bg: '#EFF6FF', color: '#1D4ED8', label: 'Enrolled' },
+  completed: { bg: '#D1FAE5', color: '#065F46', label: 'Completed' },
+  cancelled: { bg: '#FEE2E2', color: '#991B1B', label: 'Cancelled' },
 };
+
+function EnrollmentIcon({ status }) {
+  if (status === 'completed') return <FiCheckCircle size={15} aria-hidden="true" />;
+  if (status === 'cancelled') return <FiX          size={15} aria-hidden="true" />;
+  return <FiClock size={15} aria-hidden="true" />;
+}
 
 export default function ESSMyTraining() {
   const navigate = useNavigate();
@@ -27,57 +31,98 @@ export default function ESSMyTraining() {
       .finally(() => setLoading(false));
   }, [token, navigate]);
 
-  if (loading) return <div style={{ padding: 40, textAlign: 'center', color: '#6B7280' }}>Loading...</div>;
-  if (error)   return <div style={{ padding: 40, color: '#EF4444' }}>{error}</div>;
+  if (loading) return <div style={{ padding: '40px', textAlign: 'center', color: 'var(--text-4,#9CA3AF)', fontFamily: 'var(--font-body,Poppins,sans-serif)' }}>Loading…</div>;
+  if (error)   return <div style={{ padding: '40px', color: '#EF4444', fontFamily: 'var(--font-body,Poppins,sans-serif)' }}>{error}</div>;
 
   const enrollments    = data?.enrollments    || [];
   const certifications = data?.certifications || [];
 
   return (
-    <div style={{ padding: '32px 24px', maxWidth: 900, margin: '0 auto' }}>
-      <h1 style={{ fontSize: 24, fontWeight: 700, color: '#111827', marginBottom: 8 }}>My Training</h1>
-      <p style={{ color: '#6B7280', marginBottom: 32 }}>View your enrolled training sessions and completed certifications.</p>
+    <div style={{ padding: '28px', fontFamily: 'var(--font-body,Poppins,sans-serif)' }}>
 
-      <h2 style={{ fontSize: 18, fontWeight: 600, color: '#1F2937', marginBottom: 16 }}>Enrolled Sessions ({enrollments.length})</h2>
-      {enrollments.length === 0 ? (
-        <p style={{ color: '#9CA3AF', marginBottom: 32 }}>No training enrollments found.</p>
-      ) : (
-        <div style={{ display: 'grid', gap: 12, marginBottom: 32 }}>
-          {enrollments.map(e => {
-            const b = badgeStyle(e.status);
-            return (
-              <div key={e._id} style={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: 12, padding: 20 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div>
-                    <p style={{ fontWeight: 600, color: '#111827', margin: 0 }}>{e.session?.course?.title || 'Training Session'}</p>
-                    <p style={{ color: '#6B7280', fontSize: 13, margin: '4px 0 0' }}>
-                      {e.session?.sessionCode} · {e.session?.startDate ? new Date(e.session.startDate).toLocaleDateString() : ''}
-                    </p>
-                  </div>
-                  <span style={{ background: b.bg, color: b.color, padding: '3px 12px', borderRadius: 20, fontSize: 13, fontWeight: 600 }}>
-                    {e.status}
-                  </span>
-                </div>
-                {e.certificateIssued && (
-                  <p style={{ color: '#059669', fontSize: 13, marginTop: 8, margin: '8px 0 0' }}>Certificate issued</p>
-                )}
-              </div>
-            );
-          })}
+      {/* Page header */}
+      <div style={{ marginBottom: '24px' }}>
+        <h1 style={{ fontSize: '20px', fontWeight: 800, color: 'var(--text,#111)', margin: 0 }}>My Training</h1>
+        <p style={{ fontSize: '13px', color: 'var(--text-4,#9CA3AF)', marginTop: '4px', marginBottom: 0 }}>
+          View enrolled training sessions and completed certifications.
+        </p>
+      </div>
+
+      {/* Enrolled sessions */}
+      <div style={{ marginBottom: '28px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
+          <FiBook size={15} style={{ color: 'var(--accent,#FF7A00)' }} aria-hidden="true" />
+          <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text,#111)' }}>
+            Enrolled Sessions ({enrollments.length})
+          </span>
         </div>
-      )}
 
+        {enrollments.length === 0 ? (
+          <div style={{ background: 'var(--card,#fff)', border: '1px solid var(--border,#E5E7EB)', borderRadius: '12px', padding: '40px', textAlign: 'center' }}>
+            <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'var(--bg,#F9FAFB)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px' }}>
+              <FiBook size={18} style={{ color: 'var(--text-4,#9CA3AF)' }} aria-hidden="true" />
+            </div>
+            <div style={{ fontSize: '14px', color: 'var(--text-4,#9CA3AF)' }}>No training enrollments found</div>
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gap: '12px' }}>
+            {enrollments.map(e => {
+              const bs = ENROLLMENT_STYLE[e.status] || { bg: '#F3F4F6', color: '#374151', label: e.status };
+              return (
+                <div key={e._id} style={{ background: 'var(--card,#fff)', border: '1px solid var(--border,#E5E7EB)', borderRadius: '12px', padding: '18px 20px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', flex: 1 }}>
+                      <div style={{ width: 36, height: 36, borderRadius: '9px', background: bs.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: bs.color }}>
+                        <EnrollmentIcon status={e.status} />
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text,#111)', marginBottom: '4px' }}>
+                          {e.session?.course?.title || 'Training Session'}
+                        </div>
+                        <div style={{ fontSize: '12px', color: 'var(--text-4,#9CA3AF)' }}>
+                          {e.session?.sessionCode}
+                          {e.session?.startDate ? ` · ${new Date(e.session.startDate).toLocaleDateString('en-IN')}` : ''}
+                        </div>
+                        {e.certificateIssued && (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginTop: '6px', fontSize: '12px', color: '#059669', fontWeight: 600 }}>
+                            <FiAward size={12} aria-hidden="true" /> Certificate issued
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <span style={{ background: bs.bg, color: bs.color, padding: '3px 10px', borderRadius: '100px', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
+                      {bs.label}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Certifications */}
       {certifications.length > 0 && (
         <>
-          <h2 style={{ fontSize: 18, fontWeight: 600, color: '#1F2937', marginBottom: 16 }}>Certifications ({certifications.length})</h2>
-          <div style={{ display: 'grid', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
+            <FiAward size={15} style={{ color: '#10B981' }} aria-hidden="true" />
+            <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text,#111)' }}>
+              Certifications ({certifications.length})
+            </span>
+          </div>
+          <div style={{ display: 'grid', gap: '12px' }}>
             {certifications.map(c => (
-              <div key={c._id} style={{ background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: 12, padding: 16 }}>
-                <p style={{ fontWeight: 600, color: '#14532D', margin: 0 }}>{c.course?.title || 'Certification'}</p>
-                <p style={{ color: '#166534', fontSize: 13, margin: '4px 0 0' }}>
-                  Issued: {c.issueDate ? new Date(c.issueDate).toLocaleDateString() : '—'}
-                  {c.expiryDate ? ` · Expires: ${new Date(c.expiryDate).toLocaleDateString()}` : ''}
-                </p>
+              <div key={c._id} style={{ background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: '12px', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '14px' }}>
+                <div style={{ width: 36, height: 36, borderRadius: '9px', background: '#DCFCE7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <FiAward size={17} style={{ color: '#16A34A' }} aria-hidden="true" />
+                </div>
+                <div>
+                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#14532D' }}>{c.course?.title || 'Certification'}</div>
+                  <div style={{ fontSize: '12px', color: '#166534', marginTop: '3px' }}>
+                    Issued: {c.issueDate ? new Date(c.issueDate).toLocaleDateString('en-IN') : '—'}
+                    {c.expiryDate ? ` · Expires: ${new Date(c.expiryDate).toLocaleDateString('en-IN')}` : ''}
+                  </div>
+                </div>
               </div>
             ))}
           </div>
