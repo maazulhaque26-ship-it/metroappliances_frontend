@@ -1,7 +1,8 @@
 import React from 'react';
-import { DOMAINS } from './AdminDomainConfig';
 
-export default function AdminDomainRail({ activeDomain, onSelect }) {
+// Phase 2: domains prop is the role-filtered list from AdminLayout (via NavigationRegistry).
+// Falls back to empty array so rail renders nothing if called without the prop.
+export default function AdminDomainRail({ domains = [], activeDomain, onSelect }) {
   return (
     <div
       role="navigation"
@@ -9,7 +10,7 @@ export default function AdminDomainRail({ activeDomain, onSelect }) {
       className="flex flex-col items-center pt-3 pb-4 gap-1 flex-shrink-0 overflow-y-auto no-scrollbar"
       style={{ width: '48px', background: '#080808', borderRight: '1px solid rgba(255,255,255,0.05)' }}
     >
-      {DOMAINS.map(({ id, label, icon: Icon }) => {
+      {domains.map(({ id, label, icon: Icon }) => {
         const active = activeDomain === id;
         return (
           <button

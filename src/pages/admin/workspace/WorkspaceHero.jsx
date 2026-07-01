@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FiSun, FiSunrise, FiMoon, FiZap } from 'react-icons/fi';
+import { useWorkspace } from '../registry';
 
 function getGreeting(hour) {
   if (hour < 6)  return { text: 'Good Night',    icon: FiMoon,    color: '#6D28D9' };
@@ -9,9 +10,11 @@ function getGreeting(hour) {
   return            { text: 'Good Night',         icon: FiMoon,   color: '#6D28D9' };
 }
 
-const WORKSPACE = { name: 'Metro Appliances ERP', env: 'Production', version: 'v1.0.1' };
+const WORKSPACE = { env: 'Production', version: 'v1.0.1' };
 
 const WorkspaceHero = React.memo(function WorkspaceHero({ user }) {
+  // Phase 5: workspace name and description come from WorkspaceRegistry via RegistryProvider context
+  const workspace = useWorkspace();
   const [now, setNow] = useState(() => new Date());
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 60_000);
@@ -88,7 +91,7 @@ const WorkspaceHero = React.memo(function WorkspaceHero({ user }) {
                 {user?.role?.replace('_', ' ') || 'Admin'}
               </span>
               <span style={{ color: 'var(--text-5)', fontSize: 10 }}>·</span>
-              <span className="text-[11px]" style={{ color: 'var(--text-4)' }}>{WORKSPACE.name}</span>
+              <span className="text-[11px]" style={{ color: 'var(--text-4)' }}>{workspace.title}</span>
             </div>
           </div>
         </div>
@@ -107,21 +110,29 @@ const WorkspaceHero = React.memo(function WorkspaceHero({ user }) {
             <p className="text-[11px] mt-1" style={{ color: 'var(--text-4)' }}>{dateStr}</p>
           </div>
 
-          {/* Workspace badge */}
-          <div
-            className="flex items-center gap-2 px-3 py-1.5"
-            style={{
-              background: 'var(--bg)',
-              border: '1px solid var(--border)',
-              borderRadius: '20px',
-            }}
-          >
-            <FiZap size={10} style={{ color: 'var(--accent)' }} aria-hidden="true" />
-            <span className="text-[10px] font-bold" style={{ color: 'var(--text-3)', fontFamily: 'var(--font-display)' }}>
-              {WORKSPACE.env}
-            </span>
-            <span className="text-[9px]" style={{ color: 'var(--text-5)' }}>/</span>
-            <span className="text-[10px] font-medium" style={{ color: 'var(--text-4)' }}>{WORKSPACE.version}</span>
+          {/* Workspace badge — title from WorkspaceRegistry, env/version from static config */}
+          <div className="flex flex-col items-end gap-1">
+            <div
+              className="flex items-center gap-2 px-3 py-1.5"
+              style={{
+                background: 'var(--bg)',
+                border: '1px solid var(--border)',
+                borderRadius: '20px',
+              }}
+              title={workspace.description}
+            >
+              <FiZap size={10} style={{ color: 'var(--accent)' }} aria-hidden="true" />
+              <span className="text-[10px] font-bold" style={{ color: 'var(--text-3)', fontFamily: 'var(--font-display)' }}>
+                {WORKSPACE.env}
+              </span>
+              <span className="text-[9px]" style={{ color: 'var(--text-5)' }}>/</span>
+              <span className="text-[10px] font-medium" style={{ color: 'var(--text-4)' }}>{WORKSPACE.version}</span>
+            </div>
+            {workspace.description && (
+              <p className="text-[10px] text-right" style={{ color: 'var(--text-5)', maxWidth: '18ch' }}>
+                {workspace.description}
+              </p>
+            )}
           </div>
         </div>
       </div>

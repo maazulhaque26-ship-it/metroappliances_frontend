@@ -29,3 +29,17 @@ export const SEARCH_INDEX = NAV_GROUPS.flatMap(group => {
     keywords: buildKeywords(item.label, item.path, group.label),
   }));
 });
+
+/**
+ * Phase 4: Returns SEARCH_INDEX with in-scope domain items sorted first.
+ * Items outside scope are still included so that all pages remain reachable.
+ * Fuzzy scoring runs on top of this pre-sorted order.
+ *
+ * @param {{ domains: string[] }} scope - from SearchScopeRegistry
+ */
+export function getScopedSearchIndex(scope) {
+  if (!scope || scope.domains.length === 0) return SEARCH_INDEX;
+  const inScope  = SEARCH_INDEX.filter(i => scope.domains.includes(i.domain));
+  const outScope = SEARCH_INDEX.filter(i => !scope.domains.includes(i.domain));
+  return [...inScope, ...outScope];
+}

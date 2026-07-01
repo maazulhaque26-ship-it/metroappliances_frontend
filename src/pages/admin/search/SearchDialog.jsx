@@ -4,7 +4,7 @@ import {
   FiSearch, FiX, FiArrowRight, FiClock, FiGrid,
   FiSettings, FiHelpCircle, FiCommand,
 } from 'react-icons/fi';
-import { SEARCH_INDEX } from './SearchRegistry';
+import { getScopedSearchIndex } from './SearchRegistry';
 import { scoreMatch, groupResults } from './SearchUtils';
 import FavoriteButton from '../personalization/FavoriteButton';
 
@@ -41,7 +41,8 @@ function writeStorage(key, val) {
   try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
 }
 
-export default function SearchDialog({ open, onClose }) {
+// Phase 4: searchScope from SearchScopeRegistry boosts in-scope domain results first
+export default function SearchDialog({ open, onClose, searchScope }) {
   const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const [activeIdx, setActiveIdx] = useState(0);
@@ -65,11 +66,14 @@ export default function SearchDialog({ open, onClose }) {
     }
   }, [open]);
 
+  // Phase 4: scope-sorted index — in-scope domains first, all items still present
+  const scopedIndex = useMemo(() => getScopedSearchIndex(searchScope), [searchScope]);
+
   // Scored + grouped results
   const grouped = useMemo(() => {
     const q = query.trim();
     if (!q) return [];
-    const scored = SEARCH_INDEX
+    const scored = scopedIndex
       .map(item => ({ item, score: scoreMatch(item, q) }))
       .filter(x => x.score > 0)
       .sort((a, b) => b.score - a.score);
@@ -78,7 +82,7 @@ export default function SearchDialog({ open, onClose }) {
       ...g,
       items: g.items.slice(0, MAX_RESULTS_PER_GROUP),
     }));
-  }, [query]);
+  }, [query, scopedIndex]);
 
   // Flat list for keyboard nav
   const flatItems = useMemo(() => grouped.flatMap(g => g.items), [grouped]);
@@ -209,7 +213,7 @@ export default function SearchDialog({ open, onClose }) {
             type="text"
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder="Search pages, modules, features..."
+            placeholder={searchScope?.placeholder || 'Search pages, modules, features...'}
             className="flex-1 bg-transparent outline-none text-sm"
             style={{ color: 'var(--text)', fontSize: 14, lineHeight: '20px' }}
             aria-label="Search"
