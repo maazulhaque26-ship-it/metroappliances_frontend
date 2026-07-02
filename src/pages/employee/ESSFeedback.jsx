@@ -57,7 +57,7 @@ export default function ESSFeedback() {
 
       {/* Toast */}
       {toast.msg && (
-        <div style={{ background: toast.ok ? '#D1FAE5' : '#FEE2E2', color: toast.ok ? '#065F46' : '#991B1B', padding: '12px 18px', borderRadius: '8px', marginBottom: '20px', fontSize: '13px', fontWeight: 500 }}>
+        <div role={toast.ok ? 'status' : 'alert'} style={{ background: toast.ok ? '#D1FAE5' : '#FEE2E2', color: toast.ok ? '#065F46' : '#991B1B', padding: '12px 18px', borderRadius: '8px', marginBottom: '20px', fontSize: '13px', fontWeight: 500 }}>
           {toast.msg}
         </div>
       )}
@@ -70,10 +70,11 @@ export default function ESSFeedback() {
         </div>
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-2,#374151)', marginBottom: '6px' }}>
+            <label htmlFor="feedback-recipient" style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-2,#374151)', marginBottom: '6px' }}>
               Recipient Employee ID
             </label>
             <input
+              id="feedback-recipient"
               type="text"
               value={form.toEmployeeId}
               onChange={e => setForm(f => ({ ...f, toEmployeeId: e.target.value }))}
@@ -84,14 +85,16 @@ export default function ESSFeedback() {
             />
           </div>
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-2,#374151)', marginBottom: '6px' }}>
-              Message
+            <label htmlFor="feedback-message" style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-2,#374151)', marginBottom: '6px' }}>
+              Message <span aria-hidden="true" style={{ color: '#EF4444' }}>*</span>
             </label>
             <textarea
+              id="feedback-message"
               value={form.message}
               onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
               placeholder="Write your feedback…"
               rows={4}
+              aria-required="true"
               style={{ width: '100%', padding: '9px 12px', border: '1px solid var(--border,#E5E7EB)', borderRadius: '8px', fontSize: '13px', fontFamily: 'inherit', resize: 'vertical', color: 'var(--text,#111)', background: 'var(--card,#fff)', outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s' }}
               onFocus={e => { e.target.style.borderColor = 'var(--accent,#FF7A00)'; }}
               onBlur={e => { e.target.style.borderColor = 'var(--border,#E5E7EB)'; }}
@@ -112,6 +115,7 @@ export default function ESSFeedback() {
           <button
             type="submit"
             disabled={submitting || !form.message.trim()}
+            aria-busy={submitting}
             style={{ display: 'flex', alignItems: 'center', gap: '7px', background: 'var(--accent,#FF7A00)', color: '#fff', border: 'none', borderRadius: '9px', padding: '10px 20px', fontWeight: 700, fontSize: '13px', cursor: (submitting || !form.message.trim()) ? 'not-allowed' : 'pointer', opacity: (submitting || !form.message.trim()) ? 0.65 : 1, fontFamily: 'inherit' }}
           >
             <FiSend size={14} aria-hidden="true" />
@@ -127,9 +131,9 @@ export default function ESSFeedback() {
         </div>
 
         {loading ? (
-          <div style={{ color: 'var(--text-4,#9CA3AF)', fontSize: '13px' }}>Loading…</div>
+          <div role="status" aria-label="Loading feedback" style={{ color: 'var(--text-4,#9CA3AF)', fontSize: '13px' }}>Loading…</div>
         ) : error ? (
-          <div style={{ color: '#EF4444', fontSize: '13px' }}>{error}</div>
+          <div role="alert" style={{ color: '#EF4444', fontSize: '13px' }}>{error}</div>
         ) : feedbacks.length === 0 ? (
           <div style={{ background: 'var(--card,#fff)', border: '1px solid var(--border,#E5E7EB)', borderRadius: '12px', padding: '40px', textAlign: 'center' }}>
             <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'var(--bg,#F9FAFB)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px' }}>

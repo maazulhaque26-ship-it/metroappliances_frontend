@@ -57,9 +57,9 @@ export default function DealerResetPassword() {
         </div>
 
         {success ? (
-          <div className="text-center">
+          <div role="status" className="text-center">
             <div className="w-14 h-14 flex items-center justify-center mx-auto mb-5" style={{ background: 'rgba(22,163,74,0.1)', borderRadius: '50%' }}>
-              <FiCheck size={24} style={{ color: '#16A34A' }} strokeWidth={2.5} />
+              <FiCheck size={24} aria-hidden="true" style={{ color: '#16A34A' }} strokeWidth={2.5} />
             </div>
             <h1 className="text-2xl font-extrabold mb-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--text)', letterSpacing: '-0.03em' }}>
               Password reset!
@@ -74,32 +74,38 @@ export default function DealerResetPassword() {
             <p className="mb-8 text-sm" style={{ color: 'var(--text-3)' }}>Choose a strong password for your dealer account.</p>
 
             {error && (
-              <div className="mb-5 px-4 py-3 text-sm font-medium" style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.18)', borderRadius: 'var(--radius-sm)', color: '#DC2626' }}>
+              <div role="alert" className="mb-5 px-4 py-3 text-sm font-medium" style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.18)', borderRadius: 'var(--radius-sm)', color: '#DC2626' }}>
                 {error}
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="label">New Password</label>
+                <label htmlFor="reset-password" className="label">New Password</label>
                 <div className="relative">
                   <input
+                    id="reset-password"
                     type={showPwd ? 'text' : 'password'}
                     value={password}
                     onChange={e => { setPassword(e.target.value); setError(''); }}
                     placeholder="At least 8 characters"
                     className="input pr-11"
+                    autoComplete="new-password"
                     required
                   />
-                  <button type="button" onClick={() => setShowPwd(p => !p)} className="absolute right-4 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-4)' }}>
-                    {showPwd ? <FiEyeOff size={15} /> : <FiEye size={15} />}
+                  <button type="button" onClick={() => setShowPwd(p => !p)}
+                    aria-label={showPwd ? 'Hide password' : 'Show password'}
+                    aria-pressed={showPwd}
+                    aria-controls="reset-password"
+                    className="absolute right-4 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-4)' }}>
+                    {showPwd ? <FiEyeOff size={15} aria-hidden="true" /> : <FiEye size={15} aria-hidden="true" />}
                   </button>
                 </div>
                 {password && (
-                  <div className="mt-2 space-y-1">
+                  <div className="mt-2 space-y-1" aria-live="polite">
                     {RULES.map(r => (
                       <div key={r.label} className="flex items-center gap-2 text-[11px] font-medium" style={{ color: r.test(password) ? '#16A34A' : 'var(--text-4)' }}>
-                        <FiCheck size={10} /> {r.label}
+                        <FiCheck size={10} aria-hidden="true" /> {r.label}
                       </div>
                     ))}
                   </div>
@@ -107,13 +113,15 @@ export default function DealerResetPassword() {
               </div>
 
               <div>
-                <label className="label">Confirm Password</label>
+                <label htmlFor="reset-confirm" className="label">Confirm Password</label>
                 <input
+                  id="reset-confirm"
                   type="password"
                   value={confirm}
                   onChange={e => { setConfirm(e.target.value); setError(''); }}
                   placeholder="Repeat new password"
                   className="input"
+                  autoComplete="new-password"
                   required
                 />
               </div>
@@ -121,10 +129,11 @@ export default function DealerResetPassword() {
               <button
                 type="submit"
                 disabled={loading}
+                aria-busy={loading}
                 className="w-full flex items-center justify-center gap-2.5 px-6 py-4 text-white font-bold text-[12px] uppercase tracking-[0.1em]"
                 style={{ background: 'var(--text)', borderRadius: 'var(--radius-sm)', opacity: loading ? 0.65 : 1 }}
               >
-                {loading ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Resetting…</> : <>Reset Password <FiArrowRight size={15} strokeWidth={2.5} /></>}
+                {loading ? <><span aria-hidden="true" className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Resetting…</> : <>Reset Password <FiArrowRight size={15} strokeWidth={2.5} aria-hidden="true" /></>}
               </button>
             </form>
 

@@ -32,35 +32,39 @@ export default function SupplierLogin() {
 
         <div className="rounded-2xl p-6 shadow-xl" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
           {error && (
-            <div className="mb-4 px-4 py-3 rounded-xl text-sm font-medium" style={{ background: '#FEE2E2', color: '#991B1B' }}>
+            <div role="alert" className="mb-4 px-4 py-3 rounded-xl text-sm font-medium" style={{ background: '#FEE2E2', color: '#991B1B' }}>
               {error}
             </div>
           )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold mb-1.5" style={{ color: 'var(--text-4)' }}>Email Address</label>
+              <label htmlFor="supplier-login-email" className="block text-xs font-semibold mb-1.5" style={{ color: 'var(--text-4)' }}>Email Address</label>
               <input
+                id="supplier-login-email"
                 type="email" required autoFocus
                 value={form.email}
                 onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                 placeholder="supplier@company.com"
+                autoComplete="email"
                 className="w-full px-4 py-3 rounded-xl border text-sm outline-none transition"
                 style={{ borderColor: 'var(--border)', background: 'var(--bg-2)', color: 'var(--text)' }}
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold mb-1.5" style={{ color: 'var(--text-4)' }}>Password</label>
+              <label htmlFor="supplier-login-password" className="block text-xs font-semibold mb-1.5" style={{ color: 'var(--text-4)' }}>Password</label>
               <input
+                id="supplier-login-password"
                 type="password" required
                 value={form.password}
                 onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
                 placeholder="Enter password"
+                autoComplete="current-password"
                 className="w-full px-4 py-3 rounded-xl border text-sm outline-none transition"
                 style={{ borderColor: 'var(--border)', background: 'var(--bg-2)', color: 'var(--text)' }}
               />
             </div>
             <button
-              type="submit" disabled={loading}
+              type="submit" disabled={loading} aria-busy={loading}
               className="w-full py-3 rounded-xl font-bold text-sm text-white mt-2 disabled:opacity-60"
               style={{ background: '#FF7A00' }}>
               {loading ? 'Signing in…' : 'Sign In'}

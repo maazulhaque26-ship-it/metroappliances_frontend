@@ -42,12 +42,12 @@ export default function DealerForgotPassword() {
         </div>
 
         {sent ? (
-          <div className="text-center">
+          <div role="status" className="text-center">
             <div
               className="w-14 h-14 flex items-center justify-center mx-auto mb-5"
               style={{ background: 'rgba(22,163,74,0.1)', borderRadius: '50%' }}
             >
-              <FiCheck size={24} style={{ color: '#16A34A' }} strokeWidth={2.5} />
+              <FiCheck size={24} aria-hidden="true" style={{ color: '#16A34A' }} strokeWidth={2.5} />
             </div>
             <h1 className="text-2xl font-extrabold mb-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--text)', letterSpacing: '-0.03em' }}>
               Check your inbox
@@ -77,6 +77,7 @@ export default function DealerForgotPassword() {
 
             {error && (
               <div
+                role="alert"
                 className="mb-5 px-4 py-3 text-sm font-medium"
                 style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.18)', borderRadius: 'var(--radius-sm)', color: '#DC2626' }}
               >
@@ -86,15 +87,17 @@ export default function DealerForgotPassword() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="label">Email Address</label>
+                <label htmlFor="forgot-email" className="label">Email Address</label>
                 <div className="relative">
-                  <FiMail size={14} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-4)' }} />
+                  <FiMail size={14} aria-hidden="true" className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-4)' }} />
                   <input
+                    id="forgot-email"
                     type="email"
                     value={email}
                     onChange={e => { setEmail(e.target.value); setError(''); }}
                     placeholder="dealer@business.com"
                     className="input pl-10"
+                    autoComplete="email"
                     required
                   />
                 </div>
@@ -103,13 +106,14 @@ export default function DealerForgotPassword() {
               <button
                 type="submit"
                 disabled={loading}
+                aria-busy={loading}
                 className="w-full flex items-center justify-center gap-2.5 px-6 py-4 text-white font-bold text-[12px] uppercase tracking-[0.1em]"
                 style={{ background: 'var(--text)', borderRadius: 'var(--radius-sm)', opacity: loading ? 0.65 : 1 }}
               >
                 {loading ? (
-                  <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Sending…</>
+                  <><span aria-hidden="true" className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Sending…</>
                 ) : (
-                  <>Send Reset Link <FiArrowRight size={15} strokeWidth={2.5} /></>
+                  <>Send Reset Link <FiArrowRight size={15} strokeWidth={2.5} aria-hidden="true" /></>
                 )}
               </button>
             </form>

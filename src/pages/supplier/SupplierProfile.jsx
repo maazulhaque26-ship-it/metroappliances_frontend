@@ -51,7 +51,7 @@ export default function SupplierProfile() {
         {/* Read-only email */}
         <div style={{ padding: '12px 0', borderBottom: '1px solid var(--border,#F3F4F6)', marginBottom: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#9CA3AF', marginBottom: 4 }}>
-            <FiMail size={11} />Email (cannot be changed)
+            <FiMail size={11} aria-hidden="true" />Email (cannot be changed)
           </div>
           <div style={{ fontSize: 13, color: 'var(--text,#111827)' }}>{profile?.email}</div>
         </div>
@@ -59,28 +59,30 @@ export default function SupplierProfile() {
         {/* Editable form */}
         <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#9CA3AF', marginBottom: 6, fontWeight: 600 }}>
-              <FiUser size={11} />Name
+            <label htmlFor="supplier-profile-name" style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#9CA3AF', marginBottom: 6, fontWeight: 600 }}>
+              <FiUser size={11} aria-hidden="true" />Name
             </label>
-            <input type="text" value={form.name}
+            <input id="supplier-profile-name" type="text" value={form.name}
               onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+              autoComplete="name"
               className="w-full px-4 py-2.5 rounded-xl border text-sm outline-none"
               style={{ borderColor: 'var(--border,#E5E7EB)', background: 'var(--bg,#F9FAFB)', color: 'var(--text,#111827)', fontFamily: 'Poppins, sans-serif' }}
             />
           </div>
           <div>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#9CA3AF', marginBottom: 6, fontWeight: 600 }}>
-              <FiPhone size={11} />Phone
+            <label htmlFor="supplier-profile-phone" style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#9CA3AF', marginBottom: 6, fontWeight: 600 }}>
+              <FiPhone size={11} aria-hidden="true" />Phone
             </label>
-            <input type="tel" value={form.phone}
+            <input id="supplier-profile-phone" type="tel" value={form.phone}
               onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+              autoComplete="tel"
               className="w-full px-4 py-2.5 rounded-xl border text-sm outline-none"
               style={{ borderColor: 'var(--border,#E5E7EB)', background: 'var(--bg,#F9FAFB)', color: 'var(--text,#111827)', fontFamily: 'Poppins, sans-serif' }}
             />
           </div>
-          <button type="submit" disabled={saving}
+          <button type="submit" disabled={saving} aria-busy={saving}
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '11px 0', borderRadius: 12, background: saving ? '#FDA06A' : '#FF7A00', color: '#fff', border: 'none', cursor: saving ? 'not-allowed' : 'pointer', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins, sans-serif', transition: 'background 0.15s' }}>
-            <FiSave size={15} />
+            <FiSave size={15} aria-hidden="true" />
             {saving ? 'Saving…' : 'Save Changes'}
           </button>
         </form>

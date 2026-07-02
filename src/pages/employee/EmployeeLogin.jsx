@@ -25,7 +25,7 @@ export default function EmployeeLogin() {
         {/* Logo / Brand */}
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <div style={{ width: 56, height: 56, background: '#FF7A00', borderRadius: 16, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-            <svg width="28" height="28" fill="none" stroke="#fff" strokeWidth="2" viewBox="0 0 24 24">
+            <svg aria-hidden="true" width="28" height="28" fill="none" stroke="#fff" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
           </div>
@@ -36,22 +36,24 @@ export default function EmployeeLogin() {
         {/* Card */}
         <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #E5E7EB', padding: '32px 28px', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
           {error && (
-            <div style={{ background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: 8, padding: '10px 14px', marginBottom: 20, fontSize: 13, color: '#EF4444' }}>
+            <div role="alert" style={{ background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: 8, padding: '10px 14px', marginBottom: 20, fontSize: 13, color: '#EF4444' }}>
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: 18 }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#374151', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <label htmlFor="emp-login-email" style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#374151', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 Email Address
               </label>
               <input
+                id="emp-login-email"
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
                 placeholder="you@company.com"
+                autoComplete="email"
                 style={{ width: '100%', border: '1.5px solid #D1D5DB', borderRadius: 8, padding: '10px 14px', fontSize: 14, outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit', color: '#111827' }}
                 onFocus={e => { e.target.style.borderColor = '#FF7A00'; }}
                 onBlur={e => { e.target.style.borderColor = '#D1D5DB'; }}
@@ -59,15 +61,17 @@ export default function EmployeeLogin() {
             </div>
 
             <div style={{ marginBottom: 24 }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#374151', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <label htmlFor="emp-login-password" style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#374151', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 Password
               </label>
               <input
+                id="emp-login-password"
                 type="password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 required
                 placeholder="••••••••"
+                autoComplete="current-password"
                 style={{ width: '100%', border: '1.5px solid #D1D5DB', borderRadius: 8, padding: '10px 14px', fontSize: 14, outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit', color: '#111827' }}
                 onFocus={e => { e.target.style.borderColor = '#FF7A00'; }}
                 onBlur={e => { e.target.style.borderColor = '#D1D5DB'; }}
@@ -77,6 +81,7 @@ export default function EmployeeLogin() {
             <button
               type="submit"
               disabled={loading}
+              aria-busy={loading}
               style={{ width: '100%', padding: '12px', background: loading ? '#FDB97D' : '#FF7A00', color: '#fff', border: 'none', borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer', fontFamily: 'inherit', transition: 'background 0.2s' }}
             >
               {loading ? 'Signing in…' : 'Sign In'}

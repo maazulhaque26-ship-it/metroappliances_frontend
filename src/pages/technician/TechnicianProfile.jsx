@@ -32,7 +32,7 @@ export default function TechnicianProfile() {
       <h1 style={{ fontSize: 20, fontWeight: 700, color: '#111827', marginBottom: 24 }}>My Profile</h1>
 
       {msg && (
-        <div style={{ background: '#ECFDF5', color: '#065F46', padding: '10px 14px', borderRadius: 8, marginBottom: 16, fontSize: 13, fontWeight: 500 }}>
+        <div role="status" style={{ background: '#ECFDF5', color: '#065F46', padding: '10px 14px', borderRadius: 8, marginBottom: 16, fontSize: 13, fontWeight: 500 }}>
           {msg}
         </div>
       )}
@@ -61,7 +61,7 @@ export default function TechnicianProfile() {
           ].map(({ icon: Icon, label, value }) => (
             <div key={label} style={{ padding: '12px 0', borderBottom: '1px solid #F3F4F6', display: 'flex', flexDirection: 'column', gap: 4 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#9CA3AF' }}>
-                <Icon size={11} />{label}
+                <Icon size={11} aria-hidden="true" />{label}
               </div>
               <div style={{ fontSize: 13, color: '#111827', fontWeight: 600 }}>{value}</div>
             </div>
@@ -75,7 +75,14 @@ export default function TechnicianProfile() {
           <span style={{ fontSize: 13, fontWeight: 600, color: '#374151' }}>Current Workload</span>
           <span style={{ fontSize: 13, fontWeight: 700, color: '#111827' }}>{technician.currentWorkload}/{technician.maxWorkload}</span>
         </div>
-        <div style={{ height: 8, background: '#F3F4F6', borderRadius: 4, overflow: 'hidden' }}>
+        <div
+          role="progressbar"
+          aria-valuenow={technician.currentWorkload || 0}
+          aria-valuemin={0}
+          aria-valuemax={technician.maxWorkload || 1}
+          aria-label="Current workload"
+          style={{ height: 8, background: '#F3F4F6', borderRadius: 4, overflow: 'hidden' }}
+        >
           <div style={{ height: '100%', background: '#3B82F6', borderRadius: 4, width: `${Math.min(100, ((technician.currentWorkload || 0) / (technician.maxWorkload || 1)) * 100)}%`, transition: 'width 0.3s' }} />
         </div>
       </div>
@@ -89,8 +96,10 @@ export default function TechnicianProfile() {
           </div>
         </div>
         <button onClick={toggleAvailability} disabled={saving}
+          aria-pressed={isAvailable}
+          aria-label={isAvailable ? 'Set yourself as unavailable' : 'Set yourself as available'}
           style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 18px', background: isAvailable ? '#D1FAE5' : '#FEE2E2', border: 'none', borderRadius: 10, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600, fontSize: 13, color: isAvailable ? '#065F46' : '#991B1B', opacity: saving ? 0.7 : 1 }}>
-          {isAvailable ? <FiToggleRight size={20} /> : <FiToggleLeft size={20} />}
+          {isAvailable ? <FiToggleRight size={20} aria-hidden="true" /> : <FiToggleLeft size={20} aria-hidden="true" />}
           {isAvailable ? 'Available' : 'Unavailable'}
         </button>
       </div>
@@ -111,7 +120,7 @@ export default function TechnicianProfile() {
       {technician.territory?.cities?.length > 0 && (
         <div style={{ background: '#fff', borderRadius: 14, padding: 20, border: '1px solid #E5E7EB' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 12 }}>
-            <FiMapPin size={14} color="#6B7280" />
+            <FiMapPin size={14} color="#6B7280" aria-hidden="true" />
             <span style={{ fontSize: 13, fontWeight: 600, color: '#374151' }}>Service Territory</span>
           </div>
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>

@@ -43,41 +43,41 @@ function ApplyLeavePanel({ onClose }) {
     <div style={{ background: 'var(--card,#fff)', border: '1px solid var(--border,#E5E7EB)', borderRadius: '12px', padding: '24px', marginBottom: '24px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
         <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text,#111)', margin: 0 }}>Apply for Leave</h2>
-        <button onClick={onClose} style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--text-4,#9CA3AF)', display: 'flex', alignItems: 'center' }} aria-label="Close">
-          <FiX size={18} />
+        <button onClick={onClose} style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--text-4,#9CA3AF)', display: 'flex', alignItems: 'center' }} aria-label="Close apply leave panel">
+          <FiX size={18} aria-hidden="true" />
         </button>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
         <div>
-          <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-2,#374151)', marginBottom: '6px' }}>Leave Type</label>
-          <select style={{ width: '100%', padding: '8px 12px', border: '1px solid var(--border,#E5E7EB)', borderRadius: '8px', fontSize: '13px', background: 'var(--card,#fff)', fontFamily: 'inherit', color: 'var(--text,#111)', outline: 'none', boxSizing: 'border-box' }}>
+          <label htmlFor="apply-leave-type" style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-2,#374151)', marginBottom: '6px' }}>Leave Type</label>
+          <select id="apply-leave-type" style={{ width: '100%', padding: '8px 12px', border: '1px solid var(--border,#E5E7EB)', borderRadius: '8px', fontSize: '13px', background: 'var(--card,#fff)', fontFamily: 'inherit', color: 'var(--text,#111)', outline: 'none', boxSizing: 'border-box' }}>
             <option>Annual Leave</option>
             <option>Sick Leave</option>
             <option>Casual Leave</option>
           </select>
         </div>
         <div>
-          <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-2,#374151)', marginBottom: '6px' }}>Days</label>
-          <input type="number" min="0.5" step="0.5" defaultValue="1"
+          <label htmlFor="apply-leave-days" style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-2,#374151)', marginBottom: '6px' }}>Days</label>
+          <input id="apply-leave-days" type="number" min="0.5" step="0.5" defaultValue="1"
             style={{ width: '100%', padding: '8px 12px', border: '1px solid var(--border,#E5E7EB)', borderRadius: '8px', fontSize: '13px', fontFamily: 'inherit', color: 'var(--text,#111)', outline: 'none', boxSizing: 'border-box' }}
           />
         </div>
         <div>
-          <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-2,#374151)', marginBottom: '6px' }}>From Date</label>
-          <input type="date"
+          <label htmlFor="apply-leave-from" style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-2,#374151)', marginBottom: '6px' }}>From Date</label>
+          <input id="apply-leave-from" type="date"
             style={{ width: '100%', padding: '8px 12px', border: '1px solid var(--border,#E5E7EB)', borderRadius: '8px', fontSize: '13px', fontFamily: 'inherit', color: 'var(--text,#111)', outline: 'none', boxSizing: 'border-box' }}
           />
         </div>
         <div>
-          <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-2,#374151)', marginBottom: '6px' }}>To Date</label>
-          <input type="date"
+          <label htmlFor="apply-leave-to" style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-2,#374151)', marginBottom: '6px' }}>To Date</label>
+          <input id="apply-leave-to" type="date"
             style={{ width: '100%', padding: '8px 12px', border: '1px solid var(--border,#E5E7EB)', borderRadius: '8px', fontSize: '13px', fontFamily: 'inherit', color: 'var(--text,#111)', outline: 'none', boxSizing: 'border-box' }}
           />
         </div>
       </div>
       <div style={{ marginBottom: '16px' }}>
-        <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-2,#374151)', marginBottom: '6px' }}>Reason</label>
-        <textarea rows={3} placeholder="Reason for leave…"
+        <label htmlFor="apply-leave-reason" style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-2,#374151)', marginBottom: '6px' }}>Reason</label>
+        <textarea id="apply-leave-reason" rows={3} placeholder="Reason for leave…"
           style={{ width: '100%', padding: '8px 12px', border: '1px solid var(--border,#E5E7EB)', borderRadius: '8px', fontSize: '13px', fontFamily: 'inherit', resize: 'vertical', color: 'var(--text,#111)', outline: 'none', boxSizing: 'border-box' }}
         />
       </div>
@@ -143,8 +143,8 @@ export default function ESSMyLeave() {
       {/* Apply Leave panel */}
       {showApply && <ApplyLeavePanel onClose={() => setShowApply(false)} />}
 
-      {loading && <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-4,#9CA3AF)' }}>Loading…</div>}
-      {error   && <div style={{ color: '#EF4444', fontSize: '13px', padding: '12px 16px', background: '#FEF2F2', borderRadius: '8px', marginBottom: '16px' }}>{error}</div>}
+      {loading && <div role="status" aria-label="Loading leave data" style={{ textAlign: 'center', padding: '40px', color: 'var(--text-4,#9CA3AF)' }}>Loading…</div>}
+      {error   && <div role="alert" style={{ color: '#EF4444', fontSize: '13px', padding: '12px 16px', background: '#FEF2F2', borderRadius: '8px', marginBottom: '16px' }}>{error}</div>}
 
       {!loading && !error && (
         <>
@@ -175,11 +175,11 @@ export default function ESSMyLeave() {
           </div>
           <div style={{ background: 'var(--card,#fff)', border: '1px solid var(--border,#E5E7EB)', borderRadius: '12px', overflow: 'hidden' }}>
             <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+              <table aria-label="Leave requests" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
                 <thead style={{ background: 'var(--bg,#F9FAFB)' }}>
                   <tr>
                     {['Type', 'From', 'To', 'Days', 'Reason', 'Status', 'Applied On'].map(h => (
-                      <th key={h} style={{ padding: '10px 16px', textAlign: 'left', fontSize: '11px', fontWeight: 600, color: 'var(--text-4,#9CA3AF)', textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '1px solid var(--border,#E5E7EB)', whiteSpace: 'nowrap' }}>{h}</th>
+                      <th key={h} scope="col" style={{ padding: '10px 16px', textAlign: 'left', fontSize: '11px', fontWeight: 600, color: 'var(--text-4,#9CA3AF)', textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '1px solid var(--border,#E5E7EB)', whiteSpace: 'nowrap' }}>{h}</th>
                     ))}
                   </tr>
                 </thead>

@@ -50,7 +50,14 @@ export default function AdminAssetDetail() {
           <div className="flex items-center gap-4">
             <div className="flex-1">
               <p className="text-sm text-gray-500 mb-1">Asset Health Score</p>
-              <div className="h-4 bg-gray-100 rounded-full overflow-hidden">
+              <div
+                role="progressbar"
+                aria-valuenow={asset.healthScore}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label="Asset health score"
+                className="h-4 bg-gray-100 rounded-full overflow-hidden"
+              >
                 <div
                   className={`h-4 rounded-full ${asset.healthScore >= 80 ? 'bg-green-500' : asset.healthScore >= 50 ? 'bg-yellow-500' : 'bg-red-500'}`}
                   style={{ width: `${asset.healthScore}%` }}
@@ -63,10 +70,29 @@ export default function AdminAssetDetail() {
       )}
 
       {/* Tabs */}
-      <div className="flex border-b">
+      <div
+        role="tablist"
+        aria-label="Asset details"
+        className="flex border-b"
+        onKeyDown={e => {
+          const idx = TABS.indexOf(tab);
+          if (e.key === 'ArrowRight') { e.preventDefault(); setTab(TABS[(idx + 1) % TABS.length]); }
+          if (e.key === 'ArrowLeft')  { e.preventDefault(); setTab(TABS[(idx - 1 + TABS.length) % TABS.length]); }
+          if (e.key === 'Home')       { e.preventDefault(); setTab(TABS[0]); }
+          if (e.key === 'End')        { e.preventDefault(); setTab(TABS[TABS.length - 1]); }
+        }}
+      >
         {TABS.map(t => (
-          <button key={t} onClick={() => setTab(t)}
-            className={`px-5 py-2 text-sm font-medium border-b-2 transition-colors ${tab === t ? 'border-orange-500 text-orange-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}>
+          <button
+            key={t}
+            role="tab"
+            aria-selected={tab === t}
+            aria-controls={`tabpanel-${t.toLowerCase()}`}
+            id={`tab-${t.toLowerCase()}`}
+            tabIndex={tab === t ? 0 : -1}
+            onClick={() => setTab(t)}
+            className={`px-5 py-2 text-sm font-medium border-b-2 transition-colors ${tab === t ? 'border-orange-500 text-orange-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+          >
             {t}
           </button>
         ))}
@@ -74,7 +100,13 @@ export default function AdminAssetDetail() {
 
       {/* Tab Content */}
       {tab === 'Overview' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div
+          role="tabpanel"
+          id="tabpanel-overview"
+          aria-labelledby="tab-overview"
+          tabIndex={0}
+          className="grid grid-cols-1 md:grid-cols-2 gap-5"
+        >
           <div className="bg-white rounded-xl shadow-sm p-5 space-y-3">
             <h3 className="font-semibold text-gray-700">Asset Details</h3>
             {[
@@ -112,7 +144,7 @@ export default function AdminAssetDetail() {
       )}
 
       {tab === 'Documents' && (
-        <div className="bg-white rounded-xl shadow-sm p-5">
+        <div role="tabpanel" id="tabpanel-documents" aria-labelledby="tab-documents" tabIndex={0} className="bg-white rounded-xl shadow-sm p-5">
           <h3 className="font-semibold text-gray-700 mb-3">Documents ({docs.length})</h3>
           {docs.length === 0 ? <EmptyState title="No documents" /> : (
             <div className="space-y-2">
@@ -131,7 +163,7 @@ export default function AdminAssetDetail() {
       )}
 
       {tab === 'Warranties' && (
-        <div className="bg-white rounded-xl shadow-sm p-5">
+        <div role="tabpanel" id="tabpanel-warranties" aria-labelledby="tab-warranties" tabIndex={0} className="bg-white rounded-xl shadow-sm p-5">
           <h3 className="font-semibold text-gray-700 mb-3">Warranties ({warranties.length})</h3>
           {warranties.length === 0 ? <EmptyState title="No warranties" /> : (
             <div className="space-y-2">
@@ -150,7 +182,7 @@ export default function AdminAssetDetail() {
       )}
 
       {tab === 'Lifecycle' && (
-        <div className="bg-white rounded-xl shadow-sm p-5">
+        <div role="tabpanel" id="tabpanel-lifecycle" aria-labelledby="tab-lifecycle" tabIndex={0} className="bg-white rounded-xl shadow-sm p-5">
           <h3 className="font-semibold text-gray-700 mb-3">Lifecycle Events</h3>
           {lifecycle.length === 0 ? <EmptyState title="No events recorded" /> : (
             <Timeline items={lifecycle.map(e => ({

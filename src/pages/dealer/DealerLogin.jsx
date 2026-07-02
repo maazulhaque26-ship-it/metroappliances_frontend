@@ -93,6 +93,7 @@ export default function DealerLogin() {
 
           {error && (
             <div
+              role="alert"
               className="mb-5 px-4 py-3 text-sm font-medium"
               style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.18)', borderRadius: 'var(--radius-sm)', color: '#DC2626' }}
             >
@@ -102,24 +103,27 @@ export default function DealerLogin() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="label">Email Address</label>
+              <label htmlFor="dealer-login-email" className="label">Email Address</label>
               <div className="relative">
-                <FiMail size={14} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-4)' }} strokeWidth={2} />
+                <FiMail size={14} aria-hidden="true" className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-4)' }} strokeWidth={2} />
                 <input
+                  id="dealer-login-email"
                   type="email"
                   value={email}
                   onChange={e => { setEmail(e.target.value); setFormErr(p => ({ ...p, email: '' })); }}
                   placeholder="dealer@business.com"
                   className={`input pl-10 ${formErr.email ? 'input-error' : ''}`}
                   autoComplete="email"
+                  aria-invalid={!!formErr.email}
+                  aria-describedby={formErr.email ? 'dealer-login-email-err' : undefined}
                 />
               </div>
-              {formErr.email && <p className="text-red-500 text-[11px] mt-1 font-medium">{formErr.email}</p>}
+              {formErr.email && <p id="dealer-login-email-err" role="alert" className="text-red-500 text-[11px] mt-1 font-medium">{formErr.email}</p>}
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="label !mb-0">Password</label>
+                <label htmlFor="dealer-login-password" className="label !mb-0">Password</label>
                 <Link
                   to="/dealer/forgot-password"
                   className="text-[11px] font-semibold hover:underline"
@@ -129,30 +133,37 @@ export default function DealerLogin() {
                 </Link>
               </div>
               <div className="relative">
-                <FiLock size={14} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-4)' }} strokeWidth={2} />
+                <FiLock size={14} aria-hidden="true" className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-4)' }} strokeWidth={2} />
                 <input
+                  id="dealer-login-password"
                   type={showPwd ? 'text' : 'password'}
                   value={password}
                   onChange={e => { setPassword(e.target.value); setFormErr(p => ({ ...p, password: '' })); }}
                   placeholder="Your password"
                   className={`input pl-10 pr-11 ${formErr.password ? 'input-error' : ''}`}
                   autoComplete="current-password"
+                  aria-invalid={!!formErr.password}
+                  aria-describedby={formErr.password ? 'dealer-login-password-err' : undefined}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPwd(p => !p)}
+                  aria-label={showPwd ? 'Hide password' : 'Show password'}
+                  aria-pressed={showPwd}
+                  aria-controls="dealer-login-password"
                   className="absolute right-4 top-1/2 -translate-y-1/2 transition-colors"
                   style={{ color: 'var(--text-4)' }}
                 >
-                  {showPwd ? <FiEyeOff size={15} strokeWidth={2} /> : <FiEye size={15} strokeWidth={2} />}
+                  {showPwd ? <FiEyeOff size={15} strokeWidth={2} aria-hidden="true" /> : <FiEye size={15} strokeWidth={2} aria-hidden="true" />}
                 </button>
               </div>
-              {formErr.password && <p className="text-red-500 text-[11px] mt-1 font-medium">{formErr.password}</p>}
+              {formErr.password && <p id="dealer-login-password-err" role="alert" className="text-red-500 text-[11px] mt-1 font-medium">{formErr.password}</p>}
             </div>
 
             <button
               type="submit"
               disabled={loading}
+              aria-busy={loading}
               className="w-full flex items-center justify-center gap-2.5 px-6 py-4 text-white font-bold text-[12px] uppercase tracking-[0.1em] transition-all"
               style={{
                 background: 'var(--text)',
@@ -162,9 +173,9 @@ export default function DealerLogin() {
               }}
             >
               {loading ? (
-                <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Signing in…</>
+                <><span aria-hidden="true" className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Signing in…</>
               ) : (
-                <>Sign In <FiArrowRight size={15} strokeWidth={2.5} /></>
+                <>Sign In <FiArrowRight size={15} strokeWidth={2.5} aria-hidden="true" /></>
               )}
             </button>
           </form>

@@ -120,6 +120,7 @@ export default function AdminBIDashboard() {
             <div style={{ fontSize: '14px', fontWeight: 700, color: '#111' }}>Revenue Trend — {year}</div>
             <a href="/admin/bi/revenue" style={{ fontSize: '12px', color: '#FF7A00', fontWeight: 600, textDecoration: 'none' }}>Full Analysis →</a>
           </div>
+          <div role="img" aria-label={`Area chart showing B2C and B2B revenue trends by month for ${year}`}>
           <ResponsiveContainer width="100%" height={250}>
             <AreaChart data={chartData}>
               <defs>
@@ -141,6 +142,7 @@ export default function AdminBIDashboard() {
               <Area type="monotone" dataKey="b2b" stroke="#2563EB" fill="url(#biB2B)" strokeWidth={2} name="B2B" dot={false} />
             </AreaChart>
           </ResponsiveContainer>
+          </div>
         </div>
 
         {/* Bottom Row: Funnel + Quick Stats */}
@@ -152,14 +154,21 @@ export default function AdminBIDashboard() {
               <div style={{ fontSize: '14px', fontWeight: 700, color: '#111' }}>Lead Funnel</div>
               <a href="/admin/bi/leads" style={{ fontSize: '12px', color: '#FF7A00', fontWeight: 600, textDecoration: 'none' }}>Details →</a>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div role="img" aria-label="Lead funnel showing count of leads by pipeline stage" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {funnelData.map(f => (
                 <div key={f.stage} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <div style={{ width: '80px', fontSize: '11px', fontWeight: 600, color: '#374151', textTransform: 'capitalize', textAlign: 'right', flexShrink: 0 }}>{f.stage}</div>
-                  <div style={{ flex: 1, background: '#F3F4F6', borderRadius: '4px', height: '20px', overflow: 'hidden' }}>
+                  <div
+                    role="progressbar"
+                    aria-valuenow={f.count}
+                    aria-valuemin={0}
+                    aria-valuemax={funnelData[0]?.count || 1}
+                    aria-label={`${f.stage}: ${f.count} leads`}
+                    style={{ flex: 1, background: '#F3F4F6', borderRadius: '4px', height: '20px', overflow: 'hidden' }}
+                  >
                     <div style={{ width: `${f.pct}%`, height: '100%', background: STAGE_COLORS[f.stage] || '#9CA3AF', borderRadius: '4px', transition: 'width 0.5s' }} />
                   </div>
-                  <div style={{ width: '36px', fontSize: '12px', fontWeight: 700, color: '#111', textAlign: 'right', flexShrink: 0 }}>{f.count}</div>
+                  <div style={{ width: '36px', fontSize: '12px', fontWeight: 700, color: '#111', textAlign: 'right', flexShrink: 0 }} aria-hidden="true">{f.count}</div>
                 </div>
               ))}
             </div>
