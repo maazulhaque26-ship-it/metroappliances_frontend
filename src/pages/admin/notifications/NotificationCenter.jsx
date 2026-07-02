@@ -56,23 +56,40 @@ export default function NotificationCenter({
   const [filter,   setFilter]   = useState('all');
   const [category, setCategory] = useState(null);
   const [search,   setSearch]   = useState('');
-  const panelRef = useRef(null);
+  const panelRef     = useRef(null);
+  const prevFocusRef = useRef(null);
 
-  // ESC closes
+  // Save focus + initial focus + restore on close
   useEffect(() => {
     if (!open) return;
-    const handler = (e) => { if (e.key === 'Escape') onClose(); };
+    prevFocusRef.current = document.activeElement;
+    const id = setTimeout(() => {
+      panelRef.current?.querySelector('button')?.focus();
+    }, 0);
+    return () => { clearTimeout(id); prevFocusRef.current?.focus(); };
+  }, [open]);
+
+  // Focus trap + Escape
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e) => {
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key === 'Tab') {
+        const focusable = Array.from(
+          panelRef.current?.querySelectorAll('button:not([disabled]), input, [href], [tabindex]:not([tabindex="-1"])') || []
+        );
+        if (!focusable.length) return;
+        const first = focusable[0], last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+        } else {
+          if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      }
+    };
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
   }, [open, onClose]);
-
-  // Focus first button on open
-  useEffect(() => {
-    if (open && panelRef.current) {
-      const el = panelRef.current.querySelector('button');
-      el?.focus();
-    }
-  }, [open]);
 
   // Reset search on close
   useEffect(() => {

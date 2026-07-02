@@ -39,7 +39,8 @@ export default function PersonalizationDrawer({ open, onClose }) {
   const [layout, setLayoutState] = useState(getLayout);
   const [theme,  setThemeState]  = useState(getThemePref);
   const [confirmReset, setConfirmReset] = useState(null);
-  const panelRef = useRef(null);
+  const panelRef     = useRef(null);
+  const prevFocusRef = useRef(null);
 
   // Sync state if changed externally
   useEffect(() => {
@@ -51,19 +52,42 @@ export default function PersonalizationDrawer({ open, onClose }) {
     return () => window.removeEventListener('ma:personalization', handler);
   }, []);
 
-  // ESC closes
+  // Save focus + initial focus + restore on close
   useEffect(() => {
     if (!open) return;
-    const handler = (e) => { if (e.key === 'Escape') onClose(); };
+    prevFocusRef.current = document.activeElement;
+    const id = setTimeout(() => {
+      panelRef.current?.querySelector('button')?.focus();
+    }, 50);
+    return () => { clearTimeout(id); prevFocusRef.current?.focus(); };
+  }, [open]);
+
+  // Reset confirm on close
+  useEffect(() => {
+    if (!open) setConfirmReset(null);
+  }, [open]);
+
+  // Focus trap + Escape
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e) => {
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key === 'Tab') {
+        const focusable = Array.from(
+          panelRef.current?.querySelectorAll('button:not([disabled]), input, [tabindex]:not([tabindex="-1"])') || []
+        );
+        if (!focusable.length) return;
+        const first = focusable[0], last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+        } else {
+          if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      }
+    };
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
   }, [open, onClose]);
-
-  // Focus on open
-  useEffect(() => {
-    if (open) setTimeout(() => panelRef.current?.querySelector('button')?.focus(), 50);
-    if (!open) setConfirmReset(null);
-  }, [open]);
 
   const handleLayout = (val) => { setLayoutState(val); setLayout(val); };
   const handleTheme  = (val) => { setThemeState(val);  applyTheme(val); };

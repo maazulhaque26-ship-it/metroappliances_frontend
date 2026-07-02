@@ -10,18 +10,43 @@ const PAGES = [
 
 export default function TechSearch({ open, onClose }) {
   const [query, setQuery] = useState('');
-  const navigate = useNavigate();
-  const inputRef = useRef(null);
+  const navigate   = useNavigate();
+  const inputRef   = useRef(null);
+  const dialogRef  = useRef(null);
+  const prevFocusRef = useRef(null);
 
+  // Save focus on open, restore on close
   useEffect(() => {
-    if (open) { setQuery(''); setTimeout(() => inputRef.current?.focus(), 50); }
+    if (open) {
+      prevFocusRef.current = document.activeElement;
+      setQuery('');
+      setTimeout(() => inputRef.current?.focus(), 50);
+    } else {
+      prevFocusRef.current?.focus();
+    }
   }, [open]);
 
+  // Focus trap + Escape
   useEffect(() => {
-    const handler = e => { if (e.key === 'Escape') onClose(); };
+    if (!open) return;
+    const handler = (e) => {
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key === 'Tab') {
+        const focusable = Array.from(
+          dialogRef.current?.querySelectorAll('button:not([disabled]), input, [tabindex]:not([tabindex="-1"])') || []
+        );
+        if (!focusable.length) return;
+        const first = focusable[0], last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+        } else {
+          if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      }
+    };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [onClose]);
+  }, [open, onClose]);
 
   const results = query.trim()
     ? PAGES.filter(p =>
@@ -33,17 +58,31 @@ export default function TechSearch({ open, onClose }) {
 
   if (!open) return null;
   return (
-    <div onClick={onClose}
-      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 2000, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '80px 16px 0' }}>
-      <div onClick={e => e.stopPropagation()}
-        style={{ background: '#fff', borderRadius: 14, width: '100%', maxWidth: 520, boxShadow: '0 20px 60px rgba(0,0,0,0.25)', overflow: 'hidden', fontFamily: 'Poppins, sans-serif' }}>
-
+    <div
+      onClick={onClose}
+      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 2000, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '80px 16px 0' }}
+    >
+      <div
+        ref={dialogRef}
+        onClick={e => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Search technician pages"
+        style={{ background: '#fff', borderRadius: 14, width: '100%', maxWidth: 520, boxShadow: '0 20px 60px rgba(0,0,0,0.25)', overflow: 'hidden', fontFamily: 'Poppins, sans-serif' }}
+      >
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px', borderBottom: '1px solid #E5E7EB' }}>
-          <FiSearch size={16} color="#9CA3AF" />
-          <input ref={inputRef} value={query} onChange={e => setQuery(e.target.value)}
+          <FiSearch size={16} color="#9CA3AF" aria-hidden="true" />
+          <input
+            ref={inputRef}
+            value={query}
+            onChange={e => setQuery(e.target.value)}
             placeholder="Search jobs, pages…"
-            style={{ flex: 1, border: 'none', outline: 'none', fontSize: 14, fontFamily: 'inherit', background: 'transparent', color: '#111827' }} />
-          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#9CA3AF', padding: 0 }}><FiX size={16} /></button>
+            aria-label="Search technician pages"
+            style={{ flex: 1, border: 'none', outline: 'none', fontSize: 14, fontFamily: 'inherit', background: 'transparent', color: '#111827' }}
+          />
+          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#9CA3AF', padding: 0 }} aria-label="Close search">
+            <FiX size={16} aria-hidden="true" />
+          </button>
         </div>
 
         <div style={{ maxHeight: 340, overflowY: 'auto', padding: '8px 0' }}>
@@ -56,7 +95,7 @@ export default function TechSearch({ open, onClose }) {
                 style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 12, padding: '10px 16px', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left' }}
                 onMouseEnter={e => e.currentTarget.style.background = 'rgba(59,130,246,0.06)'}
                 onMouseLeave={e => e.currentTarget.style.background = 'none'}>
-                <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(59,130,246,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <div aria-hidden="true" style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(59,130,246,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <Icon size={14} color="#3B82F6" />
                 </div>
                 <div>

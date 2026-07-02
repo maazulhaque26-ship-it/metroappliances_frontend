@@ -126,6 +126,21 @@ export default function DealerLayout({ children }) {
       className="flex min-h-screen"
       style={{ background: 'var(--bg)', fontFamily: 'var(--font-body, Poppins, sans-serif)' }}
     >
+      {/* Skip to main content */}
+      <a
+        href="#main-content"
+        style={{
+          position: 'absolute', top: 0, left: 8, zIndex: 9999,
+          padding: '8px 16px', background: 'var(--card,#fff)', border: '2px solid var(--accent,#FF7A00)',
+          borderRadius: '6px', fontSize: '13px', fontWeight: 600, color: 'var(--accent,#FF7A00)',
+          textDecoration: 'none', transform: 'translateY(-100%)', transition: 'transform 0s',
+        }}
+        onFocus={e => { e.currentTarget.style.transform = 'translateY(8px)'; }}
+        onBlur={e => { e.currentTarget.style.transform = 'translateY(-100%)'; }}
+      >
+        Skip to main content
+      </a>
+
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -497,6 +512,7 @@ export default function DealerLayout({ children }) {
 
         {/* Page content */}
         <main
+          id="main-content"
           className="flex-1"
           style={{
             padding: '24px',

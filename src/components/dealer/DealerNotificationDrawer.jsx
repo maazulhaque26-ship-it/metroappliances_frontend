@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FiBell, FiX, FiPackage, FiDollarSign, FiCheckCircle,
@@ -20,6 +20,8 @@ export default function DealerNotificationDrawer({ open, onClose, onCountChange 
   const [notifications, setNotifications] = useState([]);
   const [loading,       setLoading]       = useState(false);
   const [tab,           setTab]           = useState('unread');
+  const drawerRef    = useRef(null);
+  const prevFocusRef = useRef(null);
 
   useEffect(() => {
     if (!open) return;
@@ -30,9 +32,34 @@ export default function DealerNotificationDrawer({ open, onClose, onCountChange 
       .finally(() => setLoading(false));
   }, [open]);
 
+  // Save focus + initial focus + restore on close
   useEffect(() => {
     if (!open) return;
-    const handler = (e) => { if (e.key === 'Escape') onClose(); };
+    prevFocusRef.current = document.activeElement;
+    const id = setTimeout(() => {
+      drawerRef.current?.querySelector('button:not([disabled])')?.focus();
+    }, 0);
+    return () => { clearTimeout(id); prevFocusRef.current?.focus(); };
+  }, [open]);
+
+  // Focus trap + Escape
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e) => {
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key === 'Tab') {
+        const focusable = Array.from(
+          drawerRef.current?.querySelectorAll('button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])') || []
+        );
+        if (!focusable.length) return;
+        const first = focusable[0], last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+        } else {
+          if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      }
+    };
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
   }, [open, onClose]);
@@ -75,6 +102,7 @@ export default function DealerNotificationDrawer({ open, onClose, onCountChange 
 
       {/* Drawer */}
       <div
+        ref={drawerRef}
         role="dialog"
         aria-label="Notifications"
         aria-modal="true"

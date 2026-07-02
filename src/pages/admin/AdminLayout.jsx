@@ -328,6 +328,21 @@ export default function AdminLayout({ children }) {
     >
       <div className="min-h-screen flex" style={{ background: 'var(--bg)', fontFamily: 'var(--font-body)' }}>
 
+        {/* Skip to main content */}
+        <a
+          href="#main-content"
+          style={{
+            position: 'absolute', top: 0, left: 8, zIndex: 9999,
+            padding: '8px 16px', background: 'var(--card)', border: '2px solid var(--accent)',
+            borderRadius: 'var(--radius-sm)', fontSize: '13px', fontWeight: 600, color: 'var(--accent)',
+            textDecoration: 'none', transform: 'translateY(-100%)', transition: 'transform 0s',
+          }}
+          onFocus={e => { e.currentTarget.style.transform = 'translateY(8px)'; }}
+          onBlur={e => { e.currentTarget.style.transform = 'translateY(-100%)'; }}
+        >
+          Skip to main content
+        </a>
+
         {/* ── Sidebar ──────────────────────────────────────────────── */}
         <aside
           className={`fixed top-0 left-0 bottom-0 z-40 flex overflow-hidden transition-[width,transform] duration-200 ${
@@ -356,8 +371,8 @@ export default function AdminLayout({ children }) {
               style={{ height: '92px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
             >
               <Logo imageClass="h-12 w-auto" />
-              <button onClick={() => setSidebarOpen(false)} className="lg:hidden p-1 text-white/50 hover:text-white flex-shrink-0">
-                <FiX size={18} />
+              <button onClick={() => setSidebarOpen(false)} className="lg:hidden p-1 text-white/50 hover:text-white flex-shrink-0" aria-label="Close navigation">
+                <FiX size={18} aria-hidden="true" />
               </button>
             </div>
 
@@ -413,11 +428,11 @@ export default function AdminLayout({ children }) {
 
         {/* Mobile overlay */}
         {sidebarOpen && (
-          <div className="fixed inset-0 z-30 lg:hidden" style={{ background: 'rgba(0,0,0,0.65)' }} onClick={() => setSidebarOpen(false)} />
+          <div className="fixed inset-0 z-30 lg:hidden" style={{ background: 'rgba(0,0,0,0.65)' }} onClick={() => setSidebarOpen(false)} aria-hidden="true" />
         )}
 
         {/* ── Main content ─────────────────────────────────────────── */}
-        <main className={`flex-1 min-w-0 flex flex-col transition-[margin-left] duration-200 ${sidebarCollapsed ? 'lg:ml-12' : 'lg:ml-[268px]'}`}>
+        <main id="main-content" className={`flex-1 min-w-0 flex flex-col transition-[margin-left] duration-200 ${sidebarCollapsed ? 'lg:ml-12' : 'lg:ml-[268px]'}`}>
 
           {/* Enterprise Header */}
           <AdminHeader

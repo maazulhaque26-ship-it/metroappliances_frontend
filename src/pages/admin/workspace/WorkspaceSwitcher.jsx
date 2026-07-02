@@ -36,6 +36,7 @@ export default function WorkspaceSwitcher() {
   const [open, setOpen] = useState(false);
   const containerRef = useRef(null);
   const liveRef      = useRef(null);
+  const triggerRef   = useRef(null);
 
   // Only visible for SuperAdmin / Admin actual roles
   if (actualRoleId !== 'super_admin' && actualRoleId !== 'admin') return null;
@@ -44,19 +45,44 @@ export default function WorkspaceSwitcher() {
   const currentLabel   = SWITCHABLE_WORKSPACES.find(w => w.id === effectiveId)?.label ?? 'Admin';
   const actualLabel    = SWITCHABLE_WORKSPACES.find(w => w.id === actualRoleId)?.label ?? actualRoleId;
 
-  // Close on outside click
+  // Close on outside click — restore focus to trigger
   useEffect(() => {
     const close = e => {
-      if (containerRef.current && !containerRef.current.contains(e.target)) setOpen(false);
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
     };
     document.addEventListener('mousedown', close);
     return () => document.removeEventListener('mousedown', close);
   }, []);
 
-  // Close on Escape
+  // Escape + Arrow key navigation in listbox
   useEffect(() => {
     if (!open) return;
-    const handler = e => { if (e.key === 'Escape') setOpen(false); };
+    const handler = e => {
+      if (e.key === 'Escape') {
+        setOpen(false);
+        triggerRef.current?.focus();
+        return;
+      }
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        const options = Array.from(
+          containerRef.current?.querySelectorAll('[role="option"]') || []
+        );
+        if (!options.length) return;
+        const curr = document.activeElement;
+        const idx  = options.indexOf(curr);
+        if (e.key === 'ArrowDown') {
+          const next = options[idx + 1] ?? options[0];
+          next.focus();
+        } else {
+          const prev = options[idx - 1] ?? options[options.length - 1];
+          prev.focus();
+        }
+      }
+    };
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
   }, [open]);
@@ -74,12 +100,14 @@ export default function WorkspaceSwitcher() {
     const target   = SWITCHABLE_WORKSPACES.find(w => w.id === roleId)?.label ?? roleId;
     onSetPreview?.(isActual ? null : roleId);
     setOpen(false);
+    triggerRef.current?.focus();
     announce(isActual ? `Returned to ${target} workspace` : `Workspace preview: ${target}`);
   }, [actualRoleId, onSetPreview, announce]);
 
   const handleReset = useCallback(() => {
     onSetPreview?.(null);
     setOpen(false);
+    triggerRef.current?.focus();
     announce(`Returned to ${actualLabel} workspace`);
   }, [onSetPreview, actualLabel, announce]);
 
@@ -96,6 +124,7 @@ export default function WorkspaceSwitcher() {
 
       {/* Trigger button */}
       <button
+        ref={triggerRef}
         onClick={() => setOpen(o => !o)}
         className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 transition-all flex-shrink-0"
         style={{

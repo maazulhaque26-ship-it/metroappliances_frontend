@@ -80,6 +80,21 @@ export default function EmployeeLayout() {
   return (
     <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'var(--font-body,Poppins,sans-serif)', background: 'var(--bg,#F9FAFB)' }}>
 
+      {/* Skip to main content */}
+      <a
+        href="#main-content"
+        style={{
+          position: 'absolute', top: 0, left: 8, zIndex: 9999,
+          padding: '8px 16px', background: 'var(--card,#fff)', border: '2px solid var(--accent,#FF7A00)',
+          borderRadius: '6px', fontSize: '13px', fontWeight: 600, color: 'var(--accent,#FF7A00)',
+          textDecoration: 'none', transform: 'translateY(-100%)', transition: 'transform 0s',
+        }}
+        onFocus={e => { e.currentTarget.style.transform = 'translateY(8px)'; }}
+        onBlur={e => { e.currentTarget.style.transform = 'translateY(-100%)'; }}
+      >
+        Skip to main content
+      </a>
+
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -231,7 +246,7 @@ export default function EmployeeLayout() {
             </button>
 
             {profileOpen && (
-              <div style={{ position: 'absolute', top: '42px', right: 0, background: 'var(--card,#fff)', border: '1px solid var(--border,#E5E7EB)', borderRadius: '10px', boxShadow: '0 8px 24px rgba(0,0,0,0.1)', minWidth: '200px', zIndex: 100, overflow: 'hidden' }}>
+              <div role="menu" aria-label="Profile menu" style={{ position: 'absolute', top: '42px', right: 0, background: 'var(--card,#fff)', border: '1px solid var(--border,#E5E7EB)', borderRadius: '10px', boxShadow: '0 8px 24px rgba(0,0,0,0.1)', minWidth: '200px', zIndex: 100, overflow: 'hidden' }}>
                 <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--border,#E5E7EB)' }}>
                   <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text,#111)' }}>{displayName}</div>
                   <div style={{ fontSize: '11px', color: 'var(--text-4,#9CA3AF)', marginTop: '2px' }}>
@@ -239,6 +254,7 @@ export default function EmployeeLayout() {
                   </div>
                 </div>
                 <button
+                  role="menuitem"
                   onClick={handleLogout}
                   style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', border: 'none', background: 'none', cursor: 'pointer', fontSize: '13px', color: '#EF4444', fontFamily: 'inherit', textAlign: 'left' }}
                 >
@@ -251,7 +267,7 @@ export default function EmployeeLayout() {
         </header>
 
         {/* Page content */}
-        <main style={{ flex: 1 }}>
+        <main id="main-content" style={{ flex: 1 }}>
           <Outlet />
         </main>
       </div>

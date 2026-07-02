@@ -51,6 +51,7 @@ export default function SearchDialog({ open, onClose, searchScope }) {
   const inputRef    = useRef(null);
   const listRef     = useRef(null);
   const prevFocus   = useRef(null);
+  const dialogRef   = useRef(null);
 
   // Load from localStorage on open
   useEffect(() => {
@@ -134,6 +135,19 @@ export default function SearchDialog({ open, onClose, searchScope }) {
         e.preventDefault();
         if (flatItems[activeIdx]) goTo(flatItems[activeIdx].path, query);
         break;
+      case 'Tab': {
+        const focusable = Array.from(
+          dialogRef.current?.querySelectorAll('button:not([disabled]), input, [tabindex]:not([tabindex="-1"])') || []
+        );
+        if (!focusable.length) break;
+        const first = focusable[0], last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+        } else {
+          if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+        break;
+      }
       default:
         break;
     }
@@ -194,6 +208,7 @@ export default function SearchDialog({ open, onClose, searchScope }) {
 
       {/* Panel */}
       <div
+        ref={dialogRef}
         className="relative w-full flex flex-col"
         style={{
           maxWidth: 680,

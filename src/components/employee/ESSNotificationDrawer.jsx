@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { FiX, FiBell, FiAlertCircle, FiInfo, FiRadio, FiArrowRight } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { essGetAnnouncements } from '../../services/employeeSelfServiceAPI';
@@ -19,6 +19,8 @@ function PriorityIcon({ priority }) {
 export default function ESSNotificationDrawer({ open, onClose }) {
   const [items, setItems]     = useState([]);
   const [loading, setLoading] = useState(false);
+  const drawerRef    = useRef(null);
+  const prevFocusRef = useRef(null);
 
   const load = useCallback(() => {
     setLoading(true);
@@ -30,9 +32,38 @@ export default function ESSNotificationDrawer({ open, onClose }) {
 
   useEffect(() => { if (open) load(); }, [open, load]);
 
+  // Save focus on open, restore on close (slide pattern — component stays mounted)
   useEffect(() => {
-    const handler = (e) => { if (e.key === 'Escape') onClose(); };
-    if (open) window.addEventListener('keydown', handler);
+    if (open) {
+      prevFocusRef.current = document.activeElement;
+      const id = setTimeout(() => {
+        drawerRef.current?.querySelector('button:not([disabled])')?.focus();
+      }, 50); // slight delay for slide animation
+      return () => clearTimeout(id);
+    } else {
+      prevFocusRef.current?.focus();
+    }
+  }, [open]);
+
+  // Focus trap + Escape (active only when open)
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e) => {
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key === 'Tab') {
+        const focusable = Array.from(
+          drawerRef.current?.querySelectorAll('button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])') || []
+        );
+        if (!focusable.length) return;
+        const first = focusable[0], last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+        } else {
+          if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      }
+    };
+    window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, [open, onClose]);
 
@@ -47,6 +78,7 @@ export default function ESSNotificationDrawer({ open, onClose }) {
       )}
 
       <div
+        ref={drawerRef}
         role="dialog"
         aria-modal="true"
         aria-label="Announcements"
