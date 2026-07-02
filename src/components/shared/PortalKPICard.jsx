@@ -1,6 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+const focusStyle = {
+  boxShadow: 'var(--shadow-md, 0 4px 12px rgba(0,0,0,0.08))',
+};
+
 const PortalKPICard = React.memo(function PortalKPICard({
   label, value, sub, icon: Icon, color = 'var(--accent)', to,
 }) {
@@ -21,12 +25,12 @@ const PortalKPICard = React.memo(function PortalKPICard({
           {label}
         </span>
         {Icon && (
-          <div style={{
+          <div aria-hidden="true" style={{
             width: 30, height: 30, borderRadius: 8, flexShrink: 0,
             background: `${color}18`,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
-            <Icon size={14} style={{ color }} strokeWidth={2} aria-hidden="true" />
+            <Icon size={14} style={{ color }} strokeWidth={2} />
           </div>
         )}
       </div>
@@ -43,16 +47,28 @@ const PortalKPICard = React.memo(function PortalKPICard({
   );
 
   if (to) {
+    const linkLabel = [label, value, sub].filter(Boolean).join(': ');
     return (
       <Link
         to={to}
+        aria-label={linkLabel}
         style={{ textDecoration: 'none', display: 'block' }}
         onMouseEnter={e => {
           const card = e.currentTarget.firstChild;
-          card.style.boxShadow = 'var(--shadow-md, 0 4px 12px rgba(0,0,0,0.08))';
+          card.style.boxShadow = focusStyle.boxShadow;
           card.style.borderColor = `${color}40`;
         }}
         onMouseLeave={e => {
+          const card = e.currentTarget.firstChild;
+          card.style.boxShadow = '';
+          card.style.borderColor = 'var(--border)';
+        }}
+        onFocus={e => {
+          const card = e.currentTarget.firstChild;
+          card.style.boxShadow = focusStyle.boxShadow;
+          card.style.borderColor = `${color}40`;
+        }}
+        onBlur={e => {
           const card = e.currentTarget.firstChild;
           card.style.boxShadow = '';
           card.style.borderColor = 'var(--border)';

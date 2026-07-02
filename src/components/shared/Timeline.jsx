@@ -13,15 +13,15 @@ export default function Timeline({ events = [], style }) {
   );
 
   return (
-    <div style={{ fontFamily: 'var(--font-body, Poppins, sans-serif)', ...style }}>
+    <ol style={{ listStyle: 'none', margin: 0, padding: 0, fontFamily: 'var(--font-body, Poppins, sans-serif)', ...style }}>
       {events.map((ev, i) => {
         const Icon = ev.icon || FiCircle;
         return (
-          <div key={ev._id || i} style={{ display: 'flex', gap: '14px', paddingBottom: i < events.length - 1 ? '20px' : 0, position: 'relative' }}>
+          <li key={ev._id || i} style={{ display: 'flex', gap: '14px', paddingBottom: i < events.length - 1 ? '20px' : 0, position: 'relative' }}>
             {i < events.length - 1 && (
-              <div style={{ position: 'absolute', left: '17px', top: '36px', bottom: 0, width: '1px', background: '#E5E7EB' }} />
+              <div aria-hidden="true" style={{ position: 'absolute', left: '17px', top: '36px', bottom: 0, width: '1px', background: '#E5E7EB' }} />
             )}
-            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: ev.color ? `${ev.color}20` : '#F3F4F6', border: `2px solid ${ev.color || '#E5E7EB'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, zIndex: 1 }}>
+            <div aria-hidden="true" style={{ width: '36px', height: '36px', borderRadius: '50%', background: ev.color ? `${ev.color}20` : '#F3F4F6', border: `2px solid ${ev.color || '#E5E7EB'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, zIndex: 1 }}>
               <Icon size={14} style={{ color: ev.color || '#9CA3AF' }} />
             </div>
             <div style={{ paddingTop: '6px', flex: 1 }}>
@@ -34,9 +34,9 @@ export default function Timeline({ events = [], style }) {
               )}
               <div style={{ fontSize: '11px', color: '#9CA3AF', marginTop: '4px' }}>{fmtDate(ev.timestamp || ev.createdAt)}</div>
             </div>
-          </div>
+          </li>
         );
       })}
-    </div>
+    </ol>
   );
 }

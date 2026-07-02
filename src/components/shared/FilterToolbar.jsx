@@ -7,6 +7,7 @@ export default function FilterToolbar({ filters, value, onChange, style }) {
         <button
           key={f.value}
           onClick={() => onChange(f.value)}
+          aria-pressed={value === f.value}
           style={{
             padding: '7px 14px',
             borderRadius: '20px',

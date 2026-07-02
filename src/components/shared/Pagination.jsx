@@ -19,11 +19,14 @@ export default function Pagination({ page, total, limit, onPageChange }) {
     range.push(pages);
   }
 
-  const btn = (content, target, disabled, active) => (
+  const btn = (content, target, disabled, active, ariaLabel, ariaDisabled) => (
     <button
       key={String(content)}
       onClick={() => !disabled && target && onPageChange(target)}
       disabled={disabled}
+      aria-label={ariaLabel}
+      aria-current={active ? 'page' : undefined}
+      aria-disabled={ariaDisabled || undefined}
       style={{
         minWidth: '34px', height: '34px', display: 'flex', alignItems: 'center', justifyContent: 'center',
         border: active ? 'none' : '1px solid #E5E7EB',
@@ -38,19 +41,19 @@ export default function Pagination({ page, total, limit, onPageChange }) {
   );
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', padding: '16px 0 0' }}>
+    <nav aria-label="Pagination" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', padding: '16px 0 0' }}>
       <span style={{ fontSize: '12px', color: '#9CA3AF', fontFamily: 'var(--font-body, Poppins, sans-serif)' }}>
         Showing {from}–{to} of {total}
       </span>
       <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-        {btn(<FiChevronLeft size={14} />, page - 1, page <= 1, false)}
+        {btn(<><FiChevronLeft size={14} aria-hidden="true" /></>, page - 1, page <= 1, false, 'Previous page', page <= 1)}
         {range.map((r, i) =>
           r === '…'
-            ? <span key={`ellipsis-${i}`} style={{ padding: '0 4px', color: '#9CA3AF', fontSize: '13px' }}>…</span>
-            : btn(r, r, false, r === page)
+            ? <span key={`ellipsis-${i}`} style={{ padding: '0 4px', color: '#9CA3AF', fontSize: '13px' }} aria-hidden="true">…</span>
+            : btn(r, r, false, r === page, `Page ${r}`)
         )}
-        {btn(<FiChevronRight size={14} />, page + 1, page >= pages, false)}
+        {btn(<><FiChevronRight size={14} aria-hidden="true" /></>, page + 1, page >= pages, false, 'Next page', page >= pages)}
       </div>
-    </div>
+    </nav>
   );
 }
