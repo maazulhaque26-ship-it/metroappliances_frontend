@@ -146,7 +146,7 @@ export default function AdminBIDashboard() {
         </div>
 
         {/* Bottom Row: Funnel + Quick Stats */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
 
           {/* Lead Funnel */}
           <div style={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: '12px', padding: '20px' }}>

@@ -127,7 +127,7 @@ export default function EmployeeLayout() {
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden"
-            style={{ border: 'none', background: 'none', color: '#9CA3AF', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', flexShrink: 0 }}
+            style={{ border: 'none', background: 'none', color: '#9CA3AF', cursor: 'pointer', minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
             aria-label="Close sidebar"
           >
             <FiX size={18} />
@@ -171,7 +171,7 @@ export default function EmployeeLayout() {
         </nav>
 
         {/* Logout */}
-        <div style={{ padding: '10px 8px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+        <div style={{ padding: '10px 8px', paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 10px)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
           <button
             onClick={handleLogout}
             style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '9px', padding: '9px 10px', background: 'rgba(239,68,68,0.1)', border: 'none', borderRadius: '7px', color: '#FCA5A5', fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit', transition: 'background 0.15s' }}
@@ -192,7 +192,7 @@ export default function EmployeeLayout() {
           <button
             onClick={() => setSidebarOpen(true)}
             className="lg:hidden"
-            style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--text-2,#374151)', padding: '4px', display: 'flex', alignItems: 'center' }}
+            style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--text-2,#374151)', minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             aria-label="Open navigation menu"
           >
             <FiMenu size={20} />
@@ -225,7 +225,7 @@ export default function EmployeeLayout() {
           {/* Bell */}
           <button
             onClick={() => setNotifOpen(true)}
-            style={{ width: '34px', height: '34px', border: 'none', background: 'var(--bg,#F9FAFB)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text-2,#374151)', flexShrink: 0 }}
+            style={{ width: '44px', height: '44px', border: 'none', background: 'var(--bg,#F9FAFB)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text-2,#374151)', flexShrink: 0 }}
             aria-label="Open announcements"
           >
             <FiBell size={17} />
@@ -236,7 +236,7 @@ export default function EmployeeLayout() {
             <button
               onClick={() => setProfileOpen(o => !o)}
               aria-expanded={profileOpen}
-              style={{ display: 'flex', alignItems: 'center', gap: '8px', border: 'none', background: 'none', cursor: 'pointer', padding: '4px' }}
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', border: 'none', background: 'none', cursor: 'pointer', minWidth: 44, minHeight: 44 }}
               aria-label="Open profile menu"
             >
               <div style={{ width: 30, height: 30, borderRadius: '50%', background: 'var(--accent,#FF7A00)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>

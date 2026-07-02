@@ -64,7 +64,7 @@ export default function AdminHeader({
           {/* Mobile: open drawer */}
           <button
             onClick={() => setSidebarOpen(true)}
-            className="lg:hidden p-1.5 flex-shrink-0 transition-colors rounded"
+            className="lg:hidden touch-target flex-shrink-0 transition-colors rounded"
             style={{ color: 'var(--text-3)' }}
             aria-label="Open navigation"
             onMouseEnter={e => e.currentTarget.style.color = 'var(--text)'}
@@ -267,7 +267,7 @@ export default function AdminHeader({
           {/* Notification Center — opens full slide-over panel */}
           <button
             onClick={onOpenNotifications}
-            className="relative p-1.5 transition-colors rounded"
+            className="relative touch-target transition-colors rounded"
             style={{ color: 'var(--text-3)' }}
             aria-label={`Notifications${unseenCount > 0 ? `, ${unseenCount} unread` : ''}`}
             aria-haspopup="dialog"
@@ -297,7 +297,7 @@ export default function AdminHeader({
           {/* Personalization */}
           <button
             onClick={onOpenPersonalization}
-            className="p-1.5 transition-colors rounded"
+            className="touch-target transition-colors rounded"
             style={{ color: 'var(--text-3)' }}
             aria-label="Personalization settings"
             aria-haspopup="dialog"

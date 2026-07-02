@@ -71,9 +71,10 @@ export default function AgentLayout() {
       </nav>
 
       {/* Logout */}
-      <div style={{ padding: '12px 8px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-        <button onClick={handleLogout} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '10px', padding: '9px 10px', borderRadius: '8px', border: 'none', background: 'transparent', color: 'rgba(255,255,255,0.4)', fontSize: '13px', cursor: 'pointer' }}>
-          <span>🚪</span> Sign Out
+      <div style={{ padding: '12px 8px', paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 12px)', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <button onClick={handleLogout} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 10px', borderRadius: '8px', border: 'none', background: 'transparent', color: 'rgba(255,255,255,0.4)', fontSize: '13px', cursor: 'pointer' }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign Out
         </button>
       </div>
     </div>
@@ -82,7 +83,7 @@ export default function AgentLayout() {
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: '#F9FAFB' }}>
       {/* Desktop sidebar */}
-      <div className="hidden md:flex" style={{ display: 'flex' }}>
+      <div className="hidden md:flex">
         <Sidebar />
       </div>
 
@@ -98,7 +99,9 @@ export default function AgentLayout() {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
         {/* Mobile header */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', background: '#fff', borderBottom: '1px solid #E5E7EB', position: 'sticky', top: 0, zIndex: 10 }}>
-          <button onClick={() => setMobileOpen(true)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '20px', color: '#374151' }}>☰</button>
+          <button onClick={() => setMobileOpen(true)} aria-label="Open navigation" style={{ background: 'none', border: 'none', cursor: 'pointer', minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#374151' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
           <div style={{ fontSize: '14px', fontWeight: 700, color: '#111' }}>Sales Agent Portal</div>
           <div style={{ marginLeft: 'auto', fontSize: '12px', color: '#9CA3AF' }}>{agent?.name}</div>
         </div>

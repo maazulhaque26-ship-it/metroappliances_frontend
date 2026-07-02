@@ -8,6 +8,12 @@
    ╚══════════════════════════════════════════════════════════════╝ */
 
 :root {
+  /* ── iOS Safe Area Insets (requires viewport-fit=cover) ────── */
+  --sat: env(safe-area-inset-top,    0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left,   0px);
+  --sar: env(safe-area-inset-right,  0px);
+
   /* ── Brand Colors ─────────────────────────────────────────── */
   --accent:         #FF8A00;
   --accent-dark:    #E67A00;
@@ -248,7 +254,7 @@
     border-radius: var(--radius-sm);
     color: var(--text);
     font-family: var(--font-body);
-    font-size: 0.9375rem;
+    font-size: 1rem;
     transition: border-color var(--duration-fast) var(--ease),
                 box-shadow   var(--duration-fast) var(--ease);
   }
@@ -448,6 +454,25 @@
     -webkit-backdrop-filter: blur(16px) saturate(180%);
   }
 
+  /* Safe area padding utilities — rely on --sat/--sab/--sal/--sar vars */
+  .pt-safe  { padding-top:    var(--sat); }
+  .pb-safe  { padding-bottom: var(--sab); }
+  .pl-safe  { padding-left:   var(--sal); }
+  .pr-safe  { padding-right:  var(--sar); }
+  .pb-safe-4  { padding-bottom: calc(var(--sab) + 1rem);    }
+  .pb-safe-6  { padding-bottom: calc(var(--sab) + 1.5rem);  }
+  .pb-safe-10 { padding-bottom: calc(var(--sab) + 2.5rem);  }
+  .px-safe  { padding-left: var(--sal); padding-right: var(--sar); }
+
+  /* Touch target expansion — invisible hit area around small icons */
+  .touch-target {
+    min-width:  44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   /* Orange gradient text — used on 404 page */
   .text-gradient-orange {
     background: linear-gradient(135deg, var(--accent) 0%, #ff5500 100%);
@@ -573,6 +598,16 @@ input[type="checkbox"] { accent-color: var(--text); cursor: pointer; }
   margin-bottom: 1.25rem;
 }
 .prose-dark p { margin-bottom: 1.5rem; }
+
+/* ── Mobile: prevent iOS Safari auto-zoom on input focus ────────── */
+/* iOS zooms when focused input font-size < 16px; .input is already 1rem */
+@media screen and (max-width: 767px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
 
 /* ── Admin-specific ─────────────────────────────────────────────── */
 .admin-sidebar-item {

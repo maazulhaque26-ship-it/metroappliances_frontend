@@ -371,7 +371,7 @@ export default function AdminLayout({ children }) {
               style={{ height: '92px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
             >
               <Logo imageClass="h-12 w-auto" />
-              <button onClick={() => setSidebarOpen(false)} className="lg:hidden p-1 text-white/50 hover:text-white flex-shrink-0" aria-label="Close navigation">
+              <button onClick={() => setSidebarOpen(false)} className="lg:hidden flex-shrink-0 touch-target text-white/50 hover:text-white" aria-label="Close navigation">
                 <FiX size={18} aria-hidden="true" />
               </button>
             </div>
@@ -402,7 +402,7 @@ export default function AdminLayout({ children }) {
             />
 
             {/* User footer */}
-            <div className="px-4 py-4 flex-shrink-0" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            <div className="px-4 pt-4 flex-shrink-0 pb-safe-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
               <div className="flex items-center gap-3 px-3 py-3 mb-2" style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-sm)' }}>
                 <div className="w-7 h-7 flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0" style={{ background: 'var(--accent)', borderRadius: 'var(--radius-sm)' }}>
                   {user?.name?.[0]?.toUpperCase()}

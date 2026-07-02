@@ -60,7 +60,8 @@ export default function WarehouseLayout() {
             <p className="text-sm font-bold" style={{ color: 'var(--text)', fontFamily: 'Poppins' }}>Warehouse</p>
             <p className="text-xs" style={{ color: 'var(--text-4)' }}>Portal</p>
           </div>
-          <button className="ml-auto md:hidden" onClick={() => setSidebarOpen(false)}>
+          <button className="ml-auto md:hidden" onClick={() => setSidebarOpen(false)} aria-label="Close navigation"
+            style={{ minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer' }}>
             <FiX size={18} style={{ color: 'var(--text-4)' }} />
           </button>
         </div>
@@ -96,7 +97,7 @@ export default function WarehouseLayout() {
         </nav>
 
         {/* Logout */}
-        <div className="px-3 py-4 border-t" style={{ borderColor: 'var(--border)' }}>
+        <div className="px-3 pt-4 border-t pb-safe-4" style={{ borderColor: 'var(--border)' }}>
           <button
             onClick={handleLogout}
             className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm"
@@ -118,7 +119,8 @@ export default function WarehouseLayout() {
         {/* Top bar */}
         <header className="flex items-center gap-4 px-5 py-3 border-b sticky top-0 z-20"
                 style={{ background: 'var(--card)', borderColor: 'var(--border)' }}>
-          <button className="md:hidden" onClick={() => setSidebarOpen(true)}>
+          <button className="md:hidden" onClick={() => setSidebarOpen(true)} aria-label="Open navigation"
+            style={{ minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer' }}>
             <FiMenu size={20} style={{ color: 'var(--text)' }} />
           </button>
           <h1 className="text-sm font-bold" style={{ color: 'var(--text)', fontFamily: 'Poppins' }}>

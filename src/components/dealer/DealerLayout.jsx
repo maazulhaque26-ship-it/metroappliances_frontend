@@ -190,7 +190,7 @@ export default function DealerLayout({ children }) {
           <button
             className="lg:hidden flex-shrink-0"
             onClick={() => setSidebarOpen(false)}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: 'var(--text-3)', borderRadius: '6px' }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-3)', borderRadius: '6px' }}
             aria-label="Close navigation"
           >
             <FiX size={16} />
@@ -288,7 +288,7 @@ export default function DealerLayout({ children }) {
         </nav>
 
         {/* Sign out */}
-        <div style={{ padding: '10px', borderTop: '1px solid var(--border)', flexShrink: 0 }}>
+        <div style={{ padding: '10px', paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 10px)', borderTop: '1px solid var(--border)', flexShrink: 0 }}>
           <button
             onClick={handleLogout}
             className="w-full flex items-center justify-center gap-2"
@@ -326,7 +326,7 @@ export default function DealerLayout({ children }) {
             <button
               className="lg:hidden flex-shrink-0"
               onClick={() => setSidebarOpen(true)}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '6px', color: 'var(--text)', borderRadius: '6px' }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text)', borderRadius: '6px' }}
               aria-label="Open navigation"
               aria-expanded={sidebarOpen}
             >
@@ -394,7 +394,7 @@ export default function DealerLayout({ children }) {
               <button
                 onClick={() => setSearchOpen(true)}
                 className="sm:hidden"
-                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '7px', borderRadius: '7px', color: 'var(--text-3)' }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '7px', color: 'var(--text-3)' }}
                 aria-label="Search"
                 onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg)'; e.currentTarget.style.color = 'var(--text)'; }}
                 onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.color = 'var(--text-3)'; }}
@@ -405,7 +405,7 @@ export default function DealerLayout({ children }) {
               {/* Notifications */}
               <button
                 onClick={() => setNotifOpen(true)}
-                style={{ position: 'relative', background: 'none', border: 'none', cursor: 'pointer', padding: '7px', borderRadius: '7px', color: 'var(--text-3)' }}
+                style={{ position: 'relative', background: 'none', border: 'none', cursor: 'pointer', minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '7px', color: 'var(--text-3)' }}
                 aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ''}`}
                 onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg)'; e.currentTarget.style.color = 'var(--text)'; }}
                 onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.color = 'var(--text-3)'; }}
@@ -436,7 +436,7 @@ export default function DealerLayout({ children }) {
                   aria-haspopup="true"
                   aria-label="Account menu"
                   style={{
-                    width: '32px', height: '32px', borderRadius: '50%',
+                    width: '44px', height: '44px', borderRadius: '50%',
                     border: '2px solid var(--border)',
                     background: 'var(--accent)',
                     cursor: 'pointer',

@@ -120,7 +120,7 @@ export default function SupplierLayout() {
             <button
               onClick={() => setSidebarOpen(false)}
               className="lg:hidden"
-              style={{ background: 'none', border: 'none', color: 'var(--text-4,#9CA3AF)', cursor: 'pointer', padding: 4 }}
+              style={{ background: 'none', border: 'none', color: 'var(--text-4,#9CA3AF)', cursor: 'pointer', minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               aria-label="Close navigation"
             >
               <FiX size={18} aria-hidden="true" />
@@ -146,7 +146,7 @@ export default function SupplierLayout() {
         </nav>
 
         {/* Logout */}
-        <div style={{ padding: '10px 10px 20px', borderTop: '1px solid var(--border,#E5E7EB)' }}>
+        <div style={{ padding: '10px 10px', paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 20px)', borderTop: '1px solid var(--border,#E5E7EB)' }}>
           <button onClick={handleLogout}
             style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: 'rgba(239,68,68,0.08)', border: 'none', borderRadius: 8, color: '#EF4444', fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>
             <FiLogOut size={16} aria-hidden="true" /> Sign Out
@@ -169,7 +169,7 @@ export default function SupplierLayout() {
           <button
             onClick={() => setSidebarOpen(true)}
             className="lg:hidden"
-            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text,#374151)', padding: 4, flexShrink: 0 }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text,#374151)', minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
             aria-label="Open navigation"
             aria-expanded={sidebarOpen}
           >
@@ -206,7 +206,7 @@ export default function SupplierLayout() {
           {/* Bell */}
           <button
             onClick={() => setNotifOpen(true)}
-            style={{ position: 'relative', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-4,#6B7280)', padding: 6, flexShrink: 0 }}
+            style={{ position: 'relative', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-4,#6B7280)', minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
             aria-label="Open notifications"
             aria-expanded={notifOpen}
           >
@@ -218,7 +218,7 @@ export default function SupplierLayout() {
           <div style={{ position: 'relative', flexShrink: 0 }}>
             <button
               onClick={() => setProfileOpen(v => !v)}
-              style={{ width: 32, height: 32, borderRadius: '50%', background: '#FF7A00', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: 13, fontFamily: 'inherit' }}
+              style={{ width: 44, height: 44, borderRadius: '50%', background: '#FF7A00', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: 13, fontFamily: 'inherit' }}
               aria-label="Open profile menu"
               aria-expanded={profileOpen}
               aria-haspopup="menu"
