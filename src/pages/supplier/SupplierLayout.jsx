@@ -1,78 +1,216 @@
-import React from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { FiGrid, FiShoppingBag, FiFileText, FiFile, FiBell, FiUser, FiLogOut } from 'react-icons/fi';
+import {
+  FiGrid, FiShoppingBag, FiFileText, FiFile, FiBell, FiUser, FiLogOut,
+  FiSearch, FiMenu, FiX, FiChevronRight,
+} from 'react-icons/fi';
 import { supplierLogout } from '../../redux/slices/supplierAuthSlice';
+import SupplierSearch from '../../components/supplier/SupplierSearch';
+import SupplierNotificationDrawer from '../../components/supplier/SupplierNotificationDrawer';
 
 const NAV_ITEMS = [
-  { to: '/supplier/dashboard',    icon: FiGrid,        label: 'Dashboard' },
-  { to: '/supplier/orders',       icon: FiShoppingBag, label: 'Purchase Orders' },
-  { to: '/supplier/rfq',          icon: FiFileText,    label: 'RFQs' },
-  { to: '/supplier/invoices',     icon: FiFile,        label: 'Invoices' },
-  { to: '/supplier/documents',    icon: FiFile,        label: 'Documents' },
-  { to: '/supplier/notifications',icon: FiBell,        label: 'Notifications' },
-  { to: '/supplier/profile',      icon: FiUser,        label: 'Profile' },
+  { to: '/supplier/dashboard',     icon: FiGrid,        label: 'Dashboard' },
+  { to: '/supplier/orders',        icon: FiShoppingBag, label: 'Purchase Orders' },
+  { to: '/supplier/rfq',           icon: FiFileText,    label: 'RFQs' },
+  { to: '/supplier/invoices',      icon: FiFile,        label: 'Invoices' },
+  { to: '/supplier/documents',     icon: FiFile,        label: 'Documents' },
+  { to: '/supplier/profile',       icon: FiUser,        label: 'Profile' },
 ];
+
+const BREADCRUMB_MAP = {
+  '/supplier/dashboard':     'Dashboard',
+  '/supplier/orders':        'Purchase Orders',
+  '/supplier/rfq':           'RFQ Invitations',
+  '/supplier/invoices':      'Invoices',
+  '/supplier/notifications': 'Notifications',
+  '/supplier/documents':     'Documents',
+  '/supplier/profile':       'Profile',
+};
+
+function getBreadcrumb(pathname) {
+  const label = BREADCRUMB_MAP[pathname];
+  if (label) return [{ label }];
+  if (pathname.startsWith('/supplier/orders/')) return [{ label: 'Purchase Orders', to: '/supplier/orders' }, { label: 'Order Detail' }];
+  return [];
+}
 
 export default function SupplierLayout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const { supplierUser } = useSelector(s => s.supplierAuth);
 
-  const handleLogout = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchOpen, setSearchOpen]   = useState(false);
+  const [notifOpen, setNotifOpen]     = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+
+  const crumbs = getBreadcrumb(location.pathname);
+
+  useEffect(() => { setSidebarOpen(false); }, [location.pathname]);
+
+  useEffect(() => {
+    const handler = e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); setSearchOpen(true); }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
+
+  const handleLogout = useCallback(() => {
     dispatch(supplierLogout());
     navigate('/supplier/login');
-  };
+  }, [dispatch, navigate]);
 
   return (
-    <div className="flex h-screen overflow-hidden" style={{ background: 'var(--bg)' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'Poppins, sans-serif', background: 'var(--bg,#F9FAFB)' }}>
+
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div onClick={() => setSidebarOpen(false)}
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 100 }}
+          className="lg:hidden" />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-56 flex-shrink-0 flex flex-col border-r" style={{ background: 'var(--card)', borderColor: 'var(--border)' }}>
+      <aside style={{
+        position: 'fixed', top: 0, left: 0, height: '100vh', width: 240, zIndex: 110,
+        background: 'var(--card,#fff)', borderRight: '1px solid var(--border,#E5E7EB)',
+        display: 'flex', flexDirection: 'column',
+        transform: sidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
+        transition: 'transform 0.25s ease',
+      }}
+        className="lg:translate-x-0">
+
         {/* Brand */}
-        <div className="px-4 py-5 border-b" style={{ borderColor: 'var(--border)' }}>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#FF7A00' }}>
-              <span className="text-white font-black text-sm">S</span>
+        <div style={{ padding: '20px 16px 18px', borderBottom: '1px solid var(--border,#E5E7EB)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div style={{ width: 36, height: 36, borderRadius: 10, background: '#FF7A00', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <span style={{ color: '#fff', fontWeight: 900, fontSize: 15 }}>S</span>
+              </div>
+              <div>
+                <div style={{ color: 'var(--text,#111827)', fontWeight: 700, fontSize: 13 }}>Supplier Portal</div>
+                <div style={{ color: 'var(--text-4,#9CA3AF)', fontSize: 11, marginTop: 1, maxWidth: 140, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {supplierUser?.name}
+                </div>
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-black" style={{ color: 'var(--text)', fontFamily: 'Poppins' }}>Supplier Portal</p>
-              <p className="text-xs truncate max-w-28" style={{ color: 'var(--text-4)' }}>{supplierUser?.name}</p>
-            </div>
+            <button onClick={() => setSidebarOpen(false)} className="lg:hidden"
+              style={{ background: 'none', border: 'none', color: 'var(--text-4,#9CA3AF)', cursor: 'pointer', padding: 4 }}>
+              <FiX size={18} />
+            </button>
           </div>
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-2 py-4 space-y-0.5 overflow-y-auto">
+        <nav style={{ flex: 1, padding: '12px 10px', overflowY: 'auto' }}>
           {NAV_ITEMS.map(({ to, icon: Icon, label }) => (
             <NavLink key={to} to={to}
-              className={({ isActive }) =>
-                `flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${isActive ? 'text-white' : 'hover:bg-opacity-50'}`
-              }
               style={({ isActive }) => ({
-                background: isActive ? '#FF7A00' : 'transparent',
-                color: isActive ? '#fff' : 'var(--text-4)',
+                display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px',
+                borderRadius: 8, textDecoration: 'none', fontSize: 13, marginBottom: 2,
+                color: isActive ? '#FF7A00' : 'var(--text-4,#6B7280)',
+                fontWeight: isActive ? 700 : 400,
+                background: isActive ? 'rgba(255,122,0,0.08)' : 'transparent',
+                borderLeft: isActive ? '3px solid #FF7A00' : '3px solid transparent',
               })}>
-              <Icon size={16} />
-              {label}
+              <Icon size={17} />{label}
             </NavLink>
           ))}
         </nav>
 
         {/* Logout */}
-        <div className="px-2 pb-4 border-t pt-3" style={{ borderColor: 'var(--border)' }}>
+        <div style={{ padding: '10px 10px 20px', borderTop: '1px solid var(--border,#E5E7EB)' }}>
           <button onClick={handleLogout}
-            className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-medium"
-            style={{ color: '#EF4444' }}>
-            <FiLogOut size={16} />
-            Sign Out
+            style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: 'rgba(239,68,68,0.08)', border: 'none', borderRadius: 8, color: '#EF4444', fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>
+            <FiLogOut size={16} /> Sign Out
           </button>
         </div>
       </aside>
 
-      {/* Main */}
-      <main className="flex-1 overflow-y-auto">
-        <Outlet />
-      </main>
+      {/* Main content (offset on desktop) */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}
+        className="lg:ml-[240px]">
+
+        {/* Sticky portal header */}
+        <header style={{
+          position: 'sticky', top: 0, zIndex: 90,
+          background: 'var(--card,#fff)', borderBottom: '1px solid var(--border,#E5E7EB)',
+          display: 'flex', alignItems: 'center', gap: 12,
+          padding: '0 20px', height: 56,
+        }}>
+          {/* Hamburger (mobile) */}
+          <button onClick={() => setSidebarOpen(true)} className="lg:hidden"
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text,#374151)', padding: 4, flexShrink: 0 }}>
+            <FiMenu size={20} />
+          </button>
+
+          {/* Breadcrumb */}
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+            <span style={{ fontSize: 12, color: '#9CA3AF', fontWeight: 500 }}>Supplier Portal</span>
+            {crumbs.map((c, i) => (
+              <React.Fragment key={i}>
+                <FiChevronRight size={12} color="#D1D5DB" />
+                <span style={{ fontSize: 12, color: i === crumbs.length - 1 ? 'var(--text,#111827)' : 'var(--text-4,#6B7280)', fontWeight: i === crumbs.length - 1 ? 600 : 400, whiteSpace: 'nowrap' }}>
+                  {c.label}
+                </span>
+              </React.Fragment>
+            ))}
+          </div>
+
+          {/* Search trigger */}
+          <button onClick={() => setSearchOpen(true)}
+            style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '6px 12px', background: 'var(--bg,#F9FAFB)', border: '1px solid var(--border,#E5E7EB)', borderRadius: 8, cursor: 'pointer', color: 'var(--text-4,#6B7280)', fontSize: 12, fontFamily: 'inherit', flexShrink: 0 }}>
+            <FiSearch size={13} />
+            <span className="hidden sm:inline">Search</span>
+            <kbd style={{ background: 'var(--border,#E5E7EB)', borderRadius: 4, padding: '1px 5px', fontSize: 10, color: '#9CA3AF' }} className="hidden sm:inline">Ctrl K</kbd>
+          </button>
+
+          {/* Bell */}
+          <button onClick={() => setNotifOpen(true)}
+            style={{ position: 'relative', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-4,#6B7280)', padding: 6, flexShrink: 0 }}>
+            <FiBell size={19} />
+            <span style={{ position: 'absolute', top: 4, right: 4, width: 8, height: 8, background: '#EF4444', borderRadius: '50%', border: '2px solid var(--card,#fff)' }} />
+          </button>
+
+          {/* Profile avatar */}
+          <div style={{ position: 'relative', flexShrink: 0 }}>
+            <button onClick={() => setProfileOpen(v => !v)}
+              style={{ width: 32, height: 32, borderRadius: '50%', background: '#FF7A00', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: 13, fontFamily: 'inherit' }}>
+              {supplierUser?.name?.[0]?.toUpperCase() || 'S'}
+            </button>
+            {profileOpen && (
+              <>
+                <div onClick={() => setProfileOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 200 }} />
+                <div style={{ position: 'absolute', right: 0, top: 40, background: 'var(--card,#fff)', border: '1px solid var(--border,#E5E7EB)', borderRadius: 10, boxShadow: '0 8px 32px rgba(0,0,0,0.12)', minWidth: 190, zIndex: 201, padding: '6px 0' }}>
+                  <div style={{ padding: '10px 14px', borderBottom: '1px solid var(--border,#F3F4F6)' }}>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text,#111827)' }}>{supplierUser?.name}</div>
+                    <div style={{ fontSize: 11, color: '#6B7280', marginTop: 1 }}>{supplierUser?.email}</div>
+                  </div>
+                  <NavLink to="/supplier/profile" onClick={() => setProfileOpen(false)}
+                    style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 14px', textDecoration: 'none', color: 'var(--text,#374151)', fontSize: 13 }}>
+                    <FiUser size={14} /> My Profile
+                  </NavLink>
+                  <button onClick={handleLogout}
+                    style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 8, padding: '9px 14px', background: 'none', border: 'none', cursor: 'pointer', color: '#EF4444', fontSize: 13, fontFamily: 'inherit' }}>
+                    <FiLogOut size={14} /> Sign Out
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </header>
+
+        {/* Page content */}
+        <main style={{ flex: 1, overflowY: 'auto' }}>
+          <Outlet />
+        </main>
+      </div>
+
+      <SupplierSearch open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <SupplierNotificationDrawer open={notifOpen} onClose={() => setNotifOpen(false)} />
     </div>
   );
 }
