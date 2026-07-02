@@ -146,7 +146,7 @@ export default function EngineerInstallationDetail() {
   });
 
   return (
-    <div style={{ padding: '28px 32px', fontFamily: 'Poppins, sans-serif', maxWidth: 800 }}>
+    <div style={{ padding: '24px 24px 80px', fontFamily: 'Poppins, sans-serif', maxWidth: 820 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -282,12 +282,24 @@ export default function EngineerInstallationDetail() {
         </div>
       )}
       {ir.customerSignature && (
-        <div style={{ background: '#F0FDF4', borderRadius: 10, padding: 16, border: '1px solid #BBF7D0', marginBottom: 20 }}>
+        <div style={{ background: '#F0FDF4', borderRadius: 12, padding: 16, border: '1px solid #BBF7D0', marginBottom: 20 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
             <FiCheckCircle color="#10B981" />
             <span style={{ fontSize: 13, fontWeight: 600, color: '#065F46' }}>Customer has signed off</span>
           </div>
           <img src={ir.customerSignature} alt="signature" style={{ maxWidth: 200, border: '1px solid #D1FAE5', borderRadius: 6 }} />
+        </div>
+      )}
+
+      {/* Mobile sticky bottom action bar */}
+      {nextStatuses.length > 0 && ir.status !== 'completed' && (
+        <div className="lg:hidden" style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: '#fff', borderTop: '1px solid #E5E7EB', padding: '12px 20px', zIndex: 80, display: 'flex', gap: 10 }}>
+          {nextStatuses.map(s => (
+            <button key={s.value} onClick={() => updateStatus(s.value)} disabled={updating}
+              style={{ flex: 1, padding: '14px 0', background: '#059669', color: '#fff', border: 'none', borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: updating ? 'not-allowed' : 'pointer', fontFamily: 'Poppins, sans-serif', opacity: updating ? 0.7 : 1 }}>
+              {s.label}
+            </button>
+          ))}
         </div>
       )}
     </div>

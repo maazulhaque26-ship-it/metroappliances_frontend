@@ -170,11 +170,11 @@ export default function TechnicianJobDetail() {
     timestamp: h.changedAt,
   }));
 
-  const card = { background: '#fff', borderRadius: 12, padding: 20, border: '1px solid #E5E7EB', marginBottom: 20 };
+  const card = { background: '#fff', borderRadius: 14, padding: 20, border: '1px solid #E5E7EB', marginBottom: 16, boxShadow: '0 1px 4px rgba(0,0,0,0.04)' };
   const h3Style = { fontSize: 14, fontWeight: 700, marginBottom: 12, color: '#111827' };
 
   return (
-    <div style={{ padding: '28px 32px', fontFamily: 'Poppins, sans-serif', maxWidth: 800 }}>
+    <div style={{ padding: '24px 24px 80px', fontFamily: 'Poppins, sans-serif', maxWidth: 820 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
         <h1 style={{ fontSize: 20, fontWeight: 700, color: '#111827' }}>{job.ticketNumber}</h1>
         <StatusBadge status={job.status} size="lg" />
@@ -354,6 +354,16 @@ export default function TechnicianJobDetail() {
         <h3 style={h3Style}>History</h3>
         <Timeline events={timelineEvents} />
       </div>
+
+      {/* Mobile sticky bottom action bar */}
+      {!['completed','closed','cancelled'].includes(job.status) && nextAction && (
+        <div className="lg:hidden" style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: '#fff', borderTop: '1px solid #E5E7EB', padding: '12px 20px', zIndex: 80, display: 'flex', gap: 10 }}>
+          <button onClick={() => handleAction(nextAction.status)} disabled={saving}
+            style={{ flex: 1, padding: '14px 0', background: nextAction.color, color: '#fff', border: 'none', borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: saving ? 'not-allowed' : 'pointer', fontFamily: 'Poppins, sans-serif', opacity: saving ? 0.7 : 1 }}>
+            {nextAction.label}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
