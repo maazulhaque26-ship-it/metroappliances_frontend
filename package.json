@@ -1,6 +1,6 @@
 {
   "name": "metroappliances-frontend",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Metro Appliances ERP — React 18 frontend",
   "private": true,
   "type": "module",

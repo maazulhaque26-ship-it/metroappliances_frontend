@@ -2,7 +2,7 @@
 
 > **React 18 SPA** powering a full enterprise ERP — customer storefront, admin panel, and 5 specialised portals, all lazy-loaded and code-split via Vite.
 
-**Version**: v1.0.0 | **Stack**: React 18 · Vite · Redux Toolkit · React Router 6 · Recharts · Socket.IO Client | **Deployed**: Vercel
+**Version**: v1.1.0 | **Stack**: React 18 · Vite · Redux Toolkit · React Router 6 · Recharts · Socket.IO Client | **Deployed**: Vercel
 
 ---
 
