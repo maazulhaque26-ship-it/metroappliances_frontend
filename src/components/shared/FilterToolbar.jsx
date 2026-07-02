@@ -16,8 +16,8 @@ export default function FilterToolbar({ filters, value, onChange, style }) {
             fontWeight: 600,
             cursor: 'pointer',
             fontFamily: 'var(--font-body, Poppins, sans-serif)',
-            background: value === f.value ? '#FF7A00' : '#F3F4F6',
-            color:      value === f.value ? '#fff'    : '#374151',
+            background: value === f.value ? 'var(--accent,#FF7A00)' : 'var(--bg-2,#F3F4F6)',
+            color:      value === f.value ? '#fff'                  : 'var(--text-2,#374151)',
             transition: 'all 0.15s',
           }}
         >

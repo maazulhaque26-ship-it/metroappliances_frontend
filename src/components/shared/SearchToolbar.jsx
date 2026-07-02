@@ -5,8 +5,8 @@ export default function SearchToolbar({ value, onChange, placeholder = 'Searchâ€
   const label = ariaLabel || placeholder;
 
   return (
-    <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', ...style }}>
-      <FiSearch size={14} aria-hidden="true" style={{ position: 'absolute', left: '10px', color: '#9CA3AF', pointerEvents: 'none' }} />
+    <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', width: '240px', ...style }}>
+      <FiSearch size={14} aria-hidden="true" style={{ position: 'absolute', left: '10px', color: 'var(--text-4,#9CA3AF)', pointerEvents: 'none' }} />
       <input
         type="text"
         value={value}
@@ -15,23 +15,23 @@ export default function SearchToolbar({ value, onChange, placeholder = 'Searchâ€
         aria-label={label}
         style={{
           padding: '8px 32px 8px 32px',
-          border: '1px solid #E5E7EB',
+          border: '1px solid var(--border,#E5E7EB)',
           borderRadius: '8px',
           fontSize: '13px',
           outline: 'none',
-          background: '#fff',
+          background: 'var(--card,#fff)',
           fontFamily: 'var(--font-body, Poppins, sans-serif)',
-          color: '#374151',
-          width: '240px',
+          color: 'var(--text-2,#374151)',
+          width: '100%',
           transition: 'border-color 0.15s',
         }}
         onFocus={e => {
-          e.target.style.borderColor = '#FF7A00';
-          e.target.style.outline = '2px solid #FF7A00';
+          e.target.style.borderColor = 'var(--accent,#FF7A00)';
+          e.target.style.outline = '2px solid var(--accent,#FF7A00)';
           e.target.style.outlineOffset = '1px';
         }}
         onBlur={e => {
-          e.target.style.borderColor = '#E5E7EB';
+          e.target.style.borderColor = 'var(--border,#E5E7EB)';
           e.target.style.outline = 'none';
         }}
       />

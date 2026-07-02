@@ -10,16 +10,16 @@ export default function MetricCard({ title, value, change, changeLabel, icon: Ic
   const changeText  = isUp ? `up ${changeNum}%` : isDown ? `down ${Math.abs(changeNum)}%` : `no change`;
 
   return (
-    <div style={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: '14px', padding: '20px', borderTop: `3px solid ${accent}`, fontFamily: 'var(--font-body, Poppins, sans-serif)', ...style }}>
+    <div style={{ background: 'var(--card,#fff)', border: '1px solid var(--border,#E5E7EB)', borderRadius: '14px', padding: '20px', borderTop: `3px solid ${accent}`, fontFamily: 'var(--font-body, Poppins, sans-serif)', ...style }}>
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '12px' }}>
-        <div style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#9CA3AF' }}>{title}</div>
+        <div style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-4,#9CA3AF)' }}>{title}</div>
         {Icon && (
           <div aria-hidden="true" style={{ width: '36px', height: '36px', borderRadius: '10px', background: `${accent}15`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Icon size={16} style={{ color: accent }} />
           </div>
         )}
       </div>
-      <div style={{ fontSize: '26px', fontWeight: 900, color: '#111', letterSpacing: '-0.02em', lineHeight: 1, marginBottom: '8px' }}>
+      <div style={{ fontSize: '26px', fontWeight: 900, color: 'var(--text,#111)', letterSpacing: '-0.02em', lineHeight: 1, marginBottom: '8px' }}>
         {prefix}{value}{suffix}
       </div>
       {change != null && (

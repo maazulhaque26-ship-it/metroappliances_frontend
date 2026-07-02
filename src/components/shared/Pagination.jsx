@@ -29,10 +29,10 @@ export default function Pagination({ page, total, limit, onPageChange }) {
       aria-disabled={ariaDisabled || undefined}
       style={{
         minWidth: '34px', height: '34px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        border: active ? 'none' : '1px solid #E5E7EB',
+        border: active ? 'none' : '1px solid var(--border,#E5E7EB)',
         borderRadius: '8px',
-        background: active ? '#FF7A00' : disabled ? '#F9FAFB' : '#fff',
-        color: active ? '#fff' : disabled ? '#D1D5DB' : '#374151',
+        background: active ? 'var(--accent,#FF7A00)' : disabled ? 'var(--bg,#F9FAFB)' : 'var(--card,#fff)',
+        color: active ? '#fff' : disabled ? 'var(--text-5,#D1D5DB)' : 'var(--text-2,#374151)',
         fontSize: '13px', fontWeight: active ? 700 : 500, cursor: disabled ? 'not-allowed' : 'pointer',
         fontFamily: 'var(--font-body, Poppins, sans-serif)',
         transition: 'all 0.15s',
@@ -42,7 +42,7 @@ export default function Pagination({ page, total, limit, onPageChange }) {
 
   return (
     <nav aria-label="Pagination" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', padding: '16px 0 0' }}>
-      <span style={{ fontSize: '12px', color: '#9CA3AF', fontFamily: 'var(--font-body, Poppins, sans-serif)' }}>
+      <span style={{ fontSize: '12px', color: 'var(--text-4,#9CA3AF)', fontFamily: 'var(--font-body, Poppins, sans-serif)' }}>
         Showing {from}–{to} of {total}
       </span>
       <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
